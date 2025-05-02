@@ -15,9 +15,13 @@ public class Room{
     }
     /**
      * Initializes all doors
+     * INDEX:0 = UP
+     * INDEX:1 = DOWN
+     * INDEX:2 = LEFT
+     * INDEX:3 = RIGHT
      */
     private void intializeDoors(){
-        for(int i = 0; i < myDoors.length; i++){
+        for(int i = 0; i < myDoors.length ;i++){
             myDoors[i] = new Door();
         }
     }
@@ -27,5 +31,6 @@ public class Room{
     public Door[] getDoors(){
         return myDoors;
     }
+    
     
 }
