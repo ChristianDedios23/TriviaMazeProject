@@ -31,6 +31,19 @@ public class Room{
     public Door[] getDoors(){
         return myDoors;
     }
-    
+    public Door getDoor(final Direction theDirection ){
+        switch (theDirection) {
+           case Direction.UP:
+               return myDoors[0];
+           case Direction.DOWN:
+               return myDoors[1];
+           case Direction.LEFT:
+               return myDoors[2];
+           case Direction.RIGHT:
+               return myDoors[3];
+           default:
+               throw new IllegalArgumentException("Invalid direction: "+ theDirection);
+       }
+   }
     
 }

@@ -29,5 +29,7 @@ public enum Direction {
                 return null;
         }
     }
-
+    public static Direction[] getAllDirections(){
+        return new Direction[]{Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT};
+    }
 }
