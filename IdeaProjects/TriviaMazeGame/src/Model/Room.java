@@ -15,10 +15,6 @@ public class Room{
     }
     /**
      * Initializes all doors
-     * INDEX:0 = UP
-     * INDEX:1 = DOWN
-     * INDEX:2 = LEFT
-     * INDEX:3 = RIGHT
      */
     private void intializeDoors(){
         for(int i = 0; i < myDoors.length ;i++){
@@ -31,19 +27,14 @@ public class Room{
     public Door[] getDoors(){
         return myDoors;
     }
+    /**
+     * Retrives the door correlating to the given direction
+     * @param theDirection desired direction of door 
+     * @return the door relating to the direction
+     */
     public Door getDoor(final Direction theDirection ){
-        switch (theDirection) {
-           case Direction.UP:
-               return myDoors[0];
-           case Direction.DOWN:
-               return myDoors[1];
-           case Direction.LEFT:
-               return myDoors[2];
-           case Direction.RIGHT:
-               return myDoors[3];
-           default:
-               throw new IllegalArgumentException("Invalid direction: "+ theDirection);
-       }
+       return myDoors[theDirection.getIndex()];
+       
    }
     
 }

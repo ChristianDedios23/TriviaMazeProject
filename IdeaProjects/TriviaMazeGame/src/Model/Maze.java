@@ -59,7 +59,7 @@ public class Maze {
      * Attempts a move to another room by checking the door
      * If not open, but not locked, it will ask the user a quetion
      * @param theDirection the direction the user wants to move
-     * @return true if already open, false if the door is not open yet
+     * @return true if the user can free move to next room, false if else
      */
     public boolean attemptMove(final Direction theDirection){
         int position = getNextRoomPosition(myCurrentPosition, theDirection); 
@@ -67,7 +67,6 @@ public class Maze {
             String frontSideDoor = myCurrentPosition + ": " + theDirection;
             String otherSideDoor = position+": " + theDirection.getOpposite(); 
             if(myOpenDoors.contains(frontSideDoor) || myOpenDoors.contains(otherSideDoor)){
-                move(theDirection, true);
                 return true;
             }else if(!isDoorLocked(position, theDirection)){
                 //ask question 
