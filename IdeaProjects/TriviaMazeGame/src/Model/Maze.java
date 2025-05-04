@@ -1,5 +1,7 @@
 package Model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -10,7 +12,7 @@ import java.util.Set;
 /**
  * Maze object to manage the state of the game
  */
-public class Maze {
+public class Maze implements PropertyChangeListenerMaze{
     /** An int representing the current position */
     private int myCurrentPosition;
     /** A map representing the maze  */
@@ -23,6 +25,7 @@ public class Maze {
     private int myMazeLength;
     /** The room position of the exit */
     private int myExit;
+    private final PropertyChangeSupport myPcs;
     /**
      * Constructs a maze object based on the given length
      * @param theLength, the desired length of the maze
@@ -32,6 +35,7 @@ public class Maze {
         myOpenDoors = new HashSet<>();
         myCurrentPosition = STARTING_POSITION;
         myExit = (int) Math.pow(myMazeLength -1, 2);
+        myPcs = new PropertyChangeSupport(this);
     }
     /**
      * Intializes myMaze with Room objects and links them
@@ -253,5 +257,15 @@ public class Maze {
         Room room = getRoom(thePosition);
         Door door = room.getDoor(theDirection);
         door.lockDoor();
+    }
+    /** This method takes in a PropertyChangeListener object and adds it
+     * to the myPcs object. Any PropertyChangeListener added will be notified
+     * when myPcs fires a property change.
+     *
+     * @param theListener The PropertyChangeListener to be added
+     */
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener theListener) {
+        myPcs.addPropertyChangeListener(theListener);
     }
 }
