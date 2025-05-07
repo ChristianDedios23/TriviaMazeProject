@@ -30,12 +30,13 @@ public class GameSettingsWindow extends JDialog
 
     private final int SETTINGS_WINDOW_HEIGHT = 300;
 
-    public GameSettingsWindow()
+    public GameSettingsWindow(final JFrame theParent)
     {
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         this.setTitle("Game settings:");
         this.setSize(SETTINGS_WINDOW_WIDTH, SETTINGS_WINDOW_HEIGHT);
         this.setResizable(false);
+        this.setLocationRelativeTo(theParent);
 
         myQuestionsPanel = new JPanel();
         myDifficultyPanel = new JPanel();
@@ -47,9 +48,7 @@ public class GameSettingsWindow extends JDialog
 
         myStartGameButton = new JButton("Start Game");
         this.add(myStartGameButton);
-
-        //do when new game
-        setVisible(true);
+        this.pack();
     }
 
     private void setUpQuestionPanel()
@@ -84,5 +83,15 @@ public class GameSettingsWindow extends JDialog
         myBoardCheckBox = new JCheckBox("Fully Visible Board:");
         myBoardPanel.add(myBoardCheckBox);
         this.add(myBoardPanel);
+    }
+
+    public void makeVisible(boolean isVisible)
+    {
+        this.setVisible(isVisible);
+    }
+
+    public JButton getStartGameButton()
+    {
+        return myStartGameButton;
     }
 }

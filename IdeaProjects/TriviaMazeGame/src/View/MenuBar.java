@@ -19,6 +19,9 @@ public class MenuBar extends JMenuBar
 
     private JMenuItem myAboutItem;
 
+    private JMenuItem myShortCutsItem;
+
+    //add shortcuts menu item and add shortcuts to play the whole game without a mouse
     public MenuBar()
     {
         super();
@@ -29,6 +32,7 @@ public class MenuBar extends JMenuBar
         myExitGameItem = new JMenuItem("Exit Game");
         myGamePlayInstructionItem = new JMenuItem("How-to-play");
         myAboutItem = new JMenuItem("About");
+        myShortCutsItem = new JMenuItem("Short-Cuts");
         setUpComponents();
     }
 
@@ -39,12 +43,14 @@ public class MenuBar extends JMenuBar
         myExitGameItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
         myGamePlayInstructionItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK));
         myAboutItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK));
+        myShortCutsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 
         myFileMenu.add(mySaveGameItem);
         myFileMenu.add(myLoadGameItem);
         myFileMenu.add(myExitGameItem);
         myHelpMenu.add(myGamePlayInstructionItem);
         myHelpMenu.add(myAboutItem);
+        myHelpMenu.add(myShortCutsItem);
 
         this.add(myFileMenu);
         this.add(myHelpMenu);
@@ -79,4 +85,6 @@ public class MenuBar extends JMenuBar
     {
         return myGamePlayInstructionItem;
     }
+
+    public JMenuItem getShortCutsItem(){ return myShortCutsItem;}
 }
