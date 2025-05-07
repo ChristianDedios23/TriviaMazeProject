@@ -4,13 +4,17 @@ import java.beans.PropertyChangeListener;
 
 public interface PropertyChangeListenerMaze {
 
-    String PROPERTY_PLAYER_MOVE_UP = "playerMoveUP";
-    String PROPERTY_PLAYER_MOVE_DOWN = "playerMoveDown";
-    String PROPERTY_PLAYER_MOVE_LEFT = "playerMoveLeft";
-    String PROPERTY_PLAYER_MOVE_RIGHT = "playerMoveRight";
+    String PROPERTY_PLAYER_MOVE = "playerMove";
+    String PROPERTY_DOOR_UP = "doorUP";
+    String PROPERTY_DOOR_DOWN = "doorDown";
+    String PROPERTY_DOOR_LEFT = "doorLeft";
+    String PROPERTY_DOOR_RIGHT = "doorRight";
     String PROPERTY_PLAYER_MOVE_OOB = "playerMoveOOB";
     String PROPERTY_QUESTION_WRONG = "questionWrong";
     String PROPERTY_QUESTION_RIGHT = "questionRight";
+    
+    String PROPERTY_VICTORY = "victory";
+    String PROPERTY_GAMEOVER = "gameOver";
     /**
      * Add a PropertyChangeListener to the listener list. The listener is registered for
      * all properties. The same listener object may be added more than once, and will be

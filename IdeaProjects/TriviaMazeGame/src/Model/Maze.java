@@ -25,6 +25,9 @@ public class Maze implements PropertyChangeListenerMaze{
     private int myMazeLength;
     /** The room position of the exit */
     private int myExit;
+    private final int DOOR_OPEN = 1;
+    private final int DOOR_W_QUESTION = 2;
+    private final int DOOR_LOCKED = 3;
     private final PropertyChangeSupport myPcs;
     /**
      * Constructs a maze object based on the given length
@@ -60,11 +63,64 @@ public class Maze implements PropertyChangeListenerMaze{
         return maze;
     }
     /**
+     * Sets the current position to given position
+     * @param thePosition the next position
+     */
+    private void setCurrentPosition(final int thePosition){
+        if(thePosition < 0 || thePosition > myExit){
+            throw new IllegalArgumentException("Can't set position out of bounds: "+ thePosition);
+        }
+        myPcs.firePropertyChange(PROPERTY_PLAYER_MOVE, myCurrentPosition, thePosition);
+        myCurrentPosition = thePosition;
+        firePCSSurroundingRooms();
+        
+    }
+    /**
+     * Fires a PCS to tell the state of all surrounding doors
+     */
+    private void firePCSSurroundingRooms(){
+        for(Direction direction: Direction.getAllDirections()){
+            firePCSForDoor(direction);
+        }
+    }
+    /**
+     * Fires a PCS to tell the state of a door in a direction
+     * @param theDirection the direction of the door/room
+     */
+    private void firePCSForDoor(final Direction theDirection){
+        int position = -1;
+        switch (theDirection) {
+            case Direction.UP:
+                position = canMoveUp(myCurrentPosition);
+                break;
+            case Direction.DOWN:
+                position = canMoveDown(myCurrentPosition);
+                break;
+            case Direction.LEFT:
+                position = canMoveLeft(myCurrentPosition);
+                break;
+            case Direction.RIGHT:
+                position = canMoveRight(myCurrentPosition);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid direction: "+ theDirection);
+        }
+        String event = "door"+theDirection;
+        if(position == -1){
+            myPcs.firePropertyChange(event, null, DOOR_LOCKED);
+        }else if(myOpenDoors.contains(position+": "+theDirection)){
+            myPcs.firePropertyChange(event, null, DOOR_OPEN);
+        }else{
+            myPcs.firePropertyChange(event, null, DOOR_W_QUESTION);
+        }
+    }
+    /**
      * Attempts a move to another room by checking the door
      * If not open, but not locked, it will ask the user a quetion
      * @param theDirection the direction the user wants to move
      * @return true if the user can free move to next room, false if else
      */
+   
     public boolean attemptMove(final Direction theDirection){
         int position = getNextRoomPosition(myCurrentPosition, theDirection); 
         if(position > 0){
@@ -89,6 +145,8 @@ public class Maze implements PropertyChangeListenerMaze{
     public boolean move(final Direction theDirection, final boolean theCorrectAnswer){
         int position = getNextRoomPosition(myCurrentPosition, theDirection);
         if(!theCorrectAnswer){
+            //Change later 
+            myPcs.firePropertyChange("questionWrong", theDirection, theDirection);
             lockDoor(myCurrentPosition, theDirection);
             lockDoor(position, theDirection.getOpposite());
             return false;
@@ -99,8 +157,11 @@ public class Maze implements PropertyChangeListenerMaze{
 
             myOpenDoors.add(frontSideDoor);
             myOpenDoors.add(otherSideDoor);
-
-            myCurrentPosition = position;
+            
+            //Change new value
+            myPcs.firePropertyChange("questionRight", theDirection, theDirection);
+            setCurrentPosition(position);
+            
             return true;
         }
         return false;
@@ -111,6 +172,9 @@ public class Maze implements PropertyChangeListenerMaze{
      * @return true if its the exit, false if else
      */
     public boolean checkAtExit(final int thePosition){
+        if(myCurrentPosition == myExit){
+            myPcs.firePropertyChange(PROPERTY_VICTORY, null, true);
+        }
         return thePosition == myExit;
     }
     /**
@@ -209,6 +273,7 @@ public class Maze implements PropertyChangeListenerMaze{
                 }
             }
         }
+        myPcs.firePropertyChange(PROPERTY_GAMEOVER, null, true);
         return false;
     }
     /**
