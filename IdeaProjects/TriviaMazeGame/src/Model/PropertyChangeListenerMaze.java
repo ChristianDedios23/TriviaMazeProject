@@ -9,7 +9,7 @@ public interface PropertyChangeListenerMaze {
     String PROPERTY_DOOR_DOWN = "doorDown";
     String PROPERTY_DOOR_LEFT = "doorLeft";
     String PROPERTY_DOOR_RIGHT = "doorRight";
-    String PROPERTY_PLAYER_MOVE_OOB = "playerMoveOOB";
+   
     String PROPERTY_QUESTION_WRONG = "questionWrong";
     String PROPERTY_QUESTION_RIGHT = "questionRight";
     

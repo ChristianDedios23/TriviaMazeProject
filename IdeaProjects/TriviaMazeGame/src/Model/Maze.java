@@ -88,23 +88,7 @@ public class Maze implements PropertyChangeListenerMaze{
      * @param theDirection the direction of the door/room
      */
     private void firePCSForDoor(final Direction theDirection){
-        int position = -1;
-        switch (theDirection) {
-            case Direction.UP:
-                position = canMoveUp(myCurrentPosition);
-                break;
-            case Direction.DOWN:
-                position = canMoveDown(myCurrentPosition);
-                break;
-            case Direction.LEFT:
-                position = canMoveLeft(myCurrentPosition);
-                break;
-            case Direction.RIGHT:
-                position = canMoveRight(myCurrentPosition);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid direction: "+ theDirection);
-        }
+        int position = canMove(myCurrentPosition, theDirection);
         String event = "door"+theDirection;
         if(position == -1){
             myPcs.firePropertyChange(event, null, DOOR_LOCKED);
@@ -122,7 +106,7 @@ public class Maze implements PropertyChangeListenerMaze{
      */
    
     public boolean attemptMove(final Direction theDirection){
-        int position = getNextRoomPosition(myCurrentPosition, theDirection); 
+        int position = canMove(myCurrentPosition, theDirection); 
         if(position > 0){
             String frontSideDoor = myCurrentPosition + ": " + theDirection;
             String otherSideDoor = position+": " + theDirection.getOpposite(); 
@@ -143,7 +127,7 @@ public class Maze implements PropertyChangeListenerMaze{
      * @return true if the move was valid, false if else 
      */
     public boolean move(final Direction theDirection, final boolean theCorrectAnswer){
-        int position = getNextRoomPosition(myCurrentPosition, theDirection);
+        int position = canMove(myCurrentPosition, theDirection);
         if(!theCorrectAnswer){
             //Change later 
             myPcs.firePropertyChange("questionWrong", theDirection, theDirection);
@@ -190,68 +174,53 @@ public class Maze implements PropertyChangeListenerMaze{
         return myMaze.get(thePosition);
     }
     /**
-     * Gets the room position if the user were to move up
-     * depending on the given position
+     * Checks if the given move is valid based on position 
      * @param thePosition the current given position
-     * @return the room position above the given position, -1 if not valid
+     * @param theDirection the desired direction
+     * @return an int representing the valid next position, -1 if invalid
      */
-    public int canMoveUp(final int thePosition){
-        int position = thePosition - myMazeLength;
-        if(position > 0){
-            return position;
-        }else{
-            return -1;
+    public int canMove(final int thePosition, final Direction theDirection){
+        int position = -1;
+        switch (theDirection) {
+            case Direction.UP:
+                position = thePosition - myMazeLength;
+                if(position > 0){
+                    return position;
+                }else{
+                    return -1;
+                }
+            case Direction.DOWN:
+                position = thePosition + myMazeLength;
+                if(position < myExit){
+                    return position;
+                }else{
+                    return -1;
+                }
+            case Direction.LEFT:
+                position = thePosition  -1;
+                if(position > 0 && (int)(position/myMazeLength) == (int)(thePosition/myMazeLength)){
+                    return position;
+                }else{
+                    return -1;
+                }
+            case Direction.RIGHT:
+                position = thePosition + 1;
+                if(position < myExit && (int)(position/myMazeLength) == (int)(thePosition/myMazeLength)){
+                    return position;
+                }else{
+                    return -1;
+                }
+            default:
+                throw new IllegalArgumentException("Invalid direction: "+ theDirection);
         }
     }
-    /**
-     * Gets the room position if the user were to move down
-     * depending on the given position
-     * @param thePosition the current given position
-     * @return the room position below the given position, -1 if not valid
-     */
-    public int canMoveDown(final int thePosition){
-        int position = thePosition + myMazeLength;
-        if(position < myExit){
-            return position;
-        }else{
-            return -1;
-        }
-        
-    }
-    /**
-     * Gets the room position if the user were to move left
-     * depending on the given position
-     * @param thePosition the current given position
-     * @return the room position left of the given position, -1 if not valid
-     */
-    public int canMoveLeft(final int thePosition){
-        int position = thePosition  -1;
-        if(position > 0 && (int)(position/myMazeLength) == (int)(thePosition/myMazeLength)){
-            return position;
-        }else{
-            return -1;
-        }
-    }
-    /**
-     * Gets the room position if the user were to move right
-     * depending on the given position
-     * @param thePosition the current given position
-     * @return the room position left of the given position, -1 if not valid
-     */
-    public int canMoveRight(final int thePosition){
-        int position = thePosition + 1;
-        if(position < myExit && (int)(position/myMazeLength) == (int)(thePosition/myMazeLength)){
-            return position;
-        }else{
-            return -1;
-        }
-    }
+    
     /**
      * Checks if there is a valid path to the exit 
      * using BFS
      * @return true if there is a valid path, false if else
      */
-    public boolean availablePathToExit(){
+    private boolean availablePathToExit(){
         //bfs or dfs
         Set<Integer> visitedRooms = new HashSet<>();
         Queue<Integer> queue = new LinkedList<>();
@@ -262,13 +231,15 @@ public class Maze implements PropertyChangeListenerMaze{
 
             for(Direction direction: Direction.getAllDirections()){
                 if(!isDoorLocked(position, direction)){
-                    int nextRoom = getNextRoomPosition(position, direction);
-                    if(checkAtExit(nextRoom)){
-                        return true;
-                    }
-                    if(!visitedRooms.contains(nextRoom)){
-                        visitedRooms.add(nextRoom);
-                        queue.add(nextRoom);
+                    int nextRoom = canMove(position, direction);
+                    if(nextRoom > 0){
+                        if(checkAtExit(nextRoom)){
+                            return true;
+                        }
+                        if(!visitedRooms.contains(nextRoom)){
+                            visitedRooms.add(nextRoom);
+                            queue.add(nextRoom);
+                        }
                     }
                 }
             }
@@ -276,27 +247,7 @@ public class Maze implements PropertyChangeListenerMaze{
         myPcs.firePropertyChange(PROPERTY_GAMEOVER, null, true);
         return false;
     }
-    /**
-     * Gets the next room position based on the given position
-     * and the given direction
-     * @param thePosition current posistion
-     * @param theDirection desired direction
-     * @returnthe next room position, -1 if invalid
-     */
-    private int getNextRoomPosition(final int thePosition, final Direction theDirection){
-        switch (theDirection) {
-            case Direction.UP:
-                return canMoveUp(thePosition);
-            case Direction.DOWN:
-                return canMoveDown(thePosition);
-            case Direction.LEFT:
-                return canMoveLeft(thePosition);
-            case Direction.RIGHT:
-                return canMoveRight(thePosition);
-            default:
-                throw new IllegalArgumentException("Invalid direction: "+ theDirection);
-        }
-    }
+   
     /**
      * Checks if a door is locked based on
      * the a given position and given direction
@@ -322,6 +273,7 @@ public class Maze implements PropertyChangeListenerMaze{
         Room room = getRoom(thePosition);
         Door door = room.getDoor(theDirection);
         door.lockDoor();
+        availablePathToExit();
     }
     /** This method takes in a PropertyChangeListener object and adds it
      * to the myPcs object. Any PropertyChangeListener added will be notified
