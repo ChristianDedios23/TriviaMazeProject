@@ -4,25 +4,12 @@ package Model;
  */
 public enum Direction {
 
-    UP(0),
-    DOWN(1),
-    LEFT(2),
-    RIGHT(3);
-    /** The index in an array the direction represents */
-    private int myIndex;
-    /**
-     * Constructer for direction enum
-     * @param theIndex the index the direction represents
-     */
-    private Direction(final int theIndex) {
-        myIndex = theIndex;
-    }
-    /**
-     * @return the index the direction represents
-     */
-    public int getIndex(){
-        return myIndex;
-    }
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT;
+    
+   
     /**
      * @return the opposite direction of the current direction
      */
