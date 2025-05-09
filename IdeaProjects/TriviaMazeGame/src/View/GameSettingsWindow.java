@@ -14,6 +14,8 @@ public class GameSettingsWindow extends JDialog
 
     private JCheckBox myTrueFalseCheckBox;
 
+    private JCheckBox myShortAnswerCheckBox;
+
     private JCheckBox myBoardCheckBox;
 
     private ButtonGroup myDifficultyButtons;
@@ -30,7 +32,7 @@ public class GameSettingsWindow extends JDialog
 
     private final int SETTINGS_WINDOW_HEIGHT = 300;
 
-    public GameSettingsWindow(final JFrame theParent)
+    GameSettingsWindow(final JFrame theParent)
     {
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         this.setTitle("Game settings:");
@@ -55,9 +57,11 @@ public class GameSettingsWindow extends JDialog
     {
         myMultipleChoiceBox = new JCheckBox("Multiple Choice");
         myTrueFalseCheckBox = new JCheckBox("True or False");
+        myShortAnswerCheckBox = new JCheckBox("Short Answer");
         myQuestionsPanel.setBorder(BorderFactory.createTitledBorder("Types of Questions:"));
         myQuestionsPanel.add(myMultipleChoiceBox);
         myQuestionsPanel.add(myTrueFalseCheckBox);
+        myQuestionsPanel.add(myShortAnswerCheckBox);
         this.add(myQuestionsPanel);
     }
 

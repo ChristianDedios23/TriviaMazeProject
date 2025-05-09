@@ -15,11 +15,11 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
 
     private MenuBar myMenuBar;
     private GameSettingsWindow myGameSettingsWindow;
+    private MazeFrame myMazeFrame;
 
     private JButton myNewGameButton;
     private JButton myLoadGameButton;
     private JLabel myTitleLabel;
-    private JPopupMenu d;
 
     private final int WIDTH_OF_FRAME = 700;
     private final int HEIGHT_OF_FRAME = 500;
@@ -30,7 +30,8 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
     public StartGameFrame()
     {
         super();
-        myMenuBar = new MenuBar();
+        myMazeFrame = new MazeFrame();
+        myMenuBar = new MenuBar(this);
         myNewGameButton = new JButton();
         myLoadGameButton = new JButton();
         myTitleLabel = new JLabel();
@@ -80,30 +81,17 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
             myGameSettingsWindow.makeVisible(true);
         });
 
+        //make method so both do the same
+        myLoadGameButton.addActionListener(theEvent -> {
+            //this.dispatchEvent(new KeyEvent());
+        });
+
         myGameSettingsWindow.getStartGameButton().addActionListener(theEvent -> {
             myGameSettingsWindow.makeVisible(false);
+            myMazeFrame.getMazeFrame().setVisible(true);
+            this.setVisible(false);
         });
 
-        myMenuBar.getExitGameItem().addActionListener(theEvent -> {
-            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-        });
-
-        myMenuBar.getGameInstructions().addActionListener(theEvent -> {
-            JOptionPane.showMessageDialog(this, "This is how to play the game");
-        });
-
-        //add buttons
-        myMenuBar.getShortCutsItem().addActionListener(theEvent -> {
-            JOptionPane.showMessageDialog(this, "New Game - ALT + N\n"
-                    + "Load Game - CTRL + L \nSave Game - CTRL + S \nExit Game - CTRL + E \nAbout - CTRL + A\n"
-                    + "How-To-Play - CTRL + H \nShortcuts - CTRL + O \nMove Up - Alt + U \nMove Right - ALT + P\n"
-                    + "Move Left - ALT + L \nMove Down - ALT + D");
-        });
-
-        myMenuBar.getAboutItem().addActionListener(theEvent -> {
-            JOptionPane.showMessageDialog(this, "Authors :\n     Christian Dedios \n     Jason Dinh " +
-                    "\n     Khalid Mohamed \n\nVersion: 1.0   JDK 23.0.1");
-        });
 
         this.addWindowListener(new WindowAdapter()
         {
