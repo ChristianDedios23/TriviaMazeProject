@@ -25,7 +25,7 @@ public class MenuBar extends JMenuBar
     private JMenuItem myShortCutsItem;
 
     //add shortcuts menu item and add shortcuts to play the whole game without a mouse
-    public MenuBar(JFrame theParent)
+    MenuBar(JFrame theParent)
     {
         super();
         myParent = theParent;
@@ -39,6 +39,7 @@ public class MenuBar extends JMenuBar
         myShortCutsItem = new JMenuItem("Short-Cuts");
         setUpComponents();
         addListeners();
+        //this.setVisible(true);
     }
 
     private void setUpComponents()
@@ -97,26 +98,4 @@ public class MenuBar extends JMenuBar
     {
         return this;
     }
-
-    public JMenuItem getSaveGameItem()
-    {
-        return mySaveGameItem;
-    }
-
-    public JMenuItem getLoadGameItem()
-    {
-        return myLoadGameItem;
-    }
-
-    public JMenuItem getExitGameItem()
-    {
-        return myExitGameItem;
-    }
-
-    public JMenuItem getGameInstructions()
-    {
-        return myGamePlayInstructionItem;
-    }
-
-    public JMenuItem getShortCutsItem(){ return myShortCutsItem;}
 }

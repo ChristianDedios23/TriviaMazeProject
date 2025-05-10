@@ -26,7 +26,7 @@ public class GameSettingsWindow extends JDialog
 
     private JRadioButton myHardButton;
 
-    private JButton myStartGameButton;
+    private final JButton myStartGameButton;
 
     private final int SETTINGS_WINDOW_WIDTH = 300;
 
@@ -38,7 +38,6 @@ public class GameSettingsWindow extends JDialog
         this.setTitle("Game settings:");
         this.setSize(SETTINGS_WINDOW_WIDTH, SETTINGS_WINDOW_HEIGHT);
         this.setResizable(false);
-        this.setLocationRelativeTo(theParent);
 
         myQuestionsPanel = new JPanel();
         myDifficultyPanel = new JPanel();

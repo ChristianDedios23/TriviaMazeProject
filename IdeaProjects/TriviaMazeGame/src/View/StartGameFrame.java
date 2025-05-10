@@ -27,15 +27,19 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
     private final int WIDTH_OF_BUTTON = 100;
     private final int HEIGHT_OF_BUTTON = 50;
 
+    //when someone closes the game settings window dont do anything
+    //if they use the start button do stuff :/
     public StartGameFrame()
     {
         super();
-        myMazeFrame = new MazeFrame();
         myMenuBar = new MenuBar(this);
+        myMazeFrame = new MazeFrame();
+        myMazeFrame.setJMenuBar(new MenuBar(myMazeFrame));
         myNewGameButton = new JButton();
         myLoadGameButton = new JButton();
         myTitleLabel = new JLabel();
         myGameSettingsWindow = new GameSettingsWindow(this);
+
 
         setUpFrame();
         setUpPageElements();
@@ -78,6 +82,7 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
         //MazeModel.addPropertyChangeListener(this);
 
         myNewGameButton.addActionListener(theEvent -> {
+            myGameSettingsWindow.setLocationRelativeTo(this);
             myGameSettingsWindow.makeVisible(true);
         });
 
@@ -88,7 +93,8 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
 
         myGameSettingsWindow.getStartGameButton().addActionListener(theEvent -> {
             myGameSettingsWindow.makeVisible(false);
-            myMazeFrame.getMazeFrame().setVisible(true);
+            myMazeFrame.setLocationRelativeTo(this);
+            myMazeFrame.setVisible(true);
             this.setVisible(false);
         });
 
