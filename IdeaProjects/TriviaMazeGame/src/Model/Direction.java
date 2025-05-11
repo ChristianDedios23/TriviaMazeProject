@@ -14,24 +14,14 @@ public enum Direction {
      * @return the opposite direction of the current direction
      */
     public Direction getOpposite(){
-        switch (this) {
-            case UP:
-                return Direction.DOWN;
-            case DOWN:
-                return Direction.UP;
-            case LEFT:
-                return Direction.RIGHT;
-            case RIGHT:
-                return Direction.LEFT;  
-            default:
-                throw new IllegalStateException("Unexpected error: " + this);
-        }
+        return switch (this) {
+            case UP -> Direction.DOWN;
+            case DOWN -> Direction.UP;
+            case LEFT -> Direction.RIGHT;
+            case RIGHT -> Direction.LEFT;
+        };
     }
-    /**
-     * @return an array of all directions available
-     */
-    public static Direction[] getAllDirections(){
-        return new Direction[]{Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT};
-    }
+
+
     
 }

@@ -16,14 +16,14 @@ public class Maze implements PropertyChangeListenerMaze{
     /** An int representing the current room */
     private int myCurrentRoom;
     /** A map representing the maze  */
-    private Map<Integer, Room> myMaze;
+    private final Map<Integer, Room> myMaze;
     /** Default starting room */
     private final int STARTING_POSITION = 0;
-  
+
     /** The length dimension for the maze */
     private int myMazeLength;
-    /** The room room of the exit */
-    private int myExit;
+    /** The room of the exit */
+    private final int myExit;
     /** PCS to signal to view */
     private final PropertyChangeSupport myPcs;
     /**
@@ -32,13 +32,13 @@ public class Maze implements PropertyChangeListenerMaze{
      */
     public Maze(final int theLength){
         myMaze = initializeRooms(theLength);
-       
+
         myCurrentRoom = STARTING_POSITION;
-        myExit = (int) Math.pow(myMazeLength -1, 2);
+        myExit = (int) Math.pow(myMazeLength, 2) -1;
         myPcs = new PropertyChangeSupport(this);
     }
     /**
-     * Intializes myMaze with Room objects and links them
+     * Initializes myMaze with Room objects and links them
      * to a room number
      * @param theLength the desired length of the maze
      * @return a HashMap of all rooms for the maze
@@ -53,11 +53,18 @@ public class Maze implements PropertyChangeListenerMaze{
         HashMap<Integer, Room> maze = new HashMap<>();
         int roomNum = 0;
         
-        while(roomNum < Math.pow(myMazeLength-1, 2)){
+        while(roomNum < Math.pow(myMazeLength, 2)){
             maze.put(roomNum++, new Room());
         }
        
         return maze;
+    }
+
+    /**
+     * @return the current room position
+     */
+    public int getMyCurrentRoom(){
+        return myCurrentRoom;
     }
     /**
      * Sets the current room to given room
@@ -76,7 +83,7 @@ public class Maze implements PropertyChangeListenerMaze{
      * Fires a PCS to tell the state of all surrounding doors
      */
     private void firePCSSurroundingRooms(){
-        for(Direction direction: Direction.getAllDirections()){
+        for(Direction direction: Direction.values()){
             firePCSForDoor(direction);
         }
     }
@@ -104,7 +111,7 @@ public class Maze implements PropertyChangeListenerMaze{
      * Attempts a move to another room by checking the door
      * If not open, but not locked, it will ask the user a quetion
      * @param theDirection the direction the user wants to move
-     * @return true if the user can free move to next room, false if else
+     * @return the door state of the direction
      */
    
     public DoorState attemptMove(final Direction theDirection){
@@ -134,13 +141,14 @@ public class Maze implements PropertyChangeListenerMaze{
         }
         Door frontSide = getDoor(myCurrentRoom, theDirection);
         Door backSide = getDoor(room, theDirection.getOpposite());
+
         if(!theCorrectAnswer){
-            //Change later 
-            myPcs.firePropertyChange(PROPERTY_QUESTION_WRONG, theDirection, theDirection);
+            availablePathToExit();
             frontSide.lockDoor();
             backSide.lockDoor();
             return false;
         }
+
         if(frontSide.getDoorState() == DoorState.QUESTION|| backSide.getDoorState() == DoorState.QUESTION){
             
 
@@ -168,11 +176,11 @@ public class Maze implements PropertyChangeListenerMaze{
     }
     /**
      * Gets the room from myMaze
-     * @param theRoom, the desired room room
+     * @param theRoom, the desired room
      * @return the room correlating to the room num, error if invalid
      */
     public Room getRoom(final int theRoom){
-        if(theRoom < 0 || theRoom > myMaze.size()){
+        if(theRoom < 0 || theRoom > myExit){
             throw new IllegalArgumentException("Can't access a room out of bounds!, Room Number :" + theRoom);
         }
         
@@ -186,31 +194,35 @@ public class Maze implements PropertyChangeListenerMaze{
      */
     public int canMove(final int theRoom, final Direction theDirection){
         int room = -1;
+        if(theRoom < 0 || theRoom > myExit){
+            throw new IllegalArgumentException("Can't access a room out of bounds!: " + theRoom);
+        }
         switch (theDirection) {
             case Direction.UP:
                 room = theRoom - myMazeLength;
-                if(room > 0){
+                if(room >= 0){
                     return room;
                 }else{
                     return -1;
                 }
             case Direction.DOWN:
                 room = theRoom + myMazeLength;
-                if(room < myExit){
+                if(room <= myExit){
                     return room;
                 }else{
                     return -1;
                 }
             case Direction.LEFT:
                 room = theRoom  -1;
-                if(room > 0 && (int)(room/myMazeLength) == (int)(theRoom/myMazeLength)){
+
+                if(room >= 0 && (room/myMazeLength) == (theRoom/myMazeLength)){
                     return room;
                 }else{
                     return -1;
                 }
             case Direction.RIGHT:
                 room = theRoom + 1;
-                if(room < myExit && (int)(room/myMazeLength) == (int)(theRoom/myMazeLength)){
+                if(room <= myExit && (room/myMazeLength) == (theRoom/myMazeLength)){
                     return room;
                 }else{
                     return -1;
@@ -221,11 +233,10 @@ public class Maze implements PropertyChangeListenerMaze{
     }
     
     /**
-     * Checks if there is a valid path to the exit 
+     * Checks if there is a valid path to the exit
      * using BFS
-     * @return true if there is a valid path, false if else
      */
-    private boolean availablePathToExit(){
+    public boolean availablePathToExit(){
      
         Set<Integer> visitedRooms = new HashSet<>();
         Queue<Integer> queue = new LinkedList<>();
@@ -234,9 +245,9 @@ public class Maze implements PropertyChangeListenerMaze{
         while(!queue.isEmpty()){
             Integer room = queue.poll();
 
-            for(Direction direction: Direction.getAllDirections()){
+            for(Direction direction: Direction.values()){
                 Door door = getDoor(room, direction);
-                if(door.getDoorState() == DoorState.LOCKED){
+                if(door.getDoorState() != DoorState.LOCKED){
                     int nextRoom = canMove(room, direction);
                     if(nextRoom > 0){
                         if(checkAtExit(nextRoom)){
@@ -259,7 +270,7 @@ public class Maze implements PropertyChangeListenerMaze{
      * @param theDirection the given direction
      * @return the door associated with the room and direction
      */
-    private Door getDoor(final int theRoom, final Direction theDirection){
+    public Door getDoor(final int theRoom, final Direction theDirection){
         Room room = getRoom(theRoom);
         return room.getDoor(theDirection);
     }

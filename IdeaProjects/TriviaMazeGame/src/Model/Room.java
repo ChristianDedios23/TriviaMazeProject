@@ -8,26 +8,27 @@ import java.util.Map;
  */
 public class Room{
     /** An Map to hold the state of the doors on all sides */
-    private Map<Direction, Door> myDoors;
+    private final Map<Direction, Door> myDoors;
     /**
      * Constructs a Room object will all four doors
      */
     public Room(){
         myDoors = new HashMap<>();
-        intializeDoors();
+        initializeDoors();
 
     }
+
     /**
      * Initializes all doors
      */
-    private void intializeDoors(){
-        for(Direction direction: Direction.getAllDirections()){
+    private void initializeDoors(){
+        for(Direction direction: Direction.values()){
             myDoors.put(direction, new Door());
         }
     }
     
     /**
-     * Retrives the door correlating to the given direction
+     * Gets the door correlating to the given direction
      * @param theDirection desired direction of door 
      * @return the door relating to the direction
      */
