@@ -6,19 +6,25 @@ package Model;
  */
 public class Door {
     private boolean myLock;
-
+    private boolean myOpen;
     
     /**
      * Constructs a Door object
      */
     public Door(){
         myLock = false;
+     
     }
     /**
-     * @return true if the door is locked, false if else
+     * @return the state of the door
      */
-    public boolean isLocked(){
-        return !myLock;
+    public DoorState getDoorState(){
+        if(myOpen){
+            return DoorState.OPEN;
+        }else if (myLock){
+            return DoorState.LOCKED;
+        }
+        return DoorState.QUESTION;
     }
 
     /**
@@ -26,6 +32,9 @@ public class Door {
      */
     public void lockDoor(){
         myLock = true;
+    }
+    public void openDoor(){
+        myOpen = true;
     }
 
     
