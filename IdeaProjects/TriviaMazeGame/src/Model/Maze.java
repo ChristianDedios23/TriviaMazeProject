@@ -173,23 +173,11 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
      * @param theRoom the given room to check
      * @return true if its the exit, false if else
      */
-    public boolean checkAtExit(final int theRoom){
+    public boolean checkIfExit(final int theRoom){
         if(myCurrentRoom == myExit){
             myPcs.firePropertyChange(PROPERTY_VICTORY, null, true);
         }
         return theRoom == myExit;
-    }
-    /**
-     * Gets the room from myMaze
-     * @param theRoomNum, the desired room
-     * @return the room correlating to the room num, error if invalid
-     */
-    public Room getRoom(final int theRoomNum){
-        if(theRoomNum < 0 || theRoomNum > myExit){
-            throw new IllegalArgumentException("Can't access a room out of bounds!, Room Number :" + theRoomNum);
-        }
-        
-        return myMaze.get(theRoomNum);
     }
 
     /**
@@ -256,7 +244,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
                 if(door.getDoorState() != DoorState.LOCKED){
                     int nextRoom = canMove(room, direction);
                     if(nextRoom > 0){
-                        if(checkAtExit(nextRoom)){
+                        if(checkIfExit(nextRoom)){
                             return true;
                         }
                         if(!visitedRooms.contains(nextRoom)){
@@ -272,12 +260,15 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     }
     /**
      * Gets the door associated with the room and direction
-     * @param theRoom the given room
+     * @param theRoomNum the given room
      * @param theDirection the given direction
      * @return the door associated with the room and direction
      */
-    public Door getDoor(final int theRoom, final Direction theDirection){
-        Room room = getRoom(theRoom);
+    public Door getDoor(final int theRoomNum, final Direction theDirection){
+        Room room = myMaze.get(theRoomNum);
+        if(room == null){
+            throw new IllegalArgumentException("Invalid Room Number: " + theRoomNum);
+        }
         return room.getDoor(theDirection);
     }
    

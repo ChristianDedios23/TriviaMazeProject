@@ -10,36 +10,31 @@ import java.io.Serializable;
 public class Door implements Serializable {
     @Serial
     private static final long serialVersionUID = 345234345L;
-    private boolean myLock;
-    private boolean myOpen;
+    private DoorState myDoorState;
     
     /**
      * Constructs a Door object
      */
     public Door(){
-        myLock = false;
+        myDoorState = DoorState.QUESTION;
      
     }
     /**
      * @return the state of the door
      */
     public DoorState getDoorState(){
-        if(myOpen){
-            return DoorState.OPEN;
-        }else if (myLock){
-            return DoorState.LOCKED;
-        }
-        return DoorState.QUESTION;
+
+        return myDoorState;
     }
 
     /**
      * Locks a door if the given question was answered wrong
      */
     public void lockDoor(){
-        myLock = true;
+        myDoorState = DoorState.LOCKED;
     }
     public void openDoor(){
-        myOpen = true;
+       myDoorState = DoorState.OPEN;
     }
 
     

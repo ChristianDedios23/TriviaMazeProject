@@ -1,7 +1,6 @@
 package test;
 
 import Model.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,26 +22,7 @@ class MazeTest {
     void testInitialMazeState(){
         Maze maze = MazeFactory.create5x5Maze();
         assertEquals(0, maze.getMyCurrentRoom());
-        assertTrue(maze.checkAtExit(24));
-    }
-    @Test
-    void testGetRoom(){
-        Maze maze = MazeFactory.create5x5Maze();
-        for(int i = 0; i < 25; i++){
-            if (maze.getRoom(i) == null) {
-                fail("Room at index " + i + " should not be null");
-            }
-        }
-    }
-    @Test
-    void testGetInvalidRoomNegative(){
-        Maze maze = MazeFactory.create5x5Maze();
-        assertThrows(IllegalArgumentException.class, ()->{maze.getRoom(-1);});
-    }
-    @Test
-    void testGetInvalidRoom(){
-        Maze maze = MazeFactory.create5x5Maze();
-        assertThrows(IllegalArgumentException.class, ()->{maze.getRoom(25);});
+        assertTrue(maze.checkIfExit(24));
     }
     @Test
     void testGetDoor(){
@@ -50,6 +30,11 @@ class MazeTest {
         for(Direction direction : Direction.values()){
             assertDoesNotThrow(()->{maze.getDoor(10, direction);});
         }
+    }
+    @Test
+    void testGetDoorInvalidRoom(){
+        Maze maze = MazeFactory.create5x5Maze();
+        assertThrows(IllegalArgumentException.class, ()->{maze.getDoor(25, Direction.LEFT);});
     }
     @Test
     void testCanMoveUpInvalidRoom(){
@@ -144,13 +129,13 @@ class MazeTest {
 
     }
     @Test
-    void testCheckAtExitCurrentRoom(){
+    void testCheckIfExitCurrentRoom(){
         Maze maze = MazeFactory.create5x5Maze();
         for(int i = 0; i< 5; i++){
             maze.move(Direction.RIGHT, true);
             maze.move(Direction.DOWN, true);
         }
-        assertTrue(maze.checkAtExit(24));
+        assertTrue(maze.checkIfExit(24));
     }
     @Test
     void testAvailablePathToExitValid(){
