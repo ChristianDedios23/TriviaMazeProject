@@ -5,10 +5,7 @@ import java.beans.PropertyChangeListener;
 public interface PropertyChangeListenerMaze {
 
     String PROPERTY_PLAYER_MOVE = "playerMove";
-    String PROPERTY_DOOR_UP = "doorUP";
-    String PROPERTY_DOOR_DOWN = "doorDown";
-    String PROPERTY_DOOR_LEFT = "doorLeft";
-    String PROPERTY_DOOR_RIGHT = "doorRight";
+
    
     String PROPERTY_QUESTION_WRONG = "questionWrong";
     String PROPERTY_QUESTION_RIGHT = "questionRight";

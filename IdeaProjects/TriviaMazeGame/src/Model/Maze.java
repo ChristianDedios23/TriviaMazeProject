@@ -2,6 +2,8 @@ package Model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -12,7 +14,9 @@ import java.util.Set;
 /**
  * Maze object to manage the state of the game
  */
-public class Maze implements PropertyChangeListenerMaze{
+public class Maze implements PropertyChangeListenerMaze, Serializable {
+    @Serial
+    private static final long serialVersionUID = 129348938L;
     /** An int representing the current room */
     private int myCurrentRoom;
     /** A map representing the maze  */
@@ -146,6 +150,7 @@ public class Maze implements PropertyChangeListenerMaze{
             availablePathToExit();
             frontSide.lockDoor();
             backSide.lockDoor();
+            myPcs.firePropertyChange(PROPERTY_QUESTION_WRONG, theDirection, theDirection);
             return false;
         }
 
@@ -176,16 +181,17 @@ public class Maze implements PropertyChangeListenerMaze{
     }
     /**
      * Gets the room from myMaze
-     * @param theRoom, the desired room
+     * @param theRoomNum, the desired room
      * @return the room correlating to the room num, error if invalid
      */
-    public Room getRoom(final int theRoom){
-        if(theRoom < 0 || theRoom > myExit){
-            throw new IllegalArgumentException("Can't access a room out of bounds!, Room Number :" + theRoom);
+    public Room getRoom(final int theRoomNum){
+        if(theRoomNum < 0 || theRoomNum > myExit){
+            throw new IllegalArgumentException("Can't access a room out of bounds!, Room Number :" + theRoomNum);
         }
         
-        return myMaze.get(theRoom);
+        return myMaze.get(theRoomNum);
     }
+
     /**
      * Checks if the given move is valid based on room 
      * @param theRoom the current given room
