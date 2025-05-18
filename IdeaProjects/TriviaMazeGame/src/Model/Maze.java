@@ -34,7 +34,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
      * Constructs a maze object based on the given length
      * @param theLength, the desired length of the maze
      */
-    public Maze(final int theLength){
+    Maze(final int theLength){
         myMaze = initializeRooms(theLength);
 
         myCurrentRoom = STARTING_POSITION;
@@ -44,6 +44,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     /**
      * Initializes myMaze with Room objects and links them
      * to a room number
+     * Locks door if its a wall
      * @param theLength the desired length of the maze
      * @return a HashMap of all rooms for the maze
      */
@@ -58,7 +59,28 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         int roomNum = 0;
         
         while(roomNum < Math.pow(myMazeLength, 2)){
-            maze.put(roomNum++, new Room());
+            Room room = new Room();
+            if(roomNum/myMazeLength == 0){
+                Door door = room.getDoor(Direction.UP);
+                door.lockDoor();
+            }
+            if(roomNum/myMazeLength == 0){
+                Door door = room.getDoor(Direction.UP);
+                door.lockDoor();
+            }
+            if(roomNum%myMazeLength == 0){
+                Door door = room.getDoor(Direction.LEFT);
+                door.lockDoor();
+            }
+            if(roomNum%myMazeLength == myMazeLength -1){
+                Door door = room.getDoor(Direction.RIGHT);
+                door.lockDoor();
+            }
+            if(roomNum/myMazeLength == myMazeLength -1){
+                Door door = room.getDoor(Direction.DOWN);
+                door.lockDoor();
+            }
+            maze.put(roomNum++, room);
         }
        
         return maze;
@@ -271,8 +293,20 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         }
         return room.getDoor(theDirection);
     }
-   
-   
+
+    /**
+     * Gets the room from myMaze
+     * @param theRoom, the desired room
+     * @return the room correlating to the room num, error if invalid
+     */
+    public Room getRoom(final int theRoom){
+        if(theRoom < 0 || theRoom > myExit){
+            throw new IllegalArgumentException("Can't access a room out of bounds!, Room Number :" + theRoom);
+        }
+
+        return myMaze.get(theRoom);
+    }
+
     /** This method takes in a PropertyChangeListener object and adds it
      * to the myPcs object. Any PropertyChangeListener added will be notified
      * when myPcs fires a property change.

@@ -6,18 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MazeTest {
-    @Test
-    void testInvalidMazeSmall(){
-        assertThrows(IllegalArgumentException.class, () -> {new Maze(4);});
-    }
-    @Test
-    void testInvalidMazeLarge(){
-        assertThrows(IllegalArgumentException.class, () -> {new Maze(8);});
-    }
-    @Test
-    void testValidMaze(){
-        assertDoesNotThrow(()->{new Maze(6);});
-    }
+
     @Test
     void testInitialMazeState(){
         Maze maze = MazeFactory.create5x5Maze();
@@ -30,6 +19,21 @@ class MazeTest {
         for(Direction direction : Direction.values()){
             assertDoesNotThrow(()->{maze.getDoor(10, direction);});
         }
+    }
+    @Test
+    void testGetRoomValid(){
+        Maze maze = MazeFactory.create5x5Maze();
+        assertNotNull(maze.getRoom(5));
+    }
+    @Test
+    void testGetRoomInvalidTooLarge(){
+        Maze maze = MazeFactory.create5x5Maze();
+        assertThrows(IllegalArgumentException.class, ()->{maze.getRoom(55);});
+    }
+    @Test
+    void testGetRoomInvalidNegative(){
+        Maze maze = MazeFactory.create5x5Maze();
+        assertThrows(IllegalArgumentException.class, ()->{maze.getRoom(-1);});
     }
     @Test
     void testGetDoorInvalidRoom(){
