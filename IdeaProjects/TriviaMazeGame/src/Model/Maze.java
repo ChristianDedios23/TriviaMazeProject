@@ -1,5 +1,8 @@
 package Model;
 
+import Model.Enum.Direction;
+import Model.Enum.DoorState;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serial;
@@ -23,7 +26,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     private final Map<Integer, Room> myMaze;
     /** Default starting room */
     private final int STARTING_POSITION = 0;
-
+    private final Player myPlayer;
     /** The length dimension for the maze */
     private int myMazeLength;
     /** The room of the exit */
@@ -34,9 +37,9 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
      * Constructs a maze object based on the given length
      * @param theLength, the desired length of the maze
      */
-    Maze(final int theLength){
+    Maze(final int theLength, final Player thePlayer) {
         myMaze = initializeRooms(theLength);
-
+        myPlayer = thePlayer;
         myCurrentRoom = STARTING_POSITION;
         myExit = (int) Math.pow(myMazeLength, 2) -1;
         myPcs = new PropertyChangeSupport(this);
@@ -172,6 +175,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
             availablePathToExit();
             frontSide.lockDoor();
             backSide.lockDoor();
+            myPlayer.resetStreak();
             myPcs.firePropertyChange(PROPERTY_QUESTION_WRONG, theDirection, theDirection);
             return false;
         }
@@ -185,7 +189,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
             //Change new value
             myPcs.firePropertyChange(PROPERTY_QUESTION_RIGHT, theDirection, theDirection);
             setCurrentRoom(room);
-            
+            myPlayer.addStreak();
             return true;
         }
         return false;

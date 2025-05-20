@@ -1,4 +1,4 @@
-package Model;
+package Model.Enum;
 /**
  * Enum to keeps track of the available direction a user can make
  */

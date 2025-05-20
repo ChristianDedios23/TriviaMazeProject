@@ -1,5 +1,7 @@
 package Model;
 
+import Model.Enum.Direction;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;

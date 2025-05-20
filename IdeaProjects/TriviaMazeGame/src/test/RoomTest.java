@@ -1,6 +1,6 @@
 package test;
 
-import Model.Direction;
+import Model.Enum.Direction;
 import Model.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

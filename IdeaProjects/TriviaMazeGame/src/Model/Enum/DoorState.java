@@ -1,4 +1,4 @@
-package Model;
+package Model.Enum;
 /**
  * Enum to keep track of the door state
  */

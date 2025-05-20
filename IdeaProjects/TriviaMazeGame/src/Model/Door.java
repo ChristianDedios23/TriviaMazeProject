@@ -1,5 +1,7 @@
 package Model;
 
+import Model.Enum.DoorState;
+
 import java.io.Serial;
 import java.io.Serializable;
 

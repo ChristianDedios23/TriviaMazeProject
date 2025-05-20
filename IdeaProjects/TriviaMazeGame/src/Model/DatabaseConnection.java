@@ -6,17 +6,21 @@ import java.sql.SQLException;
 
 
 public class DatabaseConnection {
-    private static SQLiteDataSource myDS;
+    private static final SQLiteDataSource myDS =  new SQLiteDataSource();
     private static final String DB_URL = "jdbc:sqlite:questions.db";
 
-    private DatabaseConnection(){
+    static {
         try {
-            myDS = new SQLiteDataSource();
             myDS.setUrl(DB_URL);
-        }catch (Exception e){
+            System.out.println("SQLite database connected.");
+        } catch (Exception e) {
+            System.err.println("ailed to connect to SQLite database.");
             e.printStackTrace();
-            System.exit(0);
+            System.exit(1);
         }
+    }
+    private DatabaseConnection(){
+
     }
     public static Connection getConnection(){
         try{
