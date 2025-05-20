@@ -13,6 +13,7 @@ public class Door implements Serializable {
     @Serial
     private static final long serialVersionUID = 345234345L;
     private DoorState myDoorState;
+
     
     /**
      * Constructs a Door object
