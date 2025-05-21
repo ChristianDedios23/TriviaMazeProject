@@ -13,26 +13,26 @@ class PlayerTest {
     private Player playerHard;
     @BeforeEach
     void setUp() {
-        playerEasy = new Player(Difficulty.EASY);
-        playerMed = new Player(Difficulty.MEDIUM);
-        playerHard = new Player(Difficulty.HARD);
+        playerEasy = new Player(Difficulty.EASY, null);
+        playerMed = new Player(Difficulty.MEDIUM, null);
+        playerHard = new Player(Difficulty.HARD, null);
     }
     @Test
     void testPlayerConstructorEasy() {
-        Player playerEasy = new Player(Difficulty.EASY);
+        Player playerEasy = new Player(Difficulty.EASY, null);
         assertEquals(1, playerEasy.getHints());
         assertEquals(0, playerEasy.getStreak());
     }
     @Test
     void testPlayerConstructorMedium() {
-        Player playerMed = new Player(Difficulty.MEDIUM);
+        Player playerMed = new Player(Difficulty.MEDIUM,null);
 
         assertEquals(0, playerMed.getHints());
         assertEquals(0, playerMed.getStreak());
     }
     @Test
     void testPlayerConstructorHard() {
-        Player playerHard = new Player(Difficulty.HARD);
+        Player playerHard = new Player(Difficulty.HARD, null);
 
         assertEquals(0, playerHard.getHints());
         assertEquals(0, playerHard.getStreak());

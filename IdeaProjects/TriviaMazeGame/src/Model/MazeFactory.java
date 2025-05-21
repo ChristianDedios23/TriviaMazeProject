@@ -16,6 +16,6 @@ public class MazeFactory {
             default -> 5;
         };
 
-        return new Maze(mazeSize, new Player(theDifficulty));
+        return new Maze(mazeSize, theDifficulty);
     }
 }

@@ -1,5 +1,6 @@
 package Model;
 
+import Model.Enum.Difficulty;
 import Model.Enum.Direction;
 import Model.Enum.DoorState;
 
@@ -37,12 +38,13 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
      * Constructs a maze object based on the given length
      * @param theLength, the desired length of the maze
      */
-    Maze(final int theLength, final Player thePlayer) {
+    Maze(final int theLength, final Difficulty theDifficulty) {
         myMaze = initializeRooms(theLength);
-        myPlayer = thePlayer;
+
         myCurrentRoom = STARTING_POSITION;
         myExit = (int) Math.pow(myMazeLength, 2) -1;
         myPcs = new PropertyChangeSupport(this);
+        myPlayer = new Player(theDifficulty, myPcs);
     }
     /**
      * Initializes myMaze with Room objects and links them

@@ -12,6 +12,8 @@ public interface PropertyChangeListenerMaze {
     
     String PROPERTY_VICTORY = "victory";
     String PROPERTY_GAMEOVER = "gameOver";
+
+
     /**
      * Add a PropertyChangeListener
      * to the listener list. The listener is registered for
