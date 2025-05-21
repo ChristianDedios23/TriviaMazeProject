@@ -1,8 +1,10 @@
 package View;
 
 import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class GameSettingsWindow extends JDialog
+public class GameSettingsWindow extends JDialog implements PropertyChangeListener
 {
     private JPanel myQuestionsPanel;
 
@@ -71,6 +73,7 @@ public class GameSettingsWindow extends JDialog
         myEasyButton = new JRadioButton("Easy (5x5 board)");
         myMediumButton = new JRadioButton("Medium (6x6 board)");
         myHardButton = new JRadioButton("Hard (7x7 board)");
+        myEasyButton.setSelected(true);
         myDifficultyButtons.add(myEasyButton);
         myDifficultyButtons.add(myMediumButton);
         myDifficultyButtons.add(myHardButton);
@@ -96,5 +99,24 @@ public class GameSettingsWindow extends JDialog
     public JButton getStartGameButton()
     {
         return myStartGameButton;
+    }
+
+    public JRadioButton getEasyButton() { return myEasyButton;}
+
+    public JRadioButton getMediumButton() { return myMediumButton;}
+
+
+
+
+    /**
+     * This method gets called when a bound property is changed.
+     *
+     * @param evt A PropertyChangeEvent object describing the event source
+     *            and the property that has changed.
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+
     }
 }

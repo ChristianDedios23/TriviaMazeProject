@@ -1,5 +1,8 @@
 package View;
 
+import Model.Maze;
+import Model.MazeFactory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -8,14 +11,13 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-//for options use Jcheckbox, Jradiobutton, Buttongroup, Jbutton, JDialog, Jpanel
-// perhaps make new class to handle all of this
 public class StartGameFrame extends JFrame implements PropertyChangeListener
 {
+    private Maze myMazeModel;
 
     private MenuBar myMenuBar;
     private GameSettingsWindow myGameSettingsWindow;
-    private MazeFrame myMazeFrame;
+    private GameFrame myGameFrame;
 
     private JButton myNewGameButton;
     private JButton myLoadGameButton;
@@ -27,19 +29,18 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
     private final int WIDTH_OF_BUTTON = 100;
     private final int HEIGHT_OF_BUTTON = 50;
 
-    //when someone closes the game settings window dont do anything
-    //if they use the start button do stuff :/
+    //maybe make variable for view to check if all of maze will
+    //be shown or not
+
+    //use the question factory for checking the questions
     public StartGameFrame()
     {
         super();
         myMenuBar = new MenuBar(this);
-        myMazeFrame = new MazeFrame();
-        myMazeFrame.setJMenuBar(new MenuBar(myMazeFrame));
         myNewGameButton = new JButton();
         myLoadGameButton = new JButton();
         myTitleLabel = new JLabel();
         myGameSettingsWindow = new GameSettingsWindow(this);
-
 
         setUpFrame();
         setUpPageElements();
@@ -93,8 +94,27 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
 
         myGameSettingsWindow.getStartGameButton().addActionListener(theEvent -> {
             myGameSettingsWindow.makeVisible(false);
-            myMazeFrame.setLocationRelativeTo(this);
-            myMazeFrame.setVisible(true);
+            this.setVisible(false);
+            int mazeSize;
+
+            if (myGameSettingsWindow.getEasyButton().isSelected()) {
+                myGameFrame = new GameFrame(MazeFactory.create5x5Maze());
+                mazeSize = 5;
+            }
+
+            else if (myGameSettingsWindow.getMediumButton().isSelected()) {
+                myGameFrame = new GameFrame(MazeFactory.create6x6Maze());
+                mazeSize = 6;
+            }
+
+            else {
+                myGameFrame = new GameFrame(MazeFactory.create7x7Maze());
+                mazeSize = 7;
+            }
+            myGameFrame.setJMenuBar(new MenuBar(myGameFrame));
+            myGameFrame.setLocationRelativeTo(this);
+            myGameFrame.setBoardSizeInfo(mazeSize);
+            myGameFrame.setVisible(true);
             this.setVisible(false);
         });
 
