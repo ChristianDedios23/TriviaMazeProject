@@ -1,22 +1,16 @@
 package Model;
 
-public class TrueAndFalseQuestion extends QuestionFactory{
+public class TrueAndFalseQuestion extends AbstractQuestion {
 
     private boolean correctAnswer;
 
-    public TrueAndFalseQuestion(String question, String answer) {
-        super(question, answer);
+    public TrueAndFalseQuestion(String question, String answer,String theHint) {
+        super(question, answer,theHint);
         correctAnswer = answer.equals("true");
     }
 
     @Override
-    public void ask() {
-        System.out.println(question);
-        System.out.println("True or False");
-    }
-
-    @Override
-    public boolean checkAnswer(String answer) {
-        return answer.equals(String.valueOf(correctAnswer));
+    public String getType() {
+        return "TRUE_OR_FALSE";
     }
 }
