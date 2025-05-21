@@ -39,7 +39,6 @@ public class MenuBar extends JMenuBar
         myShortCutsItem = new JMenuItem("Short-Cuts");
         setUpComponents();
         addListeners();
-        //this.setVisible(true);
     }
 
     private void setUpComponents()

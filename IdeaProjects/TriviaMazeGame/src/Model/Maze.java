@@ -13,10 +13,13 @@ import java.util.Set;
  * Maze object to manage the state of the game
  */
 public class Maze implements PropertyChangeListenerMaze{
+
     /** An int representing the current room */
     private int myCurrentRoom;
+
     /** A map representing the maze  */
     private final Map<Integer, Room> myMaze;
+
     /** Default starting room */
     private final int STARTING_POSITION = 0;
 
@@ -34,9 +37,15 @@ public class Maze implements PropertyChangeListenerMaze{
         myMaze = initializeRooms(theLength);
 
         myCurrentRoom = STARTING_POSITION;
-        myExit = (int) Math.pow(myMazeLength, 2) -1;
+        myExit = (int) Math.pow(myMazeLength, 2) - 1;
         myPcs = new PropertyChangeSupport(this);
     }
+
+    public int getMyMazeLength()
+    {
+        return myMazeLength;
+    }
+
     /**
      * Initializes myMaze with Room objects and links them
      * to a room number
