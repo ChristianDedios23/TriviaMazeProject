@@ -32,10 +32,15 @@ public class DatabaseConnection {
      */
     public static Connection getConnection(){
         try{
-           return myDS.getConnection();
+
+
+            return myDS.getConnection();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+
 }
+
