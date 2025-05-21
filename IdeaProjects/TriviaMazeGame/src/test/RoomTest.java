@@ -31,8 +31,7 @@ class RoomTest {
     }
 
     /**
-     * Tests that a door exists for
-     * each direction
+     * Tests that a door exists for each direction
      */
     @Test
     void testGetDoor(){

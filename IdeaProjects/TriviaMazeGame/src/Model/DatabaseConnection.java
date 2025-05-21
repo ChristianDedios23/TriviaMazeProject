@@ -4,11 +4,16 @@ import org.sqlite.SQLiteDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-
+/**
+ * Utility class for connecting to the DB
+ */
 public class DatabaseConnection {
+    /** Data source for the class*/
     private static final SQLiteDataSource myDS =  new SQLiteDataSource();
+    /** URL for the SQLite*/
     private static final String DB_URL = "jdbc:sqlite:questions.db";
 
+    //On first use, connects the database source to SQLite
     static {
         try {
             myDS.setUrl(DB_URL);
@@ -19,9 +24,12 @@ public class DatabaseConnection {
             System.exit(1);
         }
     }
-    private DatabaseConnection(){
+    /**Dummy Constructor*/
+    private DatabaseConnection(){}
 
-    }
+    /**
+     * @return gets connection to the DB source
+     */
     public static Connection getConnection(){
         try{
            return myDS.getConnection();

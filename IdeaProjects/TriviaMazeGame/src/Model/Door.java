@@ -10,8 +10,10 @@ import java.io.Serializable;
  * A door is locked if the question with it is answered wrong
  */
 public class Door implements Serializable {
+    /** UID for Serialization*/
     @Serial
     private static final long serialVersionUID = 345234345L;
+    /** Contains the state of the door*/
     private DoorState myDoorState;
 
     
@@ -36,6 +38,10 @@ public class Door implements Serializable {
     public void lockDoor(){
         myDoorState = DoorState.LOCKED;
     }
+
+    /**
+     * Opens the door if question is answered right
+     */
     public void openDoor(){
        myDoorState = DoorState.OPEN;
     }

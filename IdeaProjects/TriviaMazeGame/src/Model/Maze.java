@@ -19,6 +19,7 @@ import java.util.Set;
  * Maze object to manage the state of the game
  */
 public class Maze implements PropertyChangeListenerMaze, Serializable {
+    /** UID for Serialization*/
     @Serial
     private static final long serialVersionUID = 129348938L;
     /** An int representing the current room */
@@ -97,10 +98,18 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     public int getMyCurrentRoom(){
         return myCurrentRoom;
     }
+
+    /**
+     * @return my maze length
+     */
+    public int getMyMazeLength(){
+        return myMazeLength;
+    }
     /**
      * Sets the current room to given room
      * @param theRoom the next room
      */
+
     private void setCurrentRoom(final int theRoom){
         if(theRoom < 0 || theRoom > myExit){
             throw new IllegalArgumentException("Can't set room out of bounds: "+ theRoom);
