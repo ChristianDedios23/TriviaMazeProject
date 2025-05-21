@@ -1,40 +1,49 @@
 package Model;
 
+import Model.Enum.DoorState;
+
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * A Door object to see if a direction in a room is still available 
  * A door is locked if the question with it is answered wrong
  */
-public class Door {
-    private boolean myLock;
-    private boolean myOpen;
+public class Door implements Serializable {
+    /** UID for Serialization*/
+    @Serial
+    private static final long serialVersionUID = 345234345L;
+    /** Contains the state of the door*/
+    private DoorState myDoorState;
+
     
     /**
      * Constructs a Door object
      */
     public Door(){
-        myLock = false;
+        myDoorState = DoorState.QUESTION;
      
     }
     /**
      * @return the state of the door
      */
     public DoorState getDoorState(){
-        if(myOpen){
-            return DoorState.OPEN;
-        }else if (myLock){
-            return DoorState.LOCKED;
-        }
-        return DoorState.QUESTION;
+
+        return myDoorState;
     }
 
     /**
      * Locks a door if the given question was answered wrong
      */
     public void lockDoor(){
-        myLock = true;
+        myDoorState = DoorState.LOCKED;
     }
+
+    /**
+     * Opens the door if question is answered right
+     */
     public void openDoor(){
-        myOpen = true;
+       myDoorState = DoorState.OPEN;
     }
 
     

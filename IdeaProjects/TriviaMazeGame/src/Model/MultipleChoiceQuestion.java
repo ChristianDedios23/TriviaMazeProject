@@ -1,26 +1,27 @@
 package Model;
 
-import java.util.List;
+import Model.Enum.QuestionType;
 
-public class MultipleChoiceQuestion extends QuestionFactory {
-    private List<String> optionsList;
+import java.util.HashMap;
+
+
+class MultipleChoiceQuestion extends AbstractQuestion {
+    private final HashMap<Character, String> myOptionList;
     private int correctAnswerIndex;
-    public MultipleChoiceQuestion(String question, List<String> options, String answer) {
-        super(question, answer);
-        optionsList = options;
-        correctAnswerIndex = optionsList.indexOf(answer);
+    public MultipleChoiceQuestion(final String theQuestion, final HashMap<Character, String> theOptionList,
+                                  final String theAnswer, final String theHint) {
+        super(theQuestion, theAnswer, theHint);
+        myOptionList = theOptionList;
     }
 
-    @Override
-    public void ask() {
-        System.out.println(question);
-        for(int i=0; i<optionsList.size(); i++){
-            System.out.println( (i+1) + ". " + optionsList.get(i));
-        }
-    }
+
 
     @Override
-    public boolean checkAnswer(String answerIndex) {
-        return optionsList.get(Integer.parseInt(answerIndex)-1).equals(optionsList.get(correctAnswerIndex));
+    public QuestionType getType() {
+        return QuestionType.MULTIPLE_CHOICE;
+    }
+
+    public HashMap<Character, String> getOptionList() {
+        return myOptionList;
     }
 }

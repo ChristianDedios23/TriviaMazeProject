@@ -1,6 +1,6 @@
 package test;
 
-import Model.Direction;
+import Model.Enum.Direction;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

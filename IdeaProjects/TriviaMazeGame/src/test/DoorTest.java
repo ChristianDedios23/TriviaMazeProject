@@ -1,6 +1,6 @@
 package test;
 import Model.Door;
-import Model.DoorState;
+import Model.Enum.DoorState;
 
 
 import org.junit.jupiter.api.BeforeEach;

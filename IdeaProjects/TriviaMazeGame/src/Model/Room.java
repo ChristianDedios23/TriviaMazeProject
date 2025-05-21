@@ -1,12 +1,19 @@
 package Model;
 
+import Model.Enum.Direction;
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * A Room object to hold the state of a given room
  */
-public class Room{
+public class Room implements Serializable {
+    /** UID for Serialization*/
+    @Serial
+    private static final long serialVersionUID = 465234523L;
     /** An Map to hold the state of the doors on all sides */
     private final Map<Direction, Door> myDoors;
     /**
