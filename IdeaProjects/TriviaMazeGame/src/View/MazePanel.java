@@ -4,7 +4,6 @@ import Model.Maze;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -14,7 +13,9 @@ import java.util.HashMap;
 
 public class MazePanel extends JPanel
 {
-    private BufferedImage image;
+    private BufferedImage myMazeImage;
+
+    private BufferedImage myBunnyImage;
 
     private HashMap<Integer, RoomPanel> roomPanelMap;
 
@@ -35,15 +36,18 @@ public class MazePanel extends JPanel
         myRoomLength = myMazeSize * 75;
         initializeRoomPanelMap();
 
-        try{
-            image = ImageIO.read(new File("tileFloor.png"));
-            this.setPreferredSize(new Dimension(myRoomLength, myRoomLength)); // Set size from image
-            this.setBounds(25, 100, myRoomLength, myRoomLength);
-            this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        this.setPreferredSize(new Dimension(myRoomLength, myRoomLength));
+        this.setBounds(25, 100, myRoomLength, myRoomLength);
+        this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+
+        try
+        {
+            myMazeImage = ImageIO.read(new File("tileFloor.png"));
+            myBunnyImage = ImageIO.read(new File("bunny.png"));
         }
         catch(IOException e)
         {
-            System.out.println("error");
+            System.out.println("Image was not found");
         }
     }
 
@@ -61,7 +65,18 @@ public class MazePanel extends JPanel
     protected void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        //25, 100
-        if (image != null) g.drawImage(image, 0, 0, myRoomLength, myRoomLength, this);
+
+        if (myMazeImage != null)
+        {
+            g.drawImage(myMazeImage, 0, 0, myRoomLength, myRoomLength, this);
+
+        }
+
+        if (myBunnyImage != null)
+        {
+           g.drawImage(myBunnyImage, 0, 0, 75, 75, this);
+        }
+
+
     }
 }
