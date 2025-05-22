@@ -5,6 +5,8 @@ import Model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.beans.PropertyChangeSupport;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -23,9 +25,9 @@ class PlayerTest {
      */
     @BeforeEach
     void setUp() {
-        playerEasy = new Player(Difficulty.EASY, null);
-        playerMed = new Player(Difficulty.MEDIUM, null);
-        playerHard = new Player(Difficulty.HARD, null);
+        playerEasy = new Player(Difficulty.EASY, new PropertyChangeSupport(this));
+        playerMed = new Player(Difficulty.MEDIUM, new PropertyChangeSupport(this));
+        playerHard = new Player(Difficulty.HARD, new PropertyChangeSupport(this));
     }
 
     /**

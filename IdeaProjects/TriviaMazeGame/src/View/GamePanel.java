@@ -1,6 +1,6 @@
 package View;
 
-import Model.Direction;
+import Model.Enum.Direction;
 import Model.Maze;
 
 import javax.swing.*;
@@ -8,7 +8,7 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-
+//To-D0 - Make it so when the player cant move in certain direction, deactivate button or give error to user
 public class GamePanel extends JPanel implements PropertyChangeListener
 {
     private MazePanel myMazePanel;
@@ -30,11 +30,12 @@ public class GamePanel extends JPanel implements PropertyChangeListener
     {
         myMazeModel = theMazeModel;
         myMazePanel = new MazePanel(myMazeModel);
+        setUpButtons();
         addListeners();
         this.setLayout(null);
         this.add(myMazePanel);
         this.setPreferredSize(new Dimension(1024, 768));
-        setUpButtons();
+
     }
 
     private void setUpButtons()
