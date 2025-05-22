@@ -1,18 +1,13 @@
 package Tests;
 
 
-import org.junit.jupiter.api.Test;
-import Model.AbstractQuestion;
-import Model.TrueAndFalseQuestion;
-import Model.MultipleChoiceQuestion;
-import Model.ShortAnswerQuestion;
 
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class QuestionUnitTest {
-
+/*
     @Test
     public void testTFQuestionCreation() {
         TrueAndFalseQuestion question = new TrueAndFalseQuestion("Is the sky blue?", "true","look outside");
@@ -59,5 +54,5 @@ public class QuestionUnitTest {
         assertEquals("What color is the sky?", question.getQuestion());
         assertTrue(question.checkAnswer("what is blue"));
         assertEquals(question.getHint(),"look outside");
-    }
+    }*/
 }

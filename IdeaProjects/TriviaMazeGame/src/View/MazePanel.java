@@ -6,18 +6,22 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
 
-public class MazePanel extends JPanel
+public class MazePanel extends JPanel implements PropertyChangeListener
 {
     private BufferedImage myMazeImage;
 
     private BufferedImage myBunnyImage;
 
     private HashMap<Integer, RoomPanel> roomPanelMap;
+
+    private int myCurrentRoom;
 
     private Maze myMazeModel;
 
@@ -30,6 +34,8 @@ public class MazePanel extends JPanel
         super();
         this.setLayout(null);
         this.setOpaque(false);
+        theMazeModel.addPropertyChangeListener(this);
+
         myMazeModel = theMazeModel;
         roomPanelMap = new HashMap<>();
         myMazeSize = myMazeModel.getMyMazeLength();
@@ -74,9 +80,26 @@ public class MazePanel extends JPanel
 
         if (myBunnyImage != null)
         {
-           g.drawImage(myBunnyImage, 0, 0, 75, 75, this);
+           g.drawImage(myBunnyImage, (myCurrentRoom % myMazeSize) * 75, (myCurrentRoom / myMazeSize) * 75, 75, 75, this);
         }
+    }
 
 
+    /**
+     * This method gets called when a bound property is changed.
+     *
+     * @param evt A PropertyChangeEvent object describing the event source
+     *            and the property that has changed.
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        if (evt.getPropertyName().equals("playerMove"))
+        {
+            myCurrentRoom = (int)evt.getNewValue();
+            System.out.println("Reached player move, current room:  " + myCurrentRoom);
+            this.repaint();
+            this.revalidate();
+        }
     }
 }

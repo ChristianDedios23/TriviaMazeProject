@@ -1,5 +1,6 @@
 package View;
 
+import Model.Enum.Difficulty;
 import Model.Maze;
 import Model.MazeFactory;
 
@@ -98,17 +99,17 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
             int mazeSize;
 
             if (myGameSettingsWindow.getEasyButton().isSelected()) {
-                myGameFrame = new GameFrame(MazeFactory.create5x5Maze());
+                myGameFrame = new GameFrame(MazeFactory.createMaze(Difficulty.EASY));
                 mazeSize = 5;
             }
 
             else if (myGameSettingsWindow.getMediumButton().isSelected()) {
-                myGameFrame = new GameFrame(MazeFactory.create6x6Maze());
+                myGameFrame = new GameFrame(MazeFactory.createMaze(Difficulty.MEDIUM));
                 mazeSize = 6;
             }
 
             else {
-                myGameFrame = new GameFrame(MazeFactory.create7x7Maze());
+                myGameFrame = new GameFrame(MazeFactory.createMaze(Difficulty.HARD));
                 mazeSize = 7;
             }
             myGameFrame.setJMenuBar(new MenuBar(myGameFrame));
