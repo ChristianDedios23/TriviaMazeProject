@@ -147,32 +147,32 @@ class MazeTest {
     }
 
     /**
-     * Tests attemptMove to a Door with a question
+     * Tests checkDoorState to a Door with a question
      */
     @Test
-    void testAttemptMoveQuestion(){
+    void testCheckDoorStateQuestion(){
         Maze maze = MazeFactory.createMaze(Difficulty.EASY);
-        assertEquals(DoorState.QUESTION, maze.attemptMove(Direction.RIGHT));
+        assertEquals(DoorState.QUESTION, maze.checkDoorState(Direction.RIGHT));
     }
     /**
-     * Tests attemptMove to a Door thats locked
+     * Tests checkDoorState to a Door thats locked
      */
     @Test
-    void testAttemptMoveWall(){
+    void testCheckDoorStateWall(){
         Maze maze = MazeFactory.createMaze(Difficulty.EASY);
-        assertEquals(DoorState.LOCKED, maze.attemptMove(Direction.UP));
+        assertEquals(DoorState.LOCKED, maze.checkDoorState(Direction.UP));
     }
     /**
-     * Tests attemptMove to a Door thats open
+     * Tests checkDoorState to a Door thats open
      */
     @Test
-    void testAttemptMoveOpen(){
+    void testCheckDoorStateOpen(){
         Maze maze = MazeFactory.createMaze(Difficulty.EASY);
         Door front = maze.getDoor(0, Direction.RIGHT);
         Door back = maze.getDoor(1, Direction.LEFT);
         front.openDoor();
         back.openDoor();
-        assertEquals(DoorState.OPEN, maze.attemptMove(Direction.RIGHT));
+        assertEquals(DoorState.OPEN, maze.checkDoorState(Direction.RIGHT));
     }
     /**
      * Tests move after a correct answer

@@ -54,10 +54,6 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         myPlayer = new Player(theDifficulty, myPcs);
     }
 
-    public int getMyMazeLength()
-    {
-        return myMazeLength;
-    }
 
     /**
      * Initializes myMaze with Room objects and links them
@@ -166,7 +162,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
      * @return the door state of the direction
      */
    
-    public DoorState attemptMove(final Direction theDirection){
+    public DoorState checkDoorState(final Direction theDirection){
         int room = canMove(myCurrentRoom, theDirection); 
         if(room > 0){
             Door frontSide = getDoor(myCurrentRoom, theDirection);
