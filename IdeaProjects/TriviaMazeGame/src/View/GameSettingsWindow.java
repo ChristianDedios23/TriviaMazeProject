@@ -66,6 +66,7 @@ public class GameSettingsWindow extends JDialog implements PropertyChangeListene
         myQuestionsPanel.add(myMultipleChoiceBox);
         myQuestionsPanel.add(myTrueFalseCheckBox);
         myQuestionsPanel.add(myShortAnswerCheckBox);
+        myMultipleChoiceBox.setSelected(true);
         this.add(myQuestionsPanel);
     }
 

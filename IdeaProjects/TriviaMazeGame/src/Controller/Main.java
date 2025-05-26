@@ -7,6 +7,8 @@ import Model.QuestionFactory;
 import View.StartGameFrame;
 import java.util.*;
 
+import static Model.Enum.QuestionType.SHORT_ANSWER;
+
 public class Main
 {
     public static void main(String[] args)
@@ -18,6 +20,8 @@ public class Main
 
         //*/question factory tester
         QuestionFactory.setupQuestions();
+         QuestionFactory.editMyQuestionTypeSet(SHORT_ANSWER);
+         QuestionFactory.editMyQuestionTypeSet(SHORT_ANSWER);
         AbstractQuestion tf = QuestionFactory.getQuestion();
         System.out.println(tf.getQuestion());
         System.out.println(tf.getHint());
