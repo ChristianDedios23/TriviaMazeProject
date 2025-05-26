@@ -13,6 +13,12 @@ public class GameSettingsWindow extends JDialog implements PropertyChangeListene
 
     private final JPanel myDifficultyPanel;
 
+    private JCheckBox myMultipleChoiceBox;
+
+    private JCheckBox myTrueFalseCheckBox;
+
+    private JCheckBox myShortAnswerCheckBox;
+
     private final JPanel myBoardPanel;
 
     private JRadioButton myEasyButton;
@@ -47,9 +53,9 @@ public class GameSettingsWindow extends JDialog implements PropertyChangeListene
 
     private void setUpQuestionPanel()
     {
-        JCheckBox myMultipleChoiceBox = new JCheckBox("Multiple Choice");
-        JCheckBox myTrueFalseCheckBox = new JCheckBox("True or False");
-        JCheckBox myShortAnswerCheckBox = new JCheckBox("Short Answer");
+        myMultipleChoiceBox = new JCheckBox("Multiple Choice");
+        myTrueFalseCheckBox = new JCheckBox("True or False");
+        myShortAnswerCheckBox = new JCheckBox("Short Answer");
         myQuestionsPanel.setBorder(BorderFactory.createTitledBorder("Types of Questions:"));
         myQuestionsPanel.add(myMultipleChoiceBox);
         myQuestionsPanel.add(myTrueFalseCheckBox);
@@ -118,6 +124,12 @@ public class GameSettingsWindow extends JDialog implements PropertyChangeListene
     public JRadioButton getEasyButton() { return myEasyButton;}
 
     public JRadioButton getMediumButton() { return myMediumButton;}
+
+    public JCheckBox getMultipleChoiceBox(){ return myMultipleChoiceBox;}
+
+    public JCheckBox getTrueFalseCheckBox() {return myTrueFalseCheckBox;}
+
+    public JCheckBox getShortAnswerCheckBox(){return myShortAnswerCheckBox;}
 
 
 

@@ -14,7 +14,7 @@ public class Main
     public static void main(String[] args)
     {
 
-        //StartGameFrame frame = new StartGameFrame();
+        StartGameFrame frame = new StartGameFrame();
 
          ///
 
