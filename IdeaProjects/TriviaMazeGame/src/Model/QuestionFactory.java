@@ -21,12 +21,11 @@ public class QuestionFactory {
     private static List<ShortAnswerQuestion> myShortAnswerQuestionList = new ArrayList<>();
 
     private static Set<QuestionType> myQuestionTypeSet = new HashSet<QuestionType>();
+
     private QuestionFactory() {
     }
 
     public static void setupQuestions() {
-
-
 
         String queryTF = "SELECT * FROM TRUE_OR_FALSE";
         String queryMC = "SELECT * FROM MULTIPLE_CHOICE";
@@ -65,11 +64,41 @@ public class QuestionFactory {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        myQuestionTypeSet.add(SHORT_ANSWER);
-        myQuestionTypeSet.add(MULTIPLE_CHOICE);
         myQuestionTypeSet.add(TRUE_OR_FALSE);
 
     }
+    public static AbstractQuestion getQuestion2() {
+        Random rand = new Random();
+        String type = myQuestionTypeSet.toArray()[rand.nextInt(myQuestionTypeSet.size())].toString();
+        AbstractQuestion question = null;
+        if(type.equals("MULTIPLE_CHOICE")) {
+            if(myMCCurrentIndex >= myMCQuestionList.size()) {
+                myMCCurrentIndex = 0;
+                Collections.shuffle(myMCQuestionList);
+            }
+            question = myMCQuestionList.get(myMCCurrentIndex);
+            myMCCurrentIndex++;
+        }
+        else if(type.equals("TRUE_OR_FALSE")) {
+            if(myTFCurrentIndex >= myTFQuestionList.size()) {
+                myTFCurrentIndex = 0;
+                Collections.shuffle(myTFQuestionList);
+            }
+            question = myTFQuestionList.get(myTFCurrentIndex);
+            myTFCurrentIndex++;
+        }
+        else {
+            if(mySACurrentIndex >= myShortAnswerQuestionList.size()) {
+                mySACurrentIndex = 0;
+                Collections.shuffle(myShortAnswerQuestionList);
+            }
+            question = myShortAnswerQuestionList.get(mySACurrentIndex);
+            mySACurrentIndex++;
+        }
+        return question;
+}
+
+
 
     public static AbstractQuestion getQuestion() {
         Random rand = new Random();
@@ -112,88 +141,6 @@ public class QuestionFactory {
             }
 
             return returnQuestion;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*
-        while (!chosen) {
-
-
-            int choice = rand.nextInt(3);
-            if (choice == 0) {
-
-            } else if (choice == 1) {
-                String query = "SELECT * FROM questionsMC ORDER BY RANDOM() LIMIT 1;";
-                        AbstractQuestion mcquestion = null;
-                        try {
-                            Connection connection = DatabaseConnection.getConnection();
-                            Statement statement = connection.createStatement();
-
-                            ResultSet rs = statement.executeQuery(query);
-                            while (rs.next()) {
-                                String question = rs.getString("question");
-                                HashMap<Character, String> map = new HashMap<>();
-                                map.put('A', rs.getString("option_a"));
-                                map.put('B', rs.getString("option_b"));
-                                map.put('C', rs.getString("option_c"));
-                                map.put('D', rs.getString("option_d"));
-                                String answer = rs.getString("answer");
-                                String hint = rs.getString("hint");
-                                mcquestion = new MultipleChoiceQuestion(question, map, answer, hint);
-                            }
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                        return mcquestion;
-
-                } else if (choice == 2) {
-
-
-
-                        String query = "SELECT * FROM questionsTOF ORDER BY RANDOM() LIMIT 1;";
-                        AbstractQuestion tfquestion = null;
-                        try {
-                            Connection connection = DatabaseConnection.getConnection();
-                            Statement statement = connection.createStatement();
-
-                            ResultSet rs = statement.executeQuery(query);
-                            while (rs.next()) {
-                                String question = rs.getString("question");
-                                String answer = rs.getString("answer");
-                                String hint = rs.getString("hint");
-                                tfquestion = new TrueAndFalseQuestion(question, answer, hint);
-                            }
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                        return tfquestion;
-                }
-            }
-        return null;\
-
-         */
     }
 
     public static void editMyQuestionTypeSet(QuestionType questionType) {
@@ -202,6 +149,17 @@ public class QuestionFactory {
         } else {
             myQuestionTypeSet.add(questionType);
         }
-
+        shuffleList(questionType);
+    }
+    private static void shuffleList(final QuestionType questionType) {
+        if(questionType == SHORT_ANSWER) {
+            Collections.shuffle(myShortAnswerQuestionList);
+        }
+        else if(questionType == MULTIPLE_CHOICE) {
+            Collections.shuffle(myMCQuestionList);
+        }
+        else if(questionType == TRUE_OR_FALSE) {
+            Collections.shuffle(myTFQuestionList);
+        }
     }
 }
