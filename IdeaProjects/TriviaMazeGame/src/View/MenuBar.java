@@ -6,26 +6,26 @@ import java.awt.event.WindowEvent;
 
 public class MenuBar extends JMenuBar
 {
-    private JFrame myParent;
+    private final JFrame myParent;
 
-    private JMenu myFileMenu;
+    private final JMenu myFileMenu;
 
-    private JMenu myHelpMenu;
+    private final JMenu myHelpMenu;
 
-    private JMenuItem mySaveGameItem;
+    private final JMenuItem mySaveGameItem;
 
-    private JMenuItem myLoadGameItem;
+    private final JMenuItem myLoadGameItem;
 
-    private JMenuItem myExitGameItem;
+    private final JMenuItem myExitGameItem;
 
-    private JMenuItem myGamePlayInstructionItem;
+    private final JMenuItem myGamePlayInstructionItem;
 
-    private JMenuItem myAboutItem;
+    private final JMenuItem myAboutItem;
 
-    private JMenuItem myShortCutsItem;
+    private final JMenuItem myShortCutsItem;
 
     //add shortcuts menu item and add shortcuts to play the whole game without a mouse
-    MenuBar(JFrame theParent)
+    MenuBar(final JFrame theParent)
     {
         super();
         myParent = theParent;
