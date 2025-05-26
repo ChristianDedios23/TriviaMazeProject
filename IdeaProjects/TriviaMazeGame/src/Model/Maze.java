@@ -40,6 +40,9 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     private int myMazeLength;
     /** The room of the exit */
     private final int myExit;
+    /** State of the current question*/
+    private AbstractQuestion myCurrentQuestion;
+
     /** PCS to signal to view */
     private final PropertyChangeSupport myPcs;
     /**
@@ -53,6 +56,8 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         myExit = (int) Math.pow(myMazeLength, 2) - 1;
         myPcs = new PropertyChangeSupport(this);
         myPlayer = new Player(theDifficulty, myPcs);
+        myCurrentQuestion = null;
+        QuestionFactory.setupQuestions();
     }
 
     /**
@@ -62,7 +67,10 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     public void setQuestionType(QuestionType theType) {
         QuestionFactory.editMyQuestionTypeSet(theType);
     }
-
+    private void getQuestion(){
+       myCurrentQuestion = QuestionFactory.getQuestion();
+       myPcs.firePropertyChange(PROPERTY_NEW_QUESTION, null, myCurrentQuestion);
+    }
     /**
      * Initializes myMaze with Room objects and links them
      * to a room number
@@ -199,9 +207,9 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         Door backSide = getDoor(room, theDirection.getOpposite());
 
         if(!theCorrectAnswer){
-            availablePathToExit();
             frontSide.lockDoor();
             backSide.lockDoor();
+            availablePathToExit();
             myPlayer.resetStreak();
             myPcs.firePropertyChange(PROPERTY_QUESTION_WRONG, theDirection, theDirection);
             return false;

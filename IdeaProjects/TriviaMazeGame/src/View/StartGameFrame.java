@@ -1,6 +1,7 @@
 package View;
 
 import Model.Enum.Difficulty;
+import Model.Maze;
 import Model.MazeFactory;
 
 import javax.swing.*;

@@ -6,7 +6,7 @@ public interface PropertyChangeListenerMaze {
 
     String PROPERTY_PLAYER_MOVE = "playerMove";
 
-   
+    String PROPERTY_NEW_QUESTION = "newQuestion";
     String PROPERTY_QUESTION_WRONG = "questionWrong";
     String PROPERTY_QUESTION_RIGHT = "questionRight";
     
