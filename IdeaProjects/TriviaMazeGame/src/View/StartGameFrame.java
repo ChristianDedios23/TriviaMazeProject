@@ -14,8 +14,8 @@ import java.beans.PropertyChangeListener;
 
 public class StartGameFrame extends JFrame implements PropertyChangeListener
 {
-    private Maze myMazeModel;
 
+    public static Maze MY_MAZE_MODEL;
     private MenuBar myMenuBar;
     private GameSettingsWindow myGameSettingsWindow;
     private GameFrame myGameFrame;
@@ -99,19 +99,20 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
             int mazeSize;
 
             if (myGameSettingsWindow.getEasyButton().isSelected()) {
-                myGameFrame = new GameFrame(MazeFactory.createMaze(Difficulty.EASY));
+                MY_MAZE_MODEL = MazeFactory.createMaze(Difficulty.EASY);
                 mazeSize = 5;
             }
 
             else if (myGameSettingsWindow.getMediumButton().isSelected()) {
-                myGameFrame = new GameFrame(MazeFactory.createMaze(Difficulty.MEDIUM));
+                MY_MAZE_MODEL = MazeFactory.createMaze(Difficulty.MEDIUM);
                 mazeSize = 6;
             }
 
             else {
-                myGameFrame = new GameFrame(MazeFactory.createMaze(Difficulty.HARD));
+                MY_MAZE_MODEL = MazeFactory.createMaze(Difficulty.HARD);
                 mazeSize = 7;
             }
+            myGameFrame = new GameFrame(MY_MAZE_MODEL);
             myGameFrame.setJMenuBar(new MenuBar(myGameFrame));
             myGameFrame.setLocationRelativeTo(this);
             myGameFrame.setBoardSizeInfo(mazeSize);
