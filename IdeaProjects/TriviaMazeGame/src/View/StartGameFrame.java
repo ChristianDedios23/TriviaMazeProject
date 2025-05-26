@@ -1,7 +1,6 @@
 package View;
 
 import Model.Enum.Difficulty;
-import Model.Maze;
 import Model.MazeFactory;
 
 import javax.swing.*;
@@ -15,20 +14,18 @@ import java.beans.PropertyChangeListener;
 public class StartGameFrame extends JFrame implements PropertyChangeListener
 {
 
+
     public static Maze MY_MAZE_MODEL;
-    private MenuBar myMenuBar;
-    private GameSettingsWindow myGameSettingsWindow;
+    
+
+    private final MenuBar myMenuBar;
+    private final GameSettingsWindow myGameSettingsWindow;
+
     private GameFrame myGameFrame;
 
-    private JButton myNewGameButton;
-    private JButton myLoadGameButton;
-    private JLabel myTitleLabel;
-
-    private final int WIDTH_OF_FRAME = 700;
-    private final int HEIGHT_OF_FRAME = 500;
-
-    private final int WIDTH_OF_BUTTON = 100;
-    private final int HEIGHT_OF_BUTTON = 50;
+    private final JButton myNewGameButton;
+    private final JButton myLoadGameButton;
+    private final JLabel myTitleLabel;
 
     //maybe make variable for view to check if all of maze will
     //be shown or not
@@ -52,6 +49,9 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
 
     private void setUpFrame()
     {
+        int WIDTH_OF_FRAME = 700;
+        int HEIGHT_OF_FRAME = 500;
+
         this.getContentPane().setBackground(Color.PINK);
         this.setSize(WIDTH_OF_FRAME, HEIGHT_OF_FRAME);
         this.setTitle("Trivia Maze Game");
@@ -63,6 +63,9 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
 
     private void setUpPageElements()
     {
+        int WIDTH_OF_BUTTON = 100;
+        int HEIGHT_OF_BUTTON = 50;
+
         myNewGameButton.setText("New Game");
         myNewGameButton.setBounds(290, 225, WIDTH_OF_BUTTON, HEIGHT_OF_BUTTON);
         myNewGameButton.setMnemonic(KeyEvent.VK_N);
@@ -137,6 +140,8 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
             }
         });
     }
+
+    //private void check
 
     @Override
     public void propertyChange(PropertyChangeEvent evt)

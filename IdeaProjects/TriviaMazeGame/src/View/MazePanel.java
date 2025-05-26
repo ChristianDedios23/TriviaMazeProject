@@ -17,9 +17,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener
 {
     private BufferedImage myMazeImage;
 
-    private BufferedImage myBunnyImage;
-
-    private HashMap<Integer, RoomPanel> roomPanelMap;
+    private HashMap<Integer, RoomPanel> myRoomPanelMap;
 
     private int myCurrentRoom;
 
@@ -37,10 +35,12 @@ public class MazePanel extends JPanel implements PropertyChangeListener
         theMazeModel.addPropertyChangeListener(this);
 
         myMazeModel = theMazeModel;
-        roomPanelMap = new HashMap<>();
+        myRoomPanelMap = new HashMap<>();
         myMazeSize = myMazeModel.getMyMazeLength();
         myRoomLength = myMazeSize * 75;
         initializeRoomPanelMap();
+        myCurrentRoom = 0;
+        myRoomPanelMap.get(myCurrentRoom).setMyIsCurrentRoom(true);
 
         this.setPreferredSize(new Dimension(myRoomLength, myRoomLength));
         this.setBounds(25, 100, myRoomLength, myRoomLength);
@@ -49,7 +49,6 @@ public class MazePanel extends JPanel implements PropertyChangeListener
         try
         {
             myMazeImage = ImageIO.read(new File("tileFloor.png"));
-            myBunnyImage = ImageIO.read(new File("bunny.png"));
         }
         catch(IOException e)
         {
@@ -61,9 +60,9 @@ public class MazePanel extends JPanel implements PropertyChangeListener
     {
         for (int i = 0; i < myMazeSize * myMazeSize; i++)
         {
-            RoomPanel room = new RoomPanel(myMazeModel.getRoom(i), i / myMazeSize, i % myMazeSize);
+            RoomPanel room = new RoomPanel(myMazeModel.getRoom(i), i % myMazeSize, i / myMazeSize);
             this.add(room);
-            roomPanelMap.put(i, room);
+            myRoomPanelMap.put(i, room);
         }
     }
 
@@ -75,15 +74,9 @@ public class MazePanel extends JPanel implements PropertyChangeListener
         if (myMazeImage != null)
         {
             g.drawImage(myMazeImage, 0, 0, myRoomLength, myRoomLength, this);
-
         }
 
-        if (myBunnyImage != null)
-        {
-           g.drawImage(myBunnyImage, (myCurrentRoom % myMazeSize) * 75, (myCurrentRoom / myMazeSize) * 75, 75, 75, this);
-        }
     }
-
 
     /**
      * This method gets called when a bound property is changed.
@@ -97,9 +90,10 @@ public class MazePanel extends JPanel implements PropertyChangeListener
         if (evt.getPropertyName().equals("playerMove"))
         {
             myCurrentRoom = (int)evt.getNewValue();
+            int myOldRoom = (int)evt.getOldValue();
             System.out.println("Reached player move, current room:  " + myCurrentRoom);
-            this.repaint();
-            this.revalidate();
+            myRoomPanelMap.get(myOldRoom).setMyIsCurrentRoom(false);
+            myRoomPanelMap.get(myCurrentRoom).setMyIsCurrentRoom(true);
         }
     }
 }

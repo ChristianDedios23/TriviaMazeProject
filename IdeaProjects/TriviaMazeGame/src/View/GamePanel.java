@@ -5,6 +5,7 @@ import Model.Maze;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -25,7 +26,6 @@ public class GamePanel extends JPanel implements PropertyChangeListener
 
     private Maze myMazeModel;
 
-    //BackgroundPanel.add(MazePanel.add(RoomPanel));
     GamePanel(Maze theMazeModel)
     {
         myMazeModel = theMazeModel;
@@ -53,6 +53,11 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         myLeftButton = new JButton("Left");
         myRightButton = new JButton("Right");
 
+        myUpButton.setMnemonic(KeyEvent.VK_W);
+        myDownButton.setMnemonic(KeyEvent.VK_S);
+        myLeftButton.setMnemonic(KeyEvent.VK_A);
+        myRightButton.setMnemonic(KeyEvent.VK_D);
+
         gbc.gridx = 1;
         gbc.gridy = 0;
         buttonLocation.add(myUpButton, gbc);
@@ -74,7 +79,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener
 
     private void addListeners()
     {
-        //temp, change when khalid decides to do his job
+        //temp, change
         myUpButton.addActionListener(theEvent -> {
             //myMazeModel.attemptMove(Direction.UP);
             myMazeModel.move(Direction.UP, true);

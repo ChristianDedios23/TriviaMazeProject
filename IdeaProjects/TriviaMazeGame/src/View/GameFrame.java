@@ -39,11 +39,6 @@ public class GameFrame extends JFrame implements PropertyChangeListener
         myBoardSizeInfoText.setText("Board Size: " + theBoardSizeInfo + " x " + theBoardSizeInfo);
     }
 
-    public void setMazeModel(Maze theMazeModel)
-    {
-        myGamePanel = new GamePanel(theMazeModel);
-    }
-
     private void setUpLabels()
     {
         myBoardSizeInfoText = new JLabel("Board Size: ...");

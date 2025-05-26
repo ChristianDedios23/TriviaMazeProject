@@ -9,21 +9,11 @@ import static View.StartGameFrame.MY_MAZE_MODEL;
 
 public class GameSettingsWindow extends JDialog implements PropertyChangeListener
 {
-    private JPanel myQuestionsPanel;
+    private final JPanel myQuestionsPanel;
 
-    private JPanel myDifficultyPanel;
+    private final JPanel myDifficultyPanel;
 
-    private JPanel myBoardPanel;
-
-    private JCheckBox myMultipleChoiceBox;
-
-    private JCheckBox myTrueFalseCheckBox;
-
-    private JCheckBox myShortAnswerCheckBox;
-
-    private JCheckBox myBoardCheckBox;
-
-    private ButtonGroup myDifficultyButtons;
+    private final JPanel myBoardPanel;
 
     private JRadioButton myEasyButton;
 
@@ -33,14 +23,12 @@ public class GameSettingsWindow extends JDialog implements PropertyChangeListene
 
     private final JButton myStartGameButton;
 
-    private final int SETTINGS_WINDOW_WIDTH = 300;
-
-    private final int SETTINGS_WINDOW_HEIGHT = 300;
-
     GameSettingsWindow(final JFrame theParent)
     {
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         this.setTitle("Game settings:");
+        int SETTINGS_WINDOW_WIDTH = 300;
+        int SETTINGS_WINDOW_HEIGHT = 300;
         this.setSize(SETTINGS_WINDOW_WIDTH, SETTINGS_WINDOW_HEIGHT);
         this.setResizable(false);
 
@@ -59,9 +47,9 @@ public class GameSettingsWindow extends JDialog implements PropertyChangeListene
 
     private void setUpQuestionPanel()
     {
-        myMultipleChoiceBox = new JCheckBox("Multiple Choice");
-        myTrueFalseCheckBox = new JCheckBox("True or False");
-        myShortAnswerCheckBox = new JCheckBox("Short Answer");
+        JCheckBox myMultipleChoiceBox = new JCheckBox("Multiple Choice");
+        JCheckBox myTrueFalseCheckBox = new JCheckBox("True or False");
+        JCheckBox myShortAnswerCheckBox = new JCheckBox("Short Answer");
         myQuestionsPanel.setBorder(BorderFactory.createTitledBorder("Types of Questions:"));
         myQuestionsPanel.add(myMultipleChoiceBox);
         myQuestionsPanel.add(myTrueFalseCheckBox);
@@ -71,7 +59,7 @@ public class GameSettingsWindow extends JDialog implements PropertyChangeListene
 
     private void setUpDifficultyPanel()
     {
-        myDifficultyButtons = new ButtonGroup();
+        ButtonGroup myDifficultyButtons = new ButtonGroup();
         myDifficultyPanel.setBorder(BorderFactory.createTitledBorder("Difficulty:"));
         myEasyButton = new JRadioButton("Easy (5x5 board)");
         myMediumButton = new JRadioButton("Medium (6x6 board)");
@@ -89,7 +77,7 @@ public class GameSettingsWindow extends JDialog implements PropertyChangeListene
     private void setUpBoardPanel()
     {
         myBoardPanel.setBorder(BorderFactory.createTitledBorder("Other Options:"));
-        myBoardCheckBox = new JCheckBox("Fully Visible Board:");
+        JCheckBox myBoardCheckBox = new JCheckBox("Fully Visible Board:");
         myBoardPanel.add(myBoardCheckBox);
         this.add(myBoardPanel);
     }
