@@ -3,6 +3,9 @@ package View;
 import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import Model.Enum.QuestionType;
+
+import static View.StartGameFrame.MY_MAZE_MODEL;
 
 public class GameSettingsWindow extends JDialog implements PropertyChangeListener
 {
@@ -89,6 +92,28 @@ public class GameSettingsWindow extends JDialog implements PropertyChangeListene
         myBoardCheckBox = new JCheckBox("Fully Visible Board:");
         myBoardPanel.add(myBoardCheckBox);
         this.add(myBoardPanel);
+    }
+
+    private void addListeners() {
+        myQuestionsPanel.addPropertyChangeListener(this);
+        myMultipleChoiceBox.addActionListener(theEvent -> {
+            if (myMultipleChoiceBox.isSelected()) {
+                MY_MAZE_MODEL.setQuestionType(QuestionType.MULTIPLE_CHOICE);
+            }
+
+        });
+        myTrueFalseCheckBox.addActionListener(theEvent -> {
+            if (myMultipleChoiceBox.isSelected()) {
+                MY_MAZE_MODEL.setQuestionType(QuestionType.TRUE_OR_FALSE);
+            }
+
+        });
+        myShortAnswerCheckBox.addActionListener(theEvent -> {
+            if (myMultipleChoiceBox.isSelected()) {
+                MY_MAZE_MODEL.setQuestionType(QuestionType.SHORT_ANSWER);
+            }
+        });
+
     }
 
     public void makeVisible(boolean isVisible)

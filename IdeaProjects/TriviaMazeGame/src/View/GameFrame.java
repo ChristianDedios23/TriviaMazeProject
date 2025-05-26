@@ -26,7 +26,6 @@ public class GameFrame extends JFrame implements PropertyChangeListener
     {
         super();
         myGamePanel = new GamePanel(theMazeModel);
-
         setUpFrame();
         addListeners();
 

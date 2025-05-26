@@ -1,14 +1,32 @@
 package Controller;
 
 
+import Model.AbstractQuestion;
+import Model.Enum.QuestionType;
+import Model.QuestionFactory;
 import View.StartGameFrame;
+import java.util.*;
 
 public class Main
 {
     public static void main(String[] args)
     {
 
-        StartGameFrame test = new StartGameFrame();
+        //StartGameFrame frame = new StartGameFrame();
+
+         ///
+
+        //*/question factory tester
+        QuestionFactory.setupQuestions();
+        AbstractQuestion tf = QuestionFactory.getQuestion();
+        System.out.println(tf.getQuestion());
+        System.out.println(tf.getHint());
+        System.out.println(tf.getType());
+        Scanner scan = new Scanner(System.in);
+        String answer = scan.nextLine();
+        System.out.println(tf.checkAnswer(answer));
+
+         //*/
 
     }
 }

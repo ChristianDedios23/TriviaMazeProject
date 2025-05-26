@@ -3,6 +3,7 @@ package Model;
 import Model.Enum.Difficulty;
 import Model.Enum.Direction;
 import Model.Enum.DoorState;
+import Model.Enum.QuestionType;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -54,6 +55,13 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         myPlayer = new Player(theDifficulty, myPcs);
     }
 
+    /**
+     * Sets the question type given to be available during the game.
+     * @param theType the question type chosen.
+     */
+    public void setQuestionType(QuestionType theType) {
+        QuestionFactory.editMyQuestionTypeSet(theType);
+    }
 
     /**
      * Initializes myMaze with Room objects and links them
