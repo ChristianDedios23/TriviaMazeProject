@@ -34,6 +34,8 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         addListeners();
         this.setLayout(null);
         this.add(myMazePanel);
+        //see if works, it works
+        this.add(new QuestionsPanel());
         this.setPreferredSize(new Dimension(1024, 768));
 
     }

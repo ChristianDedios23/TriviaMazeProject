@@ -15,8 +15,6 @@ public class GameFrame extends JFrame implements PropertyChangeListener
 
     private JLabel myBoardSizeInfoText;
 
-    private JLabel myQuestionText;
-
     private final int WIDTH_OF_FRAME = 1024;
 
     private final int HEIGHT_OF_FRAME = 768;
@@ -46,18 +44,6 @@ public class GameFrame extends JFrame implements PropertyChangeListener
         myBoardSizeInfoText.setForeground(Color.WHITE);
         myBoardSizeInfoText.setBounds(25, 10, 300, 100);
         this.add(myBoardSizeInfoText);
-
-        JLabel questionLabel = new JLabel("Question: ");
-        questionLabel.setFont(new Font("Serif", Font.BOLD, 30));
-        questionLabel.setForeground(Color.WHITE);
-        questionLabel.setBounds(425, 0, 500, 75);
-        this.add(questionLabel);
-
-        myQuestionText = new JLabel("<html><body style='width:330px'> Hello I love to eat lots or oranges in my free time and alos blach nwed dnsd adas d   awsd wd f faw aw w</body></html>");
-        myQuestionText.setFont(new Font("Serif", Font.BOLD, 20));
-        myQuestionText.setForeground(Color.WHITE);
-        myQuestionText.setBounds(560, 10, 500, 100);
-        this.add(myQuestionText);
     }
 
     private void setUpFrame()
