@@ -1,8 +1,9 @@
 package View;
 
+import View.QuestionTypePanels.QuestionTypeContainerPanel;
+
 import javax.swing.*;
 import java.awt.*;
-import java.util.function.Predicate;
 
 public class QuestionsPanel extends JPanel
 {
@@ -13,8 +14,9 @@ public class QuestionsPanel extends JPanel
     public QuestionsPanel()
     {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBounds(550,50,300,300);
+        this.setBounds(600,50,400,300);
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+
 
         setUpComponents();
         this.add(new QuestionTypeContainerPanel());
@@ -37,6 +39,14 @@ public class QuestionsPanel extends JPanel
         myHintTextArea.setEditable(false);
         myHintTextArea.setFont(new Font("SansSerif", Font.PLAIN, 14));
         myHintTextArea.setBorder(BorderFactory.createTitledBorder("Hint:"));
+
+        myQuestionTextArea.setMinimumSize(new Dimension(this.getWidth(),50));
+        myQuestionTextArea.setPreferredSize(new Dimension(this.getWidth(), 100));
+        myQuestionTextArea.setMaximumSize(new Dimension(this.getWidth(),150));
+
+        myHintTextArea.setMinimumSize(new Dimension(this.getWidth(),50));
+        myHintTextArea.setPreferredSize(new Dimension(this.getWidth(), 100));
+        myHintTextArea.setMaximumSize(new Dimension(this.getWidth(),150));
 
         this.add(myQuestionTextArea);
         this.add(myHintTextArea);

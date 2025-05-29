@@ -18,7 +18,7 @@ public class Main
 
          ///
 
-        //*/question factory tester
+        /*question factory tester
         QuestionFactory.setupQuestions();
          QuestionFactory.editMyQuestionTypeSet(SHORT_ANSWER);
          QuestionFactory.editMyQuestionTypeSet(SHORT_ANSWER);
@@ -30,7 +30,7 @@ public class Main
         String answer = scan.nextLine();
         System.out.println(tf.checkAnswer(answer));
 
-         //*/
+         */
 
     }
 }

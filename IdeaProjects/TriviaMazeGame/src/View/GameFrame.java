@@ -87,4 +87,9 @@ public class GameFrame extends JFrame implements PropertyChangeListener
     {
 
     }
+
+    public static class ShortAnswerPanel
+    {
+
+    }
 }
