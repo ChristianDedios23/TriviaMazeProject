@@ -67,7 +67,8 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     public void setQuestionType(QuestionType theType) {
         QuestionFactory.editMyQuestionTypeSet(theType);
     }
-    private void getQuestion(){
+
+    public void getQuestion(){
        myCurrentQuestion = QuestionFactory.getQuestion();
        myPcs.firePropertyChange(PROPERTY_NEW_QUESTION, null, myCurrentQuestion);
     }
