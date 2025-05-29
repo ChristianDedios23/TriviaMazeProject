@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 
 
-class MultipleChoiceQuestion extends AbstractQuestion {
+public class MultipleChoiceQuestion extends AbstractQuestion {
     private final HashMap<Character, String> myOptionList;
 
     public MultipleChoiceQuestion(final String theQuestion, final HashMap<Character, String> theOptionList,
