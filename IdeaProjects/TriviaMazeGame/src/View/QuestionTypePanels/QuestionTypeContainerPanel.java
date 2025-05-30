@@ -17,8 +17,8 @@ public class QuestionTypeContainerPanel extends JPanel
         this.setBorder(BorderFactory.createTitledBorder("Question Types:"));
 
         myTrueFalsePanel = new TrueFalsePanel();
-        myMultipleChoicePanel = new MultipleChoicePanel();
-        myShortAnswerPanel = new ShortAnswerPanel();
+        //myMultipleChoicePanel = new MultipleChoicePanel();
+        //myShortAnswerPanel = new ShortAnswerPanel();
 
         this.add(myTrueFalsePanel);
         this.add(myMultipleChoicePanel);

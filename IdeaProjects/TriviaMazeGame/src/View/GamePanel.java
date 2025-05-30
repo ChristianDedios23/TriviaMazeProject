@@ -1,6 +1,7 @@
 package View;
 
 import Model.Enum.Direction;
+import Model.Enum.DoorState;
 import Model.Maze;
 
 import javax.swing.*;
@@ -34,7 +35,8 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         addListeners();
         this.setLayout(null);
         this.add(myMazePanel);
-        //see if works, it works
+
+        //see if works, it works!
         this.add(new QuestionsPanel());
         this.setPreferredSize(new Dimension(1024, 768));
 
@@ -83,20 +85,21 @@ public class GamePanel extends JPanel implements PropertyChangeListener
     {
         //temp, change
         myUpButton.addActionListener(theEvent -> {
-            //myMazeModel.attemptMove(Direction.UP);
-            myMazeModel.move(Direction.UP, true);
+            if(myMazeModel.checkDoorState(Direction.UP) == DoorState.QUESTION) myMazeModel.getQuestion();
+
+            //else if(myMazeModel.checkDoorState(Direction.UP) == DoorState.OPEN) myMazeModel.m
         });
 
         myDownButton.addActionListener(theEvent -> {
-            myMazeModel.move(Direction.DOWN, true);
+            if(myMazeModel.checkDoorState(Direction.DOWN) == DoorState.QUESTION) myMazeModel.getQuestion();
         });
 
         myLeftButton.addActionListener(theEvent -> {
-            myMazeModel.move(Direction.LEFT, true);
+            if(myMazeModel.checkDoorState(Direction.LEFT) == DoorState.QUESTION) myMazeModel.getQuestion();
         });
 
         myRightButton.addActionListener(theEvent -> {
-            myMazeModel.move(Direction.RIGHT, true);
+            if(myMazeModel.checkDoorState(Direction.RIGHT) == DoorState.QUESTION) myMazeModel.getQuestion();
         });
     }
 
