@@ -35,7 +35,10 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
 
     /** Default starting room */
     private final int STARTING_POSITION = 0;
+    /** Player State */
     private final Player myPlayer;
+    /** Current state of desired direction*/
+    private Direction myDesiredDirection;
     /** The length dimension for the maze */
     private int myMazeLength;
     /** The room of the exit */
@@ -69,8 +72,8 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     }
 
     public void getQuestion(){
-       myCurrentQuestion = QuestionFactory.getQuestion();
-       myPcs.firePropertyChange(PROPERTY_NEW_QUESTION, null, myCurrentQuestion);
+        myCurrentQuestion = QuestionFactory.getQuestion();
+        myPcs.firePropertyChange(PROPERTY_NEW_QUESTION, null, myCurrentQuestion);
     }
     /**
      * Initializes myMaze with Room objects and links them
@@ -182,9 +185,11 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     public DoorState checkDoorState(final Direction theDirection){
         int room = canMove(myCurrentRoom, theDirection); 
         if(room > 0){
+            myDesiredDirection = theDirection;
             Door frontSide = getDoor(myCurrentRoom, theDirection);
             Door backSide = getDoor(room, theDirection.getOpposite());
-            if(frontSide.getDoorState() != backSide.getDoorState()){
+            DoorState frontDoorState = frontSide.getDoorState();
+            if(frontDoorState != backSide.getDoorState()){
                 throw new IllegalStateException(
                     "Doors should have the same state: Front Door: " + frontSide + ", Back Door: " + backSide);
             }
@@ -195,24 +200,23 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     /**
      * Moves to the next room based on the given direction
      * and if the user answered the question correctly or not
-     * @param theDirection the desired direction to move 
      * @param theCorrectAnswer true if the user answered the question correcly, else false
      * @return true if the move was valid, false if else 
      */
-    public boolean move(final Direction theDirection, final boolean theCorrectAnswer){
-        int room = canMove(myCurrentRoom, theDirection);
+    public boolean move(final boolean theCorrectAnswer){
+        int room = canMove(myCurrentRoom, myDesiredDirection);
         if(room < 0){
             return false;
         }
-        Door frontSide = getDoor(myCurrentRoom, theDirection);
-        Door backSide = getDoor(room, theDirection.getOpposite());
+        Door frontSide = getDoor(myCurrentRoom, myDesiredDirection);
+        Door backSide = getDoor(room, myDesiredDirection.getOpposite());
 
         if(!theCorrectAnswer){
             frontSide.lockDoor();
             backSide.lockDoor();
             availablePathToExit();
             myPlayer.resetStreak();
-            myPcs.firePropertyChange(PROPERTY_QUESTION_WRONG, theDirection, theDirection);
+            myPcs.firePropertyChange(PROPERTY_QUESTION_WRONG, myDesiredDirection, myDesiredDirection);
             return false;
         }
 
@@ -223,12 +227,12 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
             backSide.openDoor();
 
             //Change new value
-            myPcs.firePropertyChange(PROPERTY_QUESTION_RIGHT, theDirection, theDirection);
+            myPcs.firePropertyChange(PROPERTY_QUESTION_RIGHT, myDesiredDirection, myDesiredDirection);
             setCurrentRoom(room);
             myPlayer.addStreak();
             return true;
         }else if (frontSide.getDoorState() == DoorState.OPEN || backSide.getDoorState() == DoorState.OPEN){
-            myPcs.firePropertyChange(PROPERTY_QUESTION_RIGHT, theDirection, theDirection);
+            myPcs.firePropertyChange(PROPERTY_QUESTION_RIGHT, myDesiredDirection, myDesiredDirection);
             setCurrentRoom(room);
             myPlayer.addStreak();
             return true;
