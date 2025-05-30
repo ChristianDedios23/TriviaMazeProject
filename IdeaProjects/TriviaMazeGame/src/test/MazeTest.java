@@ -180,7 +180,7 @@ class MazeTest {
     @Test
     void testMoveCorrect(){
         Maze maze = MazeFactory.createMaze(Difficulty.EASY);
-        boolean result = maze.move(Direction.RIGHT, true);
+        boolean result = maze.move( true);
         assertTrue(result);
         assertEquals(1, maze.getMyCurrentRoom());
         Door front = maze.getDoor(0, Direction.RIGHT);
@@ -192,7 +192,7 @@ class MazeTest {
     @Test
     void testMoveIncorrect(){
         Maze maze = MazeFactory.createMaze(Difficulty.EASY);
-        boolean result = maze.move(Direction.RIGHT, false);
+        boolean result = maze.move( false);
         assertFalse(result);
         assertEquals(0, maze.getMyCurrentRoom());
         Door front = maze.getDoor(0, Direction.RIGHT);
@@ -204,7 +204,7 @@ class MazeTest {
     @Test
     void testMoveInvalidRoom(){
         Maze maze = MazeFactory.createMaze(Difficulty.EASY);
-        boolean result = maze.move(Direction.LEFT, false);
+        boolean result = maze.move(false);
         assertFalse(result);
 
     }
@@ -215,8 +215,8 @@ class MazeTest {
     void testCheckIfExitCurrentRoom(){
         Maze maze = MazeFactory.createMaze(Difficulty.EASY);
         for(int i = 0; i< 5; i++){
-            maze.move(Direction.RIGHT, true);
-            maze.move(Direction.DOWN, true);
+            maze.move( true);
+            maze.move( true);
         }
         assertTrue(maze.checkIfExit(24));
     }
@@ -235,8 +235,8 @@ class MazeTest {
     @Test
     void testAvailablePathToExitInvalid(){
         Maze maze = MazeFactory.createMaze(Difficulty.EASY);
-        maze.move(Direction.RIGHT, false);
-        maze.move(Direction.DOWN, false);
+        maze.move( false);
+        maze.move( false);
         assertFalse(maze.availablePathToExit());
     }
     /**
