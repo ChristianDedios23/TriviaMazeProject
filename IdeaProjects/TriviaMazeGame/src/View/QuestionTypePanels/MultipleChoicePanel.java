@@ -1,6 +1,7 @@
 package View.QuestionTypePanels;
 
-import Model.AbstractQuestion;
+
+import Model.Enum.Direction;
 import Model.Enum.QuestionType;
 import Model.MultipleChoiceQuestion;
 import View.StartGameFrame;
@@ -9,11 +10,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashMap;
 
 
 public class MultipleChoicePanel extends JPanel implements PropertyChangeListener
 {
-    private AbstractQuestion myCurrentQuestion;
+    private MultipleChoiceQuestion myCurrentQuestion;
 
     private final JButton myAChoice;
     private final JButton myBChoice;
@@ -23,6 +25,7 @@ public class MultipleChoicePanel extends JPanel implements PropertyChangeListene
     public MultipleChoicePanel()
     {
         StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
+        this.setLayout(new GridLayout(2,2));
         myAChoice = new JButton("A");
         myBChoice = new JButton("B");
         myCChoice = new JButton("C");
@@ -31,7 +34,6 @@ public class MultipleChoicePanel extends JPanel implements PropertyChangeListene
         addListeners();
     }
     private void layoutComponents() {
-        this.setLayout(new GridLayout());
         this.add(myAChoice);
         this.add(myBChoice);
         this.add(myCChoice);
@@ -39,16 +41,16 @@ public class MultipleChoicePanel extends JPanel implements PropertyChangeListene
     }
     private void addListeners(){
         myAChoice.addActionListener(theEvent ->{
-            myCurrentQuestion.checkAnswer("A");
+            StartGameFrame.MY_MAZE_MODEL.move(myCurrentQuestion.checkAnswer("A"));
         });
         myBChoice.addActionListener(theEvent ->{
-            myCurrentQuestion.checkAnswer("B");
+            StartGameFrame.MY_MAZE_MODEL.move(myCurrentQuestion.checkAnswer("B"));
         });
         myCChoice.addActionListener(theEvent ->{
-            myCurrentQuestion.checkAnswer("C");
+            StartGameFrame.MY_MAZE_MODEL.move(myCurrentQuestion.checkAnswer("C"));
         });
         myDChoice.addActionListener(theEvent ->{
-            myCurrentQuestion.checkAnswer("D");
+            StartGameFrame.MY_MAZE_MODEL.move(myCurrentQuestion.checkAnswer("D"));
         });
     }
 
@@ -63,10 +65,29 @@ public class MultipleChoicePanel extends JPanel implements PropertyChangeListene
     {
         if(evt.getPropertyName().equals("newQuestion"))
         {
-            AbstractQuestion questionObject = ((AbstractQuestion)evt.getNewValue());
+            MultipleChoiceQuestion questionObject = ((MultipleChoiceQuestion)evt.getNewValue());
             if(questionObject.getType() == QuestionType.MULTIPLE_CHOICE)
             {
                 myCurrentQuestion = questionObject;
+                HashMap<Character, String> optionList =  myCurrentQuestion.getOptionList();
+                for(Character option: optionList.keySet()){
+                    switch (option){
+                        case 'A':
+                            myAChoice.setText(optionList.get(option));
+                            break;
+                        case 'B':
+                            myBChoice.setText(optionList.get(option));
+                            break;
+                        case 'C':
+                            myCChoice.setText(optionList.get(option));
+                            break;
+                        case 'D':
+                            myDChoice.setText(optionList.get(option));
+                            break;
+                        default:
+                            break;
+                }
+                }
             }
         }
     }

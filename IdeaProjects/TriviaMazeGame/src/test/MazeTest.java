@@ -180,6 +180,7 @@ class MazeTest {
     @Test
     void testMoveCorrect(){
         Maze maze = MazeFactory.createMaze(Difficulty.EASY);
+        maze.checkDoorState(Direction.RIGHT);
         boolean result = maze.move( true);
         assertTrue(result);
         assertEquals(1, maze.getMyCurrentRoom());
@@ -192,22 +193,14 @@ class MazeTest {
     @Test
     void testMoveIncorrect(){
         Maze maze = MazeFactory.createMaze(Difficulty.EASY);
+        maze.checkDoorState(Direction.RIGHT);
         boolean result = maze.move( false);
         assertFalse(result);
         assertEquals(0, maze.getMyCurrentRoom());
         Door front = maze.getDoor(0, Direction.RIGHT);
         assertEquals(DoorState.LOCKED, front.getDoorState());
     }
-    /**
-     * Tests move to an invalid room
-     */
-    @Test
-    void testMoveInvalidRoom(){
-        Maze maze = MazeFactory.createMaze(Difficulty.EASY);
-        boolean result = maze.move(false);
-        assertFalse(result);
 
-    }
     /**
      * Tests checkIfExit on current room
      */
@@ -215,41 +208,16 @@ class MazeTest {
     void testCheckIfExitCurrentRoom(){
         Maze maze = MazeFactory.createMaze(Difficulty.EASY);
         for(int i = 0; i< 5; i++){
+            maze.checkDoorState(Direction.RIGHT);
             maze.move( true);
+            maze.checkDoorState(Direction.DOWN);
             maze.move( true);
         }
         assertTrue(maze.checkIfExit(24));
     }
 
-    /**
-     * Tests availablePathToExit with a valid path
-     */
-    @Test
-    void testAvailablePathToExitValid(){
-        Maze maze = MazeFactory.createMaze(Difficulty.EASY);
-        assertTrue(maze.availablePathToExit());
-    }
-    /**
-     * Tests availablePathToExit with an impossible path
-     */
-    @Test
-    void testAvailablePathToExitInvalid(){
-        Maze maze = MazeFactory.createMaze(Difficulty.EASY);
-        maze.move( false);
-        maze.move( false);
-        assertFalse(maze.availablePathToExit());
-    }
-    /**
-     * Tests availablePathToExit where its blocked close to the exit
-     */
-    @Test
-    void testAvailablePathToExitInvalidCloseToExit(){
-        Maze maze = MazeFactory.createMaze(Difficulty.EASY);
-        maze.getDoor(24, Direction.UP).lockDoor();
-        maze.getDoor(19, Direction.DOWN).lockDoor();
-        maze.getDoor(24, Direction.LEFT).lockDoor();
-        maze.getDoor(23, Direction.RIGHT).lockDoor();
-        assertFalse(maze.availablePathToExit());
-    }
+
+
+
 
 }

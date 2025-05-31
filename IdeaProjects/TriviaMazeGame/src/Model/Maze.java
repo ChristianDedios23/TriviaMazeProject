@@ -300,7 +300,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
      * Checks if there is a valid path to the exit
      * using BFS
      */
-    public boolean availablePathToExit(){
+    private void availablePathToExit(){
      
         Set<Integer> visitedRooms = new HashSet<>();
         Queue<Integer> queue = new LinkedList<>();
@@ -315,7 +315,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
                     int nextRoom = canMove(room, direction);
                     if(nextRoom > 0){
                         if(checkIfExit(nextRoom)){
-                            return true;
+                            return;
                         }
                         if(!visitedRooms.contains(nextRoom)){
                             visitedRooms.add(nextRoom);
@@ -326,7 +326,6 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
             }
         }
         myPcs.firePropertyChange(PROPERTY_GAMEOVER, null, true);
-        return false;
     }
     /**
      * Gets the door associated with the room and direction
