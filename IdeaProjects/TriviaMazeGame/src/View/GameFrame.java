@@ -20,10 +20,10 @@ public class GameFrame extends JFrame implements PropertyChangeListener
     private final int HEIGHT_OF_FRAME = 768;
 
     //fix this somehow, logically things appear in the correct order
-    GameFrame(Maze theMazeModel)
+    GameFrame()
     {
         super();
-        myGamePanel = new GamePanel(theMazeModel);
+        myGamePanel = new GamePanel();
         setUpFrame();
         addListeners();
 

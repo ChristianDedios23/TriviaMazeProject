@@ -21,22 +21,19 @@ public class MazePanel extends JPanel implements PropertyChangeListener
 
     private int myCurrentRoom;
 
-    private Maze myMazeModel;
-
     private int myMazeSize;
 
     private int myRoomLength;
 
-    MazePanel(Maze theMazeModel)
+    MazePanel()
     {
         super();
         this.setLayout(null);
         this.setOpaque(false);
-        theMazeModel.addPropertyChangeListener(this);
+        StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
 
-        myMazeModel = theMazeModel;
         myRoomPanelMap = new HashMap<>();
-        myMazeSize = myMazeModel.getMyMazeLength();
+        myMazeSize = StartGameFrame.MY_MAZE_MODEL.getMyMazeLength();
         myRoomLength = myMazeSize * 75;
         initializeRoomPanelMap();
         myCurrentRoom = 0;
@@ -60,7 +57,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener
     {
         for (int i = 0; i < myMazeSize * myMazeSize; i++)
         {
-            RoomPanel room = new RoomPanel(myMazeModel.getRoom(i), i % myMazeSize, i / myMazeSize);
+            RoomPanel room = new RoomPanel(StartGameFrame.MY_MAZE_MODEL.getRoom(i), i % myMazeSize, i / myMazeSize);
             this.add(room);
             myRoomPanelMap.put(i, room);
         }

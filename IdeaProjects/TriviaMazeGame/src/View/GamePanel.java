@@ -2,7 +2,6 @@ package View;
 
 import Model.Enum.Direction;
 import Model.Enum.DoorState;
-import Model.Maze;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,8 +12,6 @@ import java.beans.PropertyChangeListener;
 //To-D0 - Make it so when the player cant move in certain direction, deactivate button or give error to user
 public class GamePanel extends JPanel implements PropertyChangeListener
 {
-    private MazePanel myMazePanel;
-
     private JButton myUpButton;
 
     private JButton myDownButton;
@@ -23,29 +20,28 @@ public class GamePanel extends JPanel implements PropertyChangeListener
 
     private JButton myRightButton;
 
-    private JPanel buttonLocation;
+    private JPanel myButtonLocation;
 
-    private Maze myMazeModel;
-
-    GamePanel(Maze theMazeModel)
+    GamePanel()
     {
-        myMazeModel = theMazeModel;
-        myMazePanel = new MazePanel(myMazeModel);
+        MazePanel myMazePanel = new MazePanel();
         setUpButtons();
         addListeners();
         this.setLayout(null);
         this.add(myMazePanel);
 
         //see if works, it works!
-        this.add(new QuestionsPanel());
+        QuestionsPanel myQuestionPanel = new QuestionsPanel();
+        StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(myQuestionPanel);
+        this.add(myQuestionPanel);
         this.setPreferredSize(new Dimension(1024, 768));
 
     }
 
     private void setUpButtons()
     {
-        buttonLocation = new JPanel(new GridBagLayout());
-        buttonLocation.setBackground(Color.RED);
+        myButtonLocation = new JPanel(new GridBagLayout());
+        myButtonLocation.setBackground(Color.RED);
 
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -64,42 +60,48 @@ public class GamePanel extends JPanel implements PropertyChangeListener
 
         gbc.gridx = 1;
         gbc.gridy = 0;
-        buttonLocation.add(myUpButton, gbc);
+        myButtonLocation.add(myUpButton, gbc);
 
         gbc.gridy = 2;
-        buttonLocation.add(myDownButton, gbc);
+        myButtonLocation.add(myDownButton, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-        buttonLocation.add(myLeftButton, gbc);
+        myButtonLocation.add(myLeftButton, gbc);
 
         gbc.gridx = 2;
-        buttonLocation.add(myRightButton, gbc);
+        myButtonLocation.add(myRightButton, gbc);
 
-        buttonLocation.setBounds(660, 450, 250 , 100);
+        myButtonLocation.setBounds(660, 450, 250 , 100);
 
-        this.add(buttonLocation);
+        this.add(myButtonLocation);
     }
 
     private void addListeners()
     {
         //temp, change
         myUpButton.addActionListener(theEvent -> {
-            if(myMazeModel.checkDoorState(Direction.UP) == DoorState.QUESTION) myMazeModel.getQuestion();
+            if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.UP) == DoorState.QUESTION) StartGameFrame.MY_MAZE_MODEL.getQuestion();
 
-            //else if(myMazeModel.checkDoorState(Direction.UP) == DoorState.OPEN) myMazeModel.m
+            else if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.UP) == DoorState.OPEN) StartGameFrame.MY_MAZE_MODEL.move(true);
         });
 
         myDownButton.addActionListener(theEvent -> {
-            if(myMazeModel.checkDoorState(Direction.DOWN) == DoorState.QUESTION) myMazeModel.getQuestion();
+            if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.DOWN) == DoorState.QUESTION) StartGameFrame.MY_MAZE_MODEL.getQuestion();
+
+            else if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.DOWN) == DoorState.OPEN) StartGameFrame.MY_MAZE_MODEL.move(true);
         });
 
         myLeftButton.addActionListener(theEvent -> {
-            if(myMazeModel.checkDoorState(Direction.LEFT) == DoorState.QUESTION) myMazeModel.getQuestion();
+            if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.LEFT) == DoorState.QUESTION) StartGameFrame.MY_MAZE_MODEL.getQuestion();
+
+            else if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.LEFT) == DoorState.OPEN) StartGameFrame.MY_MAZE_MODEL.move(true);
         });
 
         myRightButton.addActionListener(theEvent -> {
-            if(myMazeModel.checkDoorState(Direction.RIGHT) == DoorState.QUESTION) myMazeModel.getQuestion();
+            if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.RIGHT) == DoorState.QUESTION) StartGameFrame.MY_MAZE_MODEL.getQuestion();
+
+            else if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.RIGHT) == DoorState.OPEN) StartGameFrame.MY_MAZE_MODEL.move(true);
         });
     }
 

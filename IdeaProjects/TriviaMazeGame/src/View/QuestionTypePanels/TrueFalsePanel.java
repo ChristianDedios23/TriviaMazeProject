@@ -1,5 +1,7 @@
 package View.QuestionTypePanels;
 
+import View.StartGameFrame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -16,8 +18,6 @@ public class TrueFalsePanel extends JPanel
         this.setLayout(new GridLayout());
         setUpComponent();
         setUpListeners();
-        //set invisible later
-        //this.setVisible(false);
     }
 
     private void setUpComponent()
@@ -32,7 +32,7 @@ public class TrueFalsePanel extends JPanel
     private void setUpListeners()
     {
         myTrueButton.addActionListener(theEvent -> {
-
+            //StartGameFrame.MY_MAZE_MODEL.move()
         });
 
         myFalseButton.addActionListener(theEvent -> {

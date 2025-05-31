@@ -133,7 +133,7 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
                 MY_MAZE_MODEL.setQuestionType(QuestionType.TRUE_OR_FALSE);
             }
 
-            myGameFrame = new GameFrame(MY_MAZE_MODEL);
+            myGameFrame = new GameFrame();
             myGameFrame.setJMenuBar(new MenuBar(myGameFrame));
             myGameFrame.setLocationRelativeTo(this);
             myGameFrame.setBoardSizeInfo(mazeSize);
