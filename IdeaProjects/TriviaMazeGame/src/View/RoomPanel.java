@@ -14,7 +14,9 @@ import java.io.IOException;
 
 public class RoomPanel extends JPanel
 {
-    private Room myRoom;
+    private final Room myRoom;
+
+    private boolean myIsLocked;
 
     private boolean myIsCurrentRoom;
 
@@ -39,6 +41,8 @@ public class RoomPanel extends JPanel
             System.out.println("Image was not found");
         }
     }
+
+
 
     public void setMyIsCurrentRoom(final boolean theCurrentRoom)
     {

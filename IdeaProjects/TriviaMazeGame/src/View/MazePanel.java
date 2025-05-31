@@ -84,13 +84,31 @@ public class MazePanel extends JPanel implements PropertyChangeListener
     @Override
     public void propertyChange(PropertyChangeEvent evt)
     {
-        if (evt.getPropertyName().equals("playerMove"))
+        if(evt.getPropertyName().equals("playerMove"))
         {
             myCurrentRoom = (int)evt.getNewValue();
             int myOldRoom = (int)evt.getOldValue();
             System.out.println("Reached player move, current room:  " + myCurrentRoom);
             myRoomPanelMap.get(myOldRoom).setMyIsCurrentRoom(false);
             myRoomPanelMap.get(myCurrentRoom).setMyIsCurrentRoom(true);
+        }
+
+        else if(evt.getPropertyName().equals("questionWrong"))
+        {
+            myRoomPanelMap.get(myCurrentRoom).setMyIsCurrentRoom(true);
+            JOptionPane.showMessageDialog(this, "Get your money up not your funny up", "Incorrect Answer", JOptionPane.ERROR_MESSAGE);
+        }
+
+        else if(evt.getPropertyName().equals("questionRight"))
+        {
+            JOptionPane.showMessageDialog(this, "Congrats! You got it correct!");
+        }
+
+        //maybe give restart button but for now close game button
+        else if(evt.getPropertyName().equals("gameOver"))
+        {
+            JOptionPane.showMessageDialog(this, "Looks like there is no possible path to the exit, you lose :(");
+            System.exit(0);
         }
     }
 }

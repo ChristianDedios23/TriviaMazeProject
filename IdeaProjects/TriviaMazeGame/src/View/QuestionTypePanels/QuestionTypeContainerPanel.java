@@ -39,14 +39,22 @@ public class QuestionTypeContainerPanel extends JPanel
 
     public void setQuestionType(QuestionType type)
     {
-        clearComponents();
         switch(type)
         {
-            case SHORT_ANSWER -> this.add(myShortAnswerPanel);
+            case SHORT_ANSWER -> {
+                clearComponents();
+                this.add(myShortAnswerPanel);
+            }
 
-            case MULTIPLE_CHOICE -> this.add(myMultipleChoicePanel);//maybe add more since we have to adjust for the questions in the buttons
+            case MULTIPLE_CHOICE -> {
+                clearComponents();
+                this.add(myMultipleChoicePanel);//maybe add more since we have to adjust for the questions in the buttons
+            }
 
-            case TRUE_OR_FALSE -> this.add(myTrueFalsePanel);
+            case TRUE_OR_FALSE -> {
+                clearComponents();
+                this.add(myTrueFalsePanel);
+            }
         }
         //case switch statements to add type of question
         //if certain type add it

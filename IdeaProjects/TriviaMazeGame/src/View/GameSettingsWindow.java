@@ -7,7 +7,7 @@ import Model.Enum.QuestionType;
 
 import static View.StartGameFrame.MY_MAZE_MODEL;
 
-public class GameSettingsWindow extends JDialog implements PropertyChangeListener
+public class GameSettingsWindow extends JDialog
 {
     private final JPanel myQuestionsPanel;
 
@@ -89,28 +89,6 @@ public class GameSettingsWindow extends JDialog implements PropertyChangeListene
         this.add(myBoardPanel);
     }
 
-    private void addListeners() {
-        myQuestionsPanel.addPropertyChangeListener(this);
-        myMultipleChoiceBox.addActionListener(theEvent -> {
-            if (myMultipleChoiceBox.isSelected()) {
-                MY_MAZE_MODEL.setQuestionType(QuestionType.MULTIPLE_CHOICE);
-            }
-
-        });
-        myTrueFalseCheckBox.addActionListener(theEvent -> {
-            if (myMultipleChoiceBox.isSelected()) {
-                MY_MAZE_MODEL.setQuestionType(QuestionType.TRUE_OR_FALSE);
-            }
-
-        });
-        myShortAnswerCheckBox.addActionListener(theEvent -> {
-            if (myMultipleChoiceBox.isSelected()) {
-                MY_MAZE_MODEL.setQuestionType(QuestionType.SHORT_ANSWER);
-            }
-        });
-
-    }
-
     public void makeVisible(boolean isVisible)
     {
         this.setVisible(isVisible);
@@ -130,19 +108,4 @@ public class GameSettingsWindow extends JDialog implements PropertyChangeListene
     public JCheckBox getTrueFalseCheckBox() {return myTrueFalseCheckBox;}
 
     public JCheckBox getShortAnswerCheckBox(){return myShortAnswerCheckBox;}
-
-
-
-
-    /**
-     * This method gets called when a bound property is changed.
-     *
-     * @param evt A PropertyChangeEvent object describing the event source
-     *            and the property that has changed.
-     */
-    @Override
-    public void propertyChange(PropertyChangeEvent evt)
-    {
-
-    }
 }

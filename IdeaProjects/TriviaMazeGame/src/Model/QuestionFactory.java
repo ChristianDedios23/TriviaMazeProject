@@ -64,8 +64,6 @@ public class QuestionFactory {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        myQuestionTypeSet.add(TRUE_OR_FALSE);
-
     }
     public static AbstractQuestion getQuestion2() {
         Random rand = new Random();
@@ -99,7 +97,7 @@ public class QuestionFactory {
 }
 
 
-
+    //Wrong, when only True or false is selected error,
     public static AbstractQuestion getQuestion() {
         Random rand = new Random();
         String type = myQuestionTypeSet.toArray()[rand.nextInt(myQuestionTypeSet.size())].toString();
@@ -149,6 +147,7 @@ public class QuestionFactory {
         } else {
             myQuestionTypeSet.add(questionType);
         }
+
         shuffleList(questionType);
     }
     private static void shuffleList(final QuestionType questionType) {

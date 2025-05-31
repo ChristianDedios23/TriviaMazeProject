@@ -22,6 +22,7 @@ public abstract class AbstractQuestion {
     public String getHint(){
         return myHint;
     }
+    public String getMyAnswer() {return myAnswer;}
     public abstract QuestionType getType();
     public boolean checkAnswer(final String theAnswer){
 
