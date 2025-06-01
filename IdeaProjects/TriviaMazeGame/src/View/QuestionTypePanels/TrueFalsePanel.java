@@ -20,7 +20,6 @@ public class TrueFalsePanel extends JPanel implements PropertyChangeListener
     TrueFalsePanel()
     {
         StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
-        this.setBorder(BorderFactory.createTitledBorder("True or False Panel:"));
         this.setLayout(new GridLayout());
         setUpComponent();
         setUpListeners();

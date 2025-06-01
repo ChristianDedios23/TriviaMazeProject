@@ -59,6 +59,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         myExit = (int) Math.pow(myMazeLength, 2) - 1;
         myPcs = new PropertyChangeSupport(this);
         myPlayer = new Player(theDifficulty, myPcs);
+        //use player methods inside this class and catch property changfe evenets
         myCurrentQuestion = null;
         QuestionFactory.setupQuestions();
     }
@@ -352,6 +353,11 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         }
 
         return myMaze.get(theRoom);
+    }
+
+    public Player getPlayer()
+    {
+        return myPlayer;
     }
 
     /** This method takes in a PropertyChangeListener object and adds it

@@ -69,7 +69,7 @@ public class Player implements Serializable {
      * Uses a hint for a question
      */
     public void useHint(){
-        if(myHints -1 < 0){
+        if(myHints <= 0){
             throw new IllegalArgumentException("Can't use a non-existent hint");
         }
         myHints--;

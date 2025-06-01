@@ -31,9 +31,8 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         this.setLayout(null);
         this.add(myMazePanel);
 
-        //see if works, it works!
+
         QuestionsPanel myQuestionPanel = new QuestionsPanel();
-        //StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(myQuestionPanel);
         this.add(myQuestionPanel);
         this.setPreferredSize(new Dimension(1024, 768));
 
@@ -85,24 +84,32 @@ public class GamePanel extends JPanel implements PropertyChangeListener
             if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.UP) == DoorState.QUESTION) StartGameFrame.MY_MAZE_MODEL.getQuestion();
 
             else if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.UP) == DoorState.OPEN) StartGameFrame.MY_MAZE_MODEL.move(true);
+
+            else{ JOptionPane.showMessageDialog(this, "You can not access this area, try another direction!");}
         });
 
         myDownButton.addActionListener(theEvent -> {
             if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.DOWN) == DoorState.QUESTION) StartGameFrame.MY_MAZE_MODEL.getQuestion();
 
             else if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.DOWN) == DoorState.OPEN) StartGameFrame.MY_MAZE_MODEL.move(true);
+
+            else{ JOptionPane.showMessageDialog(this, "You can not access this area, try another direction!");}
         });
 
         myLeftButton.addActionListener(theEvent -> {
             if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.LEFT) == DoorState.QUESTION) StartGameFrame.MY_MAZE_MODEL.getQuestion();
 
             else if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.LEFT) == DoorState.OPEN) StartGameFrame.MY_MAZE_MODEL.move(true);
+
+            else{ JOptionPane.showMessageDialog(this, "You can not access this area, try another direction!");}
         });
 
         myRightButton.addActionListener(theEvent -> {
             if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.RIGHT) == DoorState.QUESTION) StartGameFrame.MY_MAZE_MODEL.getQuestion();
 
             else if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.RIGHT) == DoorState.OPEN) StartGameFrame.MY_MAZE_MODEL.move(true);
+
+            else{ JOptionPane.showMessageDialog(this, "You can not access this area, try another direction!");}
         });
     }
 

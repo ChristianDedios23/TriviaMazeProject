@@ -1,6 +1,7 @@
 package View;
 
 import Model.AbstractQuestion;
+import Model.Player;
 import View.QuestionTypePanels.QuestionTypeContainerPanel;
 
 import javax.swing.*;
@@ -12,11 +13,17 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
 {
     private JTextArea myQuestionTextArea;
 
+    private Player myPlayer;
+
     private QuestionTypeContainerPanel myQuestionContainer;
 
     private AbstractQuestion myQuestionObject;
 
     private JButton myReceiveHintButton;
+
+    private JLabel myHintsAvailableLabel;
+
+    private JLabel myStreakLabel;
 
     private JTextArea myHintTextArea;
 
@@ -35,6 +42,10 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
 
     private void setUpComponents()
     {
+        myPlayer = StartGameFrame.MY_MAZE_MODEL.getPlayer();
+
+        myStreakLabel = new JLabel("Current Streak: 0");
+
         myQuestionTextArea = new JTextArea(3,10);
         myQuestionTextArea.setLineWrap(true);
         myQuestionTextArea.setWrapStyleWord(true);
@@ -65,12 +76,25 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
         myReceiveHintButton = new JButton("Receive Hint");
         myReceiveHintButton.setEnabled(false);
         myReceiveHintButton.addActionListener(theEvent -> {
+
             myHintTextArea.setText(myQuestionObject.getHint());
+            myReceiveHintButton.setEnabled(false);
+            try {
+                myPlayer.useHint();
+            }
+            catch(IllegalArgumentException e)
+            {
+                myReceiveHintButton.setEnabled(false);
+            }
         });
+
+        myHintsAvailableLabel = new JLabel("Available Hints: " + myPlayer.getHints());
 
         this.add(myQuestionTextArea);
         this.add(myHintTextArea);
+        this.add(myHintsAvailableLabel);
         this.add(myReceiveHintButton);
+        this.add(myStreakLabel);
     }
 
     /**
@@ -87,7 +111,7 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
             myQuestionObject = (AbstractQuestion)evt.getNewValue();
             myQuestionContainer.setQuestionType(myQuestionObject.getType());
             myQuestionTextArea.setText(myQuestionObject.getQuestion());
-            myReceiveHintButton.setEnabled(true);
+            if(myPlayer.getHints() > 0) myReceiveHintButton.setEnabled(true);
         }
 
         else if(evt.getPropertyName().equals("questionWrong") || evt.getPropertyName().equals("questionRight"))
@@ -98,5 +122,14 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
             myQuestionContainer.clearComponents();
         }
 
+        else if(evt.getPropertyName().equals("useHint") || evt.getPropertyName().equals("addHint"))
+        {
+            myHintsAvailableLabel.setText("Available Hints: " + evt.getNewValue());
+        }
+
+        else if(evt.getPropertyName().equals("addStreak") || evt.getPropertyName().equals("resetStreak"))
+        {
+            myStreakLabel.setText("Current Streak: " + evt.getNewValue());
+        }
     }
 }
