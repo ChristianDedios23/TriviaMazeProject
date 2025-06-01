@@ -20,7 +20,6 @@ public class TrueFalsePanel extends JPanel implements PropertyChangeListener
     TrueFalsePanel()
     {
         StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
-        this.setBorder(BorderFactory.createTitledBorder("True or False Panel:"));
         this.setLayout(new GridLayout());
         setUpComponent();
         setUpListeners();
@@ -60,6 +59,7 @@ public class TrueFalsePanel extends JPanel implements PropertyChangeListener
             AbstractQuestion questionObject = ((AbstractQuestion)evt.getNewValue());
             if(questionObject.getType() == QuestionType.TRUE_OR_FALSE)
             {
+
                 myCurrentQuestion = questionObject;
             }
         }
