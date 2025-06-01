@@ -3,8 +3,14 @@ package Model;
 
 import Model.Enum.QuestionType;
 
+import java.io.Serial;
+import java.io.Serializable;
 
-public abstract class AbstractQuestion {
+
+public abstract class AbstractQuestion implements Serializable {
+    /** UID for Serialization*/
+    @Serial
+    private static final long serialVersionUID = 99L;
     protected String myQuestion;
     protected String myAnswer;
     protected String myHint;
