@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class MazePanel extends JPanel implements PropertyChangeListener
 {
-    private BufferedImage myMazeImage;
+    private transient BufferedImage myMazeImage;
 
     private HashMap<Integer, RoomPanel> myRoomPanelMap;
 

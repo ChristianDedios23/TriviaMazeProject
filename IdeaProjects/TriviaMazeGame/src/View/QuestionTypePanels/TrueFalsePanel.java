@@ -59,6 +59,7 @@ public class TrueFalsePanel extends JPanel implements PropertyChangeListener
             AbstractQuestion questionObject = ((AbstractQuestion)evt.getNewValue());
             if(questionObject.getType() == QuestionType.TRUE_OR_FALSE)
             {
+
                 myCurrentQuestion = questionObject;
             }
         }

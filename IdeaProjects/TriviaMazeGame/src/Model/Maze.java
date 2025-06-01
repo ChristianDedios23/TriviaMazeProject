@@ -47,7 +47,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     private AbstractQuestion myCurrentQuestion;
 
     /** PCS to signal to view */
-    private final PropertyChangeSupport myPcs;
+    private final transient PropertyChangeSupport myPcs;
     /**
      * Constructs a maze object based on the given length
      * @param theLength, the desired length of the maze

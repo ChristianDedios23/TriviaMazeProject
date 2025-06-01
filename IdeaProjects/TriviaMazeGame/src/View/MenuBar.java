@@ -3,6 +3,9 @@ package View;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class MenuBar extends JMenuBar
 {
@@ -85,6 +88,28 @@ public class MenuBar extends JMenuBar
         });
 
         mySaveGameItem.addActionListener(theEvent -> {
+            try
+            {
+                //Saving of object in a file
+                FileOutputStream file = new FileOutputStream("savedGame.ser");
+                ObjectOutputStream out = new ObjectOutputStream(file);
+
+                // Method for serialization of object
+                out.writeObject(StartGameFrame.MY_MAZE_MODEL);
+
+                out.close();
+                file.close();
+
+                System.out.println("HAS BEEN SERIALIZED");
+
+            }
+
+            catch(IOException ex)
+            {
+                System.err.println(ex);
+                System.out.println("ERROR WHILE SAVING");
+            }
+
 
         });
 

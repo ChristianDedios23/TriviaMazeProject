@@ -20,7 +20,7 @@ public class RoomPanel extends JPanel
 
     private boolean myIsCurrentRoom;
 
-    private BufferedImage myBunnyImage;
+    private transient BufferedImage myBunnyImage;
 
     private final int myRoomLength = 75;
 

@@ -2,7 +2,7 @@ package Model;
 
 import Model.Enum.QuestionType;
 
-class ShortAnswerQuestion extends AbstractQuestion {
+public class ShortAnswerQuestion extends AbstractQuestion {
 
 
 
