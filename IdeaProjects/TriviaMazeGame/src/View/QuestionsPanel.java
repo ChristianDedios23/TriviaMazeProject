@@ -22,6 +22,7 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
 
     public QuestionsPanel()
     {
+        StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBounds(600,50,400,300);
         this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
@@ -34,7 +35,7 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
 
     private void setUpComponents()
     {
-        myQuestionTextArea = new JTextArea("This is a very long qwuestion i am going to be hello hello hello asking",3,10);
+        myQuestionTextArea = new JTextArea(3,10);
         myQuestionTextArea.setLineWrap(true);
         myQuestionTextArea.setWrapStyleWord(true);
 
@@ -42,7 +43,7 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
         myQuestionTextArea.setFont(new Font("SansSerif", Font.PLAIN, 14));
         myQuestionTextArea.setBorder(BorderFactory.createTitledBorder("Question:"));
 
-        myHintTextArea = new JTextArea("Here is the hint");
+        myHintTextArea = new JTextArea(3,10);
         myHintTextArea.setLineWrap(true);
         myHintTextArea.setWrapStyleWord(true);
 
@@ -62,10 +63,10 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
         //maybe make method in maze class to tell maze the a hint was used
         //that way it will tell me the number we have left
         myReceiveHintButton = new JButton("Receive Hint");
+        myReceiveHintButton.setEnabled(false);
         myReceiveHintButton.addActionListener(theEvent -> {
             myHintTextArea.setText(myQuestionObject.getHint());
         });
-
 
         this.add(myQuestionTextArea);
         this.add(myHintTextArea);
@@ -86,6 +87,16 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
             myQuestionObject = (AbstractQuestion)evt.getNewValue();
             myQuestionContainer.setQuestionType(myQuestionObject.getType());
             myQuestionTextArea.setText(myQuestionObject.getQuestion());
+            myReceiveHintButton.setEnabled(true);
         }
+
+        else if(evt.getPropertyName().equals("questionWrong") || evt.getPropertyName().equals("questionRight"))
+        {
+            myReceiveHintButton.setEnabled(false);
+            myQuestionTextArea.setText("");
+            myHintTextArea.setText("");
+            myQuestionContainer.clearComponents();
+        }
+
     }
 }

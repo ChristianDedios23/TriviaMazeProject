@@ -1,6 +1,7 @@
 package View.QuestionTypePanels;
 
 
+import Model.AbstractQuestion;
 import Model.Enum.Direction;
 import Model.Enum.QuestionType;
 import Model.MultipleChoiceQuestion;
@@ -30,6 +31,7 @@ public class MultipleChoicePanel extends JPanel implements PropertyChangeListene
         myBChoice = new JButton("B");
         myCChoice = new JButton("C");
         myDChoice = new JButton("D");
+
         layoutComponents();
         addListeners();
     }
@@ -65,10 +67,9 @@ public class MultipleChoicePanel extends JPanel implements PropertyChangeListene
     {
         if(evt.getPropertyName().equals("newQuestion"))
         {
-            MultipleChoiceQuestion questionObject = ((MultipleChoiceQuestion)evt.getNewValue());
-            if(questionObject.getType() == QuestionType.MULTIPLE_CHOICE)
+            if(((AbstractQuestion)evt.getNewValue()).getType() == QuestionType.MULTIPLE_CHOICE)
             {
-                myCurrentQuestion = questionObject;
+                myCurrentQuestion = ((MultipleChoiceQuestion)evt.getNewValue());
                 HashMap<Character, String> optionList =  myCurrentQuestion.getOptionList();
                 for(Character option: optionList.keySet()){
                     switch (option){

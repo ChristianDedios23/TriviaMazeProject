@@ -1,9 +1,12 @@
 package View.QuestionTypePanels;
 
 import Model.Enum.QuestionType;
+import View.StartGameFrame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class QuestionTypeContainerPanel extends JPanel
 {
@@ -21,13 +24,6 @@ public class QuestionTypeContainerPanel extends JPanel
         myTrueFalsePanel = new TrueFalsePanel();
         myMultipleChoicePanel = new MultipleChoicePanel();
         myShortAnswerPanel = new ShortAnswerPanel();
-
-        setUpComponents();
-    }
-
-    private void setUpComponents()
-    {
-
     }
 
     public void clearComponents()
@@ -41,24 +37,17 @@ public class QuestionTypeContainerPanel extends JPanel
     {
         switch(type)
         {
-            case SHORT_ANSWER -> {
-                clearComponents();
-                this.add(myShortAnswerPanel);
-            }
+            case SHORT_ANSWER -> this.add(myShortAnswerPanel);
 
-            case MULTIPLE_CHOICE -> {
-                clearComponents();
-                this.add(myMultipleChoicePanel);//maybe add more since we have to adjust for the questions in the buttons
-            }
+            case MULTIPLE_CHOICE -> this.add(myMultipleChoicePanel);//maybe add more since we have to adjust for the questions in the buttons
 
-            case TRUE_OR_FALSE -> {
-                clearComponents();
-                this.add(myTrueFalsePanel);
-            }
+            case TRUE_OR_FALSE -> this.add(myTrueFalsePanel);
         }
         //case switch statements to add type of question
         //if certain type add it
         //when answer is correct or wrong clear the elements from the questionTypeContainer
         //display if correct or wrong with JoptionPane
+
+
     }
 }

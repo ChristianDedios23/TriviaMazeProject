@@ -9,7 +9,7 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class GameFrame extends JFrame implements PropertyChangeListener
+public class GameFrame extends JFrame
 {
     private GamePanel myGamePanel;
 
@@ -71,25 +71,5 @@ public class GameFrame extends JFrame implements PropertyChangeListener
                 }
             }
         });
-
-
-    }
-
-
-    /**
-     * This method gets called when a bound property is changed.
-     *
-     * @param evt A PropertyChangeEvent object describing the event source
-     *            and the property that has changed.
-     */
-    @Override
-    public void propertyChange(PropertyChangeEvent evt)
-    {
-
-    }
-
-    public static class ShortAnswerPanel
-    {
-
     }
 }

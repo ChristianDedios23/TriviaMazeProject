@@ -97,6 +97,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener
         {
             myRoomPanelMap.get(myCurrentRoom).setMyIsCurrentRoom(true);
             JOptionPane.showMessageDialog(this, "Get your money up not your funny up", "Incorrect Answer", JOptionPane.ERROR_MESSAGE);
+
         }
 
         else if(evt.getPropertyName().equals("questionRight"))

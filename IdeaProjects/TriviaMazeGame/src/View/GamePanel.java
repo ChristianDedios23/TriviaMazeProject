@@ -24,6 +24,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener
 
     GamePanel()
     {
+        StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
         MazePanel myMazePanel = new MazePanel();
         setUpButtons();
         addListeners();
@@ -32,7 +33,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener
 
         //see if works, it works!
         QuestionsPanel myQuestionPanel = new QuestionsPanel();
-        StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(myQuestionPanel);
+        //StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(myQuestionPanel);
         this.add(myQuestionPanel);
         this.setPreferredSize(new Dimension(1024, 768));
 
@@ -41,7 +42,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener
     private void setUpButtons()
     {
         myButtonLocation = new JPanel(new GridBagLayout());
-        myButtonLocation.setBackground(Color.RED);
+        myButtonLocation.setBackground(new Color(101, 140, 225));
 
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -105,6 +106,14 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         });
     }
 
+    public void enableButtons(final boolean theIsEnabled)
+    {
+        myUpButton.setEnabled(theIsEnabled);
+        myRightButton.setEnabled(theIsEnabled);
+        myLeftButton.setEnabled(theIsEnabled);
+        myDownButton.setEnabled(theIsEnabled);
+    }
+
     /**
      * This method gets called when a bound property is changed.
      *
@@ -114,14 +123,22 @@ public class GamePanel extends JPanel implements PropertyChangeListener
     @Override
     public void propertyChange(PropertyChangeEvent evt)
     {
+        if(evt.getPropertyName().equals("newQuestion"))
+        {
+            enableButtons(false);
+        }
 
+        else if(evt.getPropertyName().equals("questionWrong") || evt.getPropertyName().equals("questionRight"))
+        {
+            enableButtons(true);
+        }
     }
 
     @Override
     protected void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        g.setColor(Color.RED);
+        g.setColor(new Color(101, 140, 225));
         g.fillRect(0, 0, 1024, 768);
     }
 }
