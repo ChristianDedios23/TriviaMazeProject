@@ -65,13 +65,8 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     }
 
     /**
-     * Sets the question type given to be available during the game.
-     * @param theType the question type chosen.
+     * Gets a new question for the user to answer
      */
-    public void setQuestionType(QuestionType theType) {
-        QuestionFactory.editMyQuestionTypeSet(theType);
-    }
-
     public void getQuestion(){
         myCurrentQuestion = QuestionFactory.getQuestion();
         myPcs.firePropertyChange(PROPERTY_NEW_QUESTION, null, myCurrentQuestion);
@@ -145,37 +140,9 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         }
         myPcs.firePropertyChange(PROPERTY_PLAYER_MOVE, myCurrentRoom, theRoom);
         myCurrentRoom = theRoom;
-        firePCSSurroundingRooms();
+        }
         
-    }
-    /**
-     * Fires a PCS to tell the state of all surrounding doors
-     */
-    private void firePCSSurroundingRooms(){
-        for(Direction direction: Direction.values()){
-            firePCSForDoor(direction);
-        }
-    }
-    /**
-     * Fires a PCS to tell the state of a door in a direction
-     * @param theDirection the direction of the door/room
-     */
-    private void firePCSForDoor(final Direction theDirection){
-        int room = canMove(myCurrentRoom, theDirection);
-        String event = "door" + theDirection;
-        if(room == -1){
-            myPcs.firePropertyChange(event, null, DoorState.LOCKED);
-            return;
-        }
-        DoorState state = getDoor(myCurrentRoom, theDirection).getDoorState();
-        if(state == DoorState.LOCKED){
-            myPcs.firePropertyChange(event, null, DoorState.LOCKED);
-        }else if(state == DoorState.OPEN){
-            myPcs.firePropertyChange(event, null, DoorState.OPEN);
-        }else{
-            myPcs.firePropertyChange(event, null, DoorState.QUESTION);
-        }
-    }
+
     /**
      * Attempts a move to another room by checking the door
      * If not open, but not locked, it will ask the user a quetion
@@ -292,9 +259,8 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
                 }else{
                     return -1;
                 }
-            default:
-                throw new IllegalArgumentException("Invalid direction: "+ theDirection);
         }
+        return -1;
     }
     
     /**
