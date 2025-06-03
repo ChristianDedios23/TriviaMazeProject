@@ -185,7 +185,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
    
     public DoorState checkDoorState(final Direction theDirection){
         int room = canMove(myCurrentRoom, theDirection); 
-        if(room > 0){
+        if(room >= 0){
             myDesiredDirection = theDirection;
             Door frontSide = getDoor(myCurrentRoom, theDirection);
             Door backSide = getDoor(room, theDirection.getOpposite());
@@ -314,7 +314,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
                 Door door = getDoor(room, direction);
                 if(door.getDoorState() != DoorState.LOCKED){
                     int nextRoom = canMove(room, direction);
-                    if(nextRoom > 0){
+                    if(nextRoom >= 0){
                         if(checkIfExit(nextRoom)){
                             return;
                         }
