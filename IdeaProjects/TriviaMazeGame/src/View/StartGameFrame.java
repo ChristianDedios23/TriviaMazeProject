@@ -4,6 +4,7 @@ import Model.Enum.Difficulty;
 import Model.Enum.QuestionType;
 import Model.Maze;
 import Model.MazeFactory;
+import Model.QuestionFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -120,17 +121,17 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
 
             if (myGameSettingsWindow.getMultipleChoiceBox().isSelected())
             {
-               MY_MAZE_MODEL.setQuestionType(QuestionType.MULTIPLE_CHOICE);
+               QuestionFactory.editMyQuestionTypeSet(QuestionType.MULTIPLE_CHOICE);
             }
 
             if (myGameSettingsWindow.getShortAnswerCheckBox().isSelected())
             {
-                MY_MAZE_MODEL.setQuestionType(QuestionType.SHORT_ANSWER);
+                QuestionFactory.editMyQuestionTypeSet(QuestionType.SHORT_ANSWER);
             }
 
             if (myGameSettingsWindow.getTrueFalseCheckBox().isSelected())
             {
-                MY_MAZE_MODEL.setQuestionType(QuestionType.TRUE_OR_FALSE);
+                QuestionFactory.editMyQuestionTypeSet(QuestionType.TRUE_OR_FALSE);
             }
 
             myGameFrame = new GameFrame();
