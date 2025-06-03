@@ -14,7 +14,7 @@ public class QuestionFactoryTest {
     }
     @Test
     public void testCreateQuestion() {
-        AbstractQuestion question = QuestionFactory.getQuestion2();
+        AbstractQuestion question = QuestionFactory.getQuestion();
         int check = 1;
         while(check != 3) {
            // if()

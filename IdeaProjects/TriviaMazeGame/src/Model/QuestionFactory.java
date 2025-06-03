@@ -65,7 +65,7 @@ public class QuestionFactory {
             throw new RuntimeException(e);
         }
     }
-    public static AbstractQuestion getQuestion2() {
+    public static AbstractQuestion getQuestion() {
         Random rand = new Random();
         String type = myQuestionTypeSet.toArray()[rand.nextInt(myQuestionTypeSet.size())].toString();
         AbstractQuestion question = null;
@@ -94,52 +94,8 @@ public class QuestionFactory {
             mySACurrentIndex++;
         }
         return question;
-}
-
-
-    //Wrong, when only True or false is selected error,
-    public static AbstractQuestion getQuestion() {
-        Random rand = new Random();
-        String type = myQuestionTypeSet.toArray()[rand.nextInt(myQuestionTypeSet.size())].toString();
-        String query = "SELECT * FROM " + type + " ORDER BY RANDOM() LIMIT 1;";
-        AbstractQuestion returnQuestion = null;
-
-            try {
-                Connection connection = DatabaseConnection.getConnection();
-                Statement statement = connection.createStatement();
-
-                ResultSet rs = statement.executeQuery(query);
-                if(type.equals("MULTIPLE_CHOICE")) {
-                    while (rs.next()) {
-                        String question = rs.getString("question");
-                        HashMap<Character, String> map = new HashMap<>();
-                        map.put('A', rs.getString("option_a"));
-                        map.put('B', rs.getString("option_b"));
-                        map.put('C', rs.getString("option_c"));
-                        map.put('D', rs.getString("option_d"));
-                        String answer = rs.getString("answer");
-                        String hint = rs.getString("hint");
-                        returnQuestion = new MultipleChoiceQuestion(question, map, answer, hint);
-                    }
-                } else {
-                    while (rs.next()) {
-                        String question = rs.getString("question");
-                        String answer = rs.getString("answer");
-                        String hint = rs.getString("hint");
-                        returnQuestion = type.equals("SHORT_ANSWER")
-                                ? new ShortAnswerQuestion(question, answer, hint)
-                                : new TrueAndFalseQuestion(question, answer, hint);
-
-
-                    }
-                }
-
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
-            return returnQuestion;
     }
+
 
     public static void editMyQuestionTypeSet(QuestionType questionType) {
         if (myQuestionTypeSet.contains(questionType)) {
