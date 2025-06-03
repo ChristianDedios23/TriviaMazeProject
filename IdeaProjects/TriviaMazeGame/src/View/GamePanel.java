@@ -22,6 +22,8 @@ public class GamePanel extends JPanel implements PropertyChangeListener
 
     private JPanel myButtonLocation;
 
+    private JLabel myCurrentTask;
+
     GamePanel()
     {
         StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
@@ -31,10 +33,15 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         this.setLayout(null);
         this.add(myMazePanel);
 
+        myCurrentTask = new JLabel("Current Task:");
+        myCurrentTask.setFont(new Font("Serif", Font.BOLD, 20));
+        myCurrentTask.setBounds(650, 550, 350, 100);
+        this.add(myCurrentTask);
 
         QuestionsPanel myQuestionPanel = new QuestionsPanel();
         this.add(myQuestionPanel);
         this.setPreferredSize(new Dimension(1024, 768));
+
 
     }
 
@@ -53,6 +60,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         myLeftButton = new JButton("Left");
         myRightButton = new JButton("Right");
 
+        //only works on windows
         myUpButton.setMnemonic(KeyEvent.VK_W);
         myDownButton.setMnemonic(KeyEvent.VK_S);
         myLeftButton.setMnemonic(KeyEvent.VK_A);
@@ -133,11 +141,14 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         if(evt.getPropertyName().equals("newQuestion"))
         {
             enableButtons(false);
+            myCurrentTask.setText("Current Task: Answer the question");
         }
 
         else if(evt.getPropertyName().equals("questionWrong") || evt.getPropertyName().equals("questionRight"))
         {
             enableButtons(true);
+            myCurrentTask.setText("Current Task: Choose a valid direction");
+            //maybe repaint and revalidate
         }
     }
 

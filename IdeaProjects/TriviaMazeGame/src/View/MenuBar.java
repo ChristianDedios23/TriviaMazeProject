@@ -27,6 +27,8 @@ public class MenuBar extends JMenuBar
 
     private final JMenuItem myShortCutsItem;
 
+    private final JMenuItem myLegendItem;
+
     //add shortcuts menu item and add shortcuts to play the whole game without a mouse
     MenuBar(final JFrame theParent)
     {
@@ -40,6 +42,7 @@ public class MenuBar extends JMenuBar
         myGamePlayInstructionItem = new JMenuItem("How-to-play");
         myAboutItem = new JMenuItem("About");
         myShortCutsItem = new JMenuItem("Short-Cuts");
+        myLegendItem = new JMenuItem("Legend");
         setUpComponents();
         addListeners();
     }
@@ -52,6 +55,8 @@ public class MenuBar extends JMenuBar
         myGamePlayInstructionItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, KeyEvent.CTRL_DOWN_MASK));
         myAboutItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK));
         myShortCutsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
+        myLegendItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_DOWN_MASK));
+        //G ctrl-down
 
         myFileMenu.add(mySaveGameItem);
         myFileMenu.add(myLoadGameItem);
@@ -59,6 +64,7 @@ public class MenuBar extends JMenuBar
         myHelpMenu.add(myGamePlayInstructionItem);
         myHelpMenu.add(myAboutItem);
         myHelpMenu.add(myShortCutsItem);
+        myHelpMenu.add(myLegendItem);
 
         this.add(myFileMenu);
         this.add(myHelpMenu);
@@ -76,7 +82,7 @@ public class MenuBar extends JMenuBar
         });
 
         myGamePlayInstructionItem.addActionListener(theEvent -> {
-            JOptionPane.showMessageDialog(myParent, "This is how to play the game");
+            JOptionPane.showMessageDialog(myParent, "This is how to play the game, include streak ++hint combo");
         });
 
         //add buttons to moving later
@@ -115,6 +121,10 @@ public class MenuBar extends JMenuBar
 
         myLoadGameItem.addActionListener(theEvent -> {
 
+        });
+
+        myLegendItem.addActionListener(theEvent -> {
+            JOptionPane.showMessageDialog(myParent, "Legend contents here");
         });
     }
 

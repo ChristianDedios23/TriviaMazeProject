@@ -16,7 +16,7 @@ public class Main
 
         StartGameFrame frame = new StartGameFrame();
 
-         ///
+         //
 
         /*question factory tester
         QuestionFactory.setupQuestions();
