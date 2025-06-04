@@ -158,4 +158,12 @@ public class QuestionFactory {
             Collections.shuffle(myTFQuestionList);
         }
     }
+
+    /**
+     * Method to check what types of questions are available.
+     * @return myQuestionTypeSet a set of questionTypes i currently have at my disposal.
+     */
+    public static Set<QuestionType> checkQuestionTypes() {
+        return myQuestionTypeSet;
+    }
 }
