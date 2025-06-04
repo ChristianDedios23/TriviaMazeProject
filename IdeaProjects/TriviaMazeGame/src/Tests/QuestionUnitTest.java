@@ -5,9 +5,11 @@ package Tests;
 import java.util.HashMap;
 
 import Model.AbstractQuestion;
+import Model.Enum.QuestionType;
 import Model.MultipleChoiceQuestion;
 import Model.TrueAndFalseQuestion;
 import Model.ShortAnswerQuestion;
+import com.sun.jdi.ShortType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -287,5 +289,22 @@ public class QuestionUnitTest {
         assertEquals("look outside",question2.getHint());
         assertEquals("look outside",question3.getHint());
         assertEquals("poke yourself",question4.getHint());
+    }
+
+    @Test
+    public void testALlQuestionTypes() {
+        AbstractQuestion tfQuestion = new TrueAndFalseQuestion("Do goldfish live underwater?","true","Where do fish live");
+        AbstractQuestion saQuestion = new ShortAnswerQuestion("Who lives in a pineapple under the sea?","Spongebob","He has square pants.");
+        HashMap<Character, String> map = new HashMap<Character, String>();
+        map.put('A',"Blue");
+        map.put('B',"Red");
+        map.put('C',"Yellow");
+        map.put('D',"Green");
+        String theQuestion1 = "What color is the sky";
+        AbstractQuestion mcQuestion = new MultipleChoiceQuestion("What color is grass?",map,"green","look outside");
+
+        assertEquals(QuestionType.MULTIPLE_CHOICE,mcQuestion.getType());
+        assertEquals(QuestionType.TRUE_OR_FALSE,tfQuestion.getType());
+        assertEquals(QuestionType.SHORT_ANSWER,saQuestion.getType());
     }
 }
