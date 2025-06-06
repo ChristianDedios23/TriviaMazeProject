@@ -13,6 +13,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 public class StartGameFrame extends JFrame implements PropertyChangeListener
 {
@@ -96,7 +99,29 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
 
         //make method so both do the same
         myLoadGameButton.addActionListener(theEvent -> {
-            //this.dispatchEvent(new KeyEvent());
+            try {
+
+                FileInputStream file = new FileInputStream("savedGame.ser");
+                ObjectInputStream in = new ObjectInputStream (file);
+                MY_MAZE_MODEL = (Maze)in.readObject();
+                in.close();
+                file.close();
+
+            }catch (IOException ex) {
+                System.err.println(ex);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }finally {
+                if(MY_MAZE_MODEL != null){
+                    myGameFrame = new GameFrame();
+                    myGameFrame.setJMenuBar(new MenuBar(myGameFrame));
+                    myGameFrame.setLocationRelativeTo(this);
+                    myGameFrame.setBoardSizeInfo(MY_MAZE_MODEL.getMyMazeLength());
+                    myGameFrame.setVisible(true);
+                    this.setVisible(false);
+                }
+            }
+
         });
 
         myGameSettingsWindow.getStartGameButton().addActionListener(theEvent -> {
@@ -121,17 +146,17 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
 
             if (myGameSettingsWindow.getMultipleChoiceBox().isSelected())
             {
-               QuestionFactory.editMyQuestionTypeSet(QuestionType.MULTIPLE_CHOICE);
+                MY_MAZE_MODEL.editMyQuestionTypeSet(QuestionType.MULTIPLE_CHOICE);
             }
 
             if (myGameSettingsWindow.getShortAnswerCheckBox().isSelected())
             {
-                QuestionFactory.editMyQuestionTypeSet(QuestionType.SHORT_ANSWER);
+                MY_MAZE_MODEL.editMyQuestionTypeSet(QuestionType.SHORT_ANSWER);
             }
 
             if (myGameSettingsWindow.getTrueFalseCheckBox().isSelected())
             {
-                QuestionFactory.editMyQuestionTypeSet(QuestionType.TRUE_OR_FALSE);
+                MY_MAZE_MODEL.editMyQuestionTypeSet(QuestionType.TRUE_OR_FALSE);
             }
 
             myGameFrame = new GameFrame();

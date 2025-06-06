@@ -2,6 +2,8 @@ package View.QuestionTypePanels;
 
 import Model.AbstractQuestion;
 import Model.Enum.QuestionType;
+import Model.ShortAnswerQuestion;
+import Model.TrueAndFalseQuestion;
 import View.StartGameFrame;
 
 import javax.swing.*;
@@ -11,7 +13,7 @@ import java.beans.PropertyChangeListener;
 
 public class TrueFalsePanel extends JPanel implements PropertyChangeListener
 {
-    private AbstractQuestion myCurrentQuestion;
+    private TrueAndFalseQuestion myCurrentQuestion;
 
     private JButton myTrueButton;
 
@@ -21,6 +23,10 @@ public class TrueFalsePanel extends JPanel implements PropertyChangeListener
     {
         StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
         this.setLayout(new GridLayout());
+        AbstractQuestion question = StartGameFrame.MY_MAZE_MODEL.getMyCurrentQuestion();
+        if(question instanceof TrueAndFalseQuestion){
+            myCurrentQuestion = (TrueAndFalseQuestion) question;
+        }
         setUpComponent();
         setUpListeners();
     }
@@ -60,7 +66,7 @@ public class TrueFalsePanel extends JPanel implements PropertyChangeListener
             if(questionObject.getType() == QuestionType.TRUE_OR_FALSE)
             {
 
-                myCurrentQuestion = questionObject;
+                myCurrentQuestion = (TrueAndFalseQuestion)questionObject;
             }
         }
     }

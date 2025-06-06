@@ -7,6 +7,8 @@ import Model.Enum.QuestionType;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -45,9 +47,9 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     private final int myExit;
     /** State of the current question*/
     private AbstractQuestion myCurrentQuestion;
-
+    private Set<QuestionType> myQuestionTypes;
     /** PCS to signal to view */
-    private final transient PropertyChangeSupport myPcs;
+    private transient PropertyChangeSupport myPcs;
     /**
      * Constructs a maze object based on the given length
      * @param theLength, the desired length of the maze
@@ -59,17 +61,32 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         myExit = (int) Math.pow(myMazeLength, 2) - 1;
         myPcs = new PropertyChangeSupport(this);
         myPlayer = new Player(theDifficulty, myPcs);
-        //use player methods inside this class and catch property changfe evenets
         myCurrentQuestion = null;
+        myQuestionTypes = new HashSet<>();
         QuestionFactory.setupQuestions();
     }
+    public void editMyQuestionTypeSet(QuestionType questionType) {
+        if (myQuestionTypes.contains(questionType)) {
+            myQuestionTypes.remove(questionType);
+        } else {
+            myQuestionTypes.add(questionType);
+        }
 
+        QuestionFactory.shuffleList(questionType);
+    }
     /**
      * Gets a new question for the user to answer
      */
     public void getQuestion(){
-        myCurrentQuestion = QuestionFactory.getQuestion();
+        myCurrentQuestion = QuestionFactory.getQuestion(myQuestionTypes);
         myPcs.firePropertyChange(PROPERTY_NEW_QUESTION, null, myCurrentQuestion);
+    }
+
+    /**
+     * @return the current active question
+     */
+    public AbstractQuestion getMyCurrentQuestion(){
+       return myCurrentQuestion;
     }
     /**
      * Initializes myMaze with Room objects and links them
@@ -172,6 +189,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
      * @return true if the move was valid, false if else 
      */
     public boolean move(final boolean theCorrectAnswer){
+        myCurrentQuestion = null;
         int room = canMove(myCurrentRoom, myDesiredDirection);
         if(room < 0){
             return false;
@@ -335,5 +353,19 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     @Override
     public void addPropertyChangeListener(PropertyChangeListener theListener) {
         myPcs.addPropertyChangeListener(theListener);
+    }
+    @Serial
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject(); // Deserialize non-transient fields
+        myPcs = new PropertyChangeSupport(this); // Reinitialize transient field'
+        QuestionFactory.setupQuestions();
+
+    }
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("Maze\n");
+        builder.append("Current Position: " + myCurrentRoom + "\n");
+        return builder.toString();
     }
 }

@@ -65,7 +65,12 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         myDownButton.setMnemonic(KeyEvent.VK_S);
         myLeftButton.setMnemonic(KeyEvent.VK_A);
         myRightButton.setMnemonic(KeyEvent.VK_D);
-
+        if(StartGameFrame.MY_MAZE_MODEL.getMyCurrentQuestion() != null){
+            myUpButton.setEnabled(false);
+            myDownButton.setEnabled(false);
+            myLeftButton.setEnabled(false);
+            myRightButton.setEnabled(false);
+        }
         gbc.gridx = 1;
         gbc.gridy = 0;
         myButtonLocation.add(myUpButton, gbc);

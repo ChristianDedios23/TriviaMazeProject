@@ -3,6 +3,7 @@ package View;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -82,7 +83,21 @@ public class MenuBar extends JMenuBar
         });
 
         myGamePlayInstructionItem.addActionListener(theEvent -> {
-            JOptionPane.showMessageDialog(myParent, "This is how to play the game, include streak ++hint combo");
+            JOptionPane.showMessageDialog(myParent, "The Trivia Maze Game test you through a series of test to traverse " +
+                    "through a grid like maze starting from the top left corner,\nmaking your way to the bottom right corner!" +
+                    "However, as you traverse, you will be asked a question for every door you haven't opened yet.\n" +
+                    "If answered correctly, you may freely maneuver between rooms using that door, but if answered wrong,\n" +
+                    "that door will be locked forever, trap yourself in and its game over! \n" +
+                    "\nHow to play:\n" +
+                    "   1. Click the start game button and choose the type of questions you would like and the difficulty!\n" +
+                    "   2. Make your way to the bottom right corner by answering questions, opening or closing doors.\n" +
+                    "   3. The game is over one you make it to the end or you trap yourself in!\n" +
+                    "   4. At anytime you can save your game and load it back up in the start screen!\n" +
+                    "\nHints:\n" +
+                    "Hints are gained based on the difficulty you set and your streak of correct answers!\n" +
+                    "Easy: Start with one hint and earn based on streaks of three!\n" +
+                    "Medium: Only earn hints based on streaks of five!\n" +
+                    "Hard: You are given no hints!");
         });
 
         //add buttons to moving later
@@ -94,6 +109,22 @@ public class MenuBar extends JMenuBar
         });
 
         mySaveGameItem.addActionListener(theEvent -> {
+            if(StartGameFrame.MY_MAZE_MODEL == null){
+                JOptionPane.showMessageDialog(myParent, "No current game to save!");
+            }
+            if((new File("savedGame.ser")).exists()){
+                int result = JOptionPane.showConfirmDialog(
+                        null,
+                        "Save file found!\n Do you want to overwrite them?",
+                        "Confirm",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (result == JOptionPane.NO_OPTION) {
+                    return;
+                }
+            }
+
             try
             {
                 //Saving of object in a file
@@ -106,14 +137,14 @@ public class MenuBar extends JMenuBar
                 out.close();
                 file.close();
 
-                System.out.println("HAS BEEN SERIALIZED");
+                JOptionPane.showMessageDialog(myParent, "Game has been saved!");
 
             }
 
             catch(IOException ex)
             {
                 System.err.println(ex);
-                System.out.println("ERROR WHILE SAVING");
+                JOptionPane.showMessageDialog(myParent, "Error while saving game");
             }
 
 

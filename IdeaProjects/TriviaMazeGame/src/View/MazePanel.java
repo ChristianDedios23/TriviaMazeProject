@@ -36,7 +36,11 @@ public class MazePanel extends JPanel implements PropertyChangeListener
         myMazeSize = StartGameFrame.MY_MAZE_MODEL.getMyMazeLength();
         myRoomLength = myMazeSize * 75;
         initializeRoomPanelMap();
-        myCurrentRoom = 0;
+        if(StartGameFrame.MY_MAZE_MODEL != null){
+            myCurrentRoom = StartGameFrame.MY_MAZE_MODEL.getMyCurrentRoom();
+        }else{
+            myCurrentRoom = 0;
+        }
         myRoomPanelMap.get(myCurrentRoom).setMyIsCurrentRoom(true);
 
         this.setPreferredSize(new Dimension(myRoomLength, myRoomLength));

@@ -1,6 +1,7 @@
 package View;
 
 import Model.AbstractQuestion;
+
 import Model.Player;
 import View.QuestionTypePanels.QuestionTypeContainerPanel;
 
@@ -44,7 +45,7 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
     {
         myPlayer = StartGameFrame.MY_MAZE_MODEL.getPlayer();
 
-        myStreakLabel = new JLabel("Current Streak: 0");
+        myStreakLabel = new JLabel("Current Streak: " + myPlayer.getStreak());
 
         myQuestionTextArea = new JTextArea(3,10);
         myQuestionTextArea.setLineWrap(true);
@@ -89,7 +90,13 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
         });
 
         myHintsAvailableLabel = new JLabel("Available Hints: " + myPlayer.getHints());
-
+        AbstractQuestion currentQuestion = StartGameFrame.MY_MAZE_MODEL.getMyCurrentQuestion();
+        if(currentQuestion != null){
+            myQuestionObject = currentQuestion;
+            myQuestionContainer.setQuestionType(myQuestionObject.getType());
+            myQuestionTextArea.setText(myQuestionObject.getQuestion());
+            if(myPlayer.getHints() > 0) myReceiveHintButton.setEnabled(true);
+        }
         this.add(myQuestionTextArea);
         this.add(myHintTextArea);
         this.add(myHintsAvailableLabel);

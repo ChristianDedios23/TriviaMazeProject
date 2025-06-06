@@ -5,6 +5,9 @@ import Model.QuestionFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -18,25 +21,18 @@ public class QuestionFactoryTest {
      */
     static void setUpBeforeClass() throws Exception {
         QuestionFactory.setupQuestions();
-        if(!QuestionFactory.checkQuestionTypes().contains(QuestionType.SHORT_ANSWER)) {
-            QuestionFactory.editMyQuestionTypeSet(QuestionType.SHORT_ANSWER);
-        }
-        if(!QuestionFactory.checkQuestionTypes().contains(QuestionType.TRUE_OR_FALSE)) {
-            QuestionFactory.editMyQuestionTypeSet(QuestionType.TRUE_OR_FALSE);
-        }
-        if(!QuestionFactory.checkQuestionTypes().contains(QuestionType.MULTIPLE_CHOICE)) {
-            QuestionFactory.editMyQuestionTypeSet(QuestionType.MULTIPLE_CHOICE);
-        }
+
     }
     @Test
     /**
      * Tests 100 random questions to see if they are made.
      */
     public void testCreateQuestion() {
-        AbstractQuestion question = QuestionFactory.getQuestion();
+        AbstractQuestion question = QuestionFactory.getQuestion(
+                new HashSet<>(List.of(QuestionType.MULTIPLE_CHOICE, QuestionType.TRUE_OR_FALSE, QuestionType.SHORT_ANSWER)));
         for(int i=0; i<100; i++) {
             assertNotNull(question);
-            question = QuestionFactory.getQuestion();
+            question = QuestionFactory.getQuestion(new HashSet<>(List.of(QuestionType.MULTIPLE_CHOICE, QuestionType.TRUE_OR_FALSE, QuestionType.SHORT_ANSWER)));
         }
     }
 
@@ -45,12 +41,11 @@ public class QuestionFactoryTest {
      * Tests to see if when all questions of a certain type are asked, it reshuffles the questions.
      */
     public void testShuffleQuestion() {
-        QuestionFactory.editMyQuestionTypeSet(QuestionType.SHORT_ANSWER);
-        QuestionFactory.editMyQuestionTypeSet(QuestionType.TRUE_OR_FALSE);
-        AbstractQuestion question = QuestionFactory.getQuestion();
+
+        AbstractQuestion question = QuestionFactory.getQuestion(new HashSet<>(List.of( QuestionType.TRUE_OR_FALSE, QuestionType.SHORT_ANSWER)));
         for(int i=0; i<100; i++) {
             assertNotNull(question);
-            question = QuestionFactory.getQuestion();
+            question = QuestionFactory.getQuestion(new HashSet<>(List.of( QuestionType.TRUE_OR_FALSE, QuestionType.SHORT_ANSWER)));
         }
     }
 }

@@ -27,11 +27,15 @@ public class MultipleChoicePanel extends JPanel implements PropertyChangeListene
     {
         StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
         this.setLayout(new GridLayout(2,2));
+        AbstractQuestion question = StartGameFrame.MY_MAZE_MODEL.getMyCurrentQuestion();
         myAChoice = new JButton("A");
         myBChoice = new JButton("B");
         myCChoice = new JButton("C");
         myDChoice = new JButton("D");
-
+        if(question instanceof MultipleChoiceQuestion){
+            myCurrentQuestion = (MultipleChoiceQuestion) question;
+            setChoices();
+        }
         layoutComponents();
         addListeners();
     }
@@ -55,41 +59,50 @@ public class MultipleChoicePanel extends JPanel implements PropertyChangeListene
             StartGameFrame.MY_MAZE_MODEL.move(myCurrentQuestion.checkAnswer("D"));
         });
     }
+    private void setChoices() {
 
-    /**
-     * This method gets called when a bound property is changed.
-     *
-     * @param evt A PropertyChangeEvent object describing the event source
-     *            and the property that has changed.
-     */
-    @Override
-    public void propertyChange(PropertyChangeEvent evt)
-    {
-        if(evt.getPropertyName().equals("newQuestion"))
-        {
-            if(((AbstractQuestion)evt.getNewValue()).getType() == QuestionType.MULTIPLE_CHOICE)
-            {
-                myCurrentQuestion = ((MultipleChoiceQuestion)evt.getNewValue());
-                HashMap<Character, String> optionList =  myCurrentQuestion.getOptionList();
-                for(Character option: optionList.keySet()){
-                    switch (option){
-                        case 'A':
-                            myAChoice.setText(optionList.get(option));
-                            break;
-                        case 'B':
-                            myBChoice.setText(optionList.get(option));
-                            break;
-                        case 'C':
-                            myCChoice.setText(optionList.get(option));
-                            break;
-                        case 'D':
-                            myDChoice.setText(optionList.get(option));
-                            break;
-                        default:
-                            break;
-                }
+        HashMap<Character, String> optionList = myCurrentQuestion.getOptionList();
+        for (Character option : optionList.keySet()) {
+            switch (option) {
+                case 'A':
+                    assert myAChoice != null;
+                    myAChoice.setText(optionList.get(option));
+                    break;
+                case 'B':
+                    assert myBChoice != null;
+                    myBChoice.setText(optionList.get(option));
+                    break;
+                case 'C':
+                    assert myCChoice != null;
+                    myCChoice.setText(optionList.get(option));
+                    break;
+                case 'D':
+                    assert myDChoice != null;
+                    myDChoice.setText(optionList.get(option));
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+        /**
+         * This method gets called when a bound property is changed.
+         *
+         * @param evt A PropertyChangeEvent object describing the event source
+         *            and the property that has changed.
+         */
+        @Override
+        public void propertyChange (PropertyChangeEvent evt){
+            if (evt.getPropertyName().equals("newQuestion")) {
+                if (((AbstractQuestion) evt.getNewValue()).getType() == QuestionType.MULTIPLE_CHOICE) {
+                    myCurrentQuestion = ((MultipleChoiceQuestion) evt.getNewValue());
+                    setChoices();
                 }
             }
         }
     }
-}
+
+
+
+
+
