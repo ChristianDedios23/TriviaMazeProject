@@ -4,7 +4,7 @@ import Model.Enum.QuestionType;
 
 
 
-class TrueAndFalseQuestion extends AbstractQuestion {
+public class TrueAndFalseQuestion extends AbstractQuestion {
 
 
     public TrueAndFalseQuestion(final String theQuestion, final String theAnswer, final String theHint) {
