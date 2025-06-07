@@ -3,6 +3,9 @@ package View;
 import Model.Maze;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -100,13 +103,34 @@ public class MazePanel extends JPanel implements PropertyChangeListener
         else if(evt.getPropertyName().equals("questionWrong"))
         {
             myRoomPanelMap.get(myCurrentRoom).setMyIsCurrentRoom(true);
+            try {
+                File soundFile = new File("sound/wrong.wav");
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
+
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioStream);
+                clip.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             JOptionPane.showMessageDialog(this, "Get your money up not your funny up", "Incorrect Answer", JOptionPane.ERROR_MESSAGE);
 
         }
 
         else if(evt.getPropertyName().equals("questionRight"))
         {
+            try {
+                File soundFile = new File("sound/correct.wav");
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(soundFile);
+
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioStream);
+                clip.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             JOptionPane.showMessageDialog(this, "Congrats! You got it correct!");
+
         }
 
         //maybe give restart button but for now close game button
