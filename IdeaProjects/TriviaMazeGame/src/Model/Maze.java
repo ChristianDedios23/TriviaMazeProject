@@ -47,7 +47,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     private final int myExit;
     /** State of the current question*/
     private AbstractQuestion myCurrentQuestion;
-    private Set<QuestionType> myQuestionTypes;
+    private final Set<QuestionType> myQuestionTypes;
     /** PCS to signal to view */
     private transient PropertyChangeSupport myPcs;
     /**
@@ -65,14 +65,14 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         myQuestionTypes = new HashSet<>();
         QuestionFactory.setupQuestions();
     }
-    public void editMyQuestionTypeSet(QuestionType questionType) {
-        if (myQuestionTypes.contains(questionType)) {
-            myQuestionTypes.remove(questionType);
+    public void editMyQuestionTypeSet(final QuestionType theQuestionType) {
+        if (myQuestionTypes.contains(theQuestionType)) {
+            myQuestionTypes.remove(theQuestionType);
         } else {
-            myQuestionTypes.add(questionType);
+            myQuestionTypes.add(theQuestionType);
         }
 
-        QuestionFactory.shuffleList(questionType);
+        QuestionFactory.shuffleList(theQuestionType);
     }
     /**
      * Gets a new question for the user to answer
@@ -356,16 +356,9 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     }
     @Serial
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
-        ois.defaultReadObject(); // Deserialize non-transient fields
-        myPcs = new PropertyChangeSupport(this); // Reinitialize transient field'
+        ois.defaultReadObject();
+        myPcs = new PropertyChangeSupport(this);
         QuestionFactory.setupQuestions();
 
-    }
-    @Override
-    public String toString(){
-        StringBuilder builder = new StringBuilder();
-        builder.append("Maze\n");
-        builder.append("Current Position: " + myCurrentRoom + "\n");
-        return builder.toString();
     }
 }
