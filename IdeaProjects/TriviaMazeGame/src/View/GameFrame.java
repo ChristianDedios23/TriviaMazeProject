@@ -135,6 +135,7 @@ public class GameFrame extends JFrame implements PropertyChangeListener
         {
             this.setVisible(false);
             StartGameFrame startGameFrame = new StartGameFrame();
+            resetInstance();
         }
     }
 }
