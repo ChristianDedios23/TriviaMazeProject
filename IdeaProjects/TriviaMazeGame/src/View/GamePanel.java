@@ -24,6 +24,8 @@ public class GamePanel extends JPanel implements PropertyChangeListener
 
     private JLabel myCurrentTask;
 
+    private JLabel myObjectiveLabel;
+
     GamePanel()
     {
         StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
@@ -33,9 +35,16 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         this.setLayout(null);
         this.add(myMazePanel);
 
+        myObjectiveLabel = new JLabel("Objective: Find the exit!");
+        myObjectiveLabel.setFont(new Font("Serif", Font.BOLD, 25));
+        myObjectiveLabel.setForeground(Color.WHITE);
+        myObjectiveLabel.setBounds(575, 575, 300, 100);
+        this.add(myObjectiveLabel);
+
         myCurrentTask = new JLabel("Current Task:");
-        myCurrentTask.setFont(new Font("Serif", Font.BOLD, 20));
-        myCurrentTask.setBounds(650, 550, 350, 100);
+        myCurrentTask.setFont(new Font("Serif", Font.BOLD, 25));
+        myCurrentTask.setForeground(Color.WHITE);
+        myCurrentTask.setBounds(575, 525, 450, 100);
         this.add(myCurrentTask);
 
         QuestionsPanel myQuestionPanel = new QuestionsPanel();
@@ -143,6 +152,11 @@ public class GamePanel extends JPanel implements PropertyChangeListener
     @Override
     public void propertyChange(PropertyChangeEvent evt)
     {
+        if(evt.getPropertyName().equals("playerMove"))
+        {
+            myObjectiveLabel.setText("Current Position: " + evt.getNewValue());
+        }
+
         if(evt.getPropertyName().equals("newQuestion"))
         {
             enableButtons(false);
@@ -153,7 +167,6 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         {
             enableButtons(true);
             myCurrentTask.setText("Current Task: Choose a valid direction");
-            //maybe repaint and revalidate
         }
     }
 

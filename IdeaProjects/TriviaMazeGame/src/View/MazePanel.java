@@ -33,6 +33,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener
         super();
         this.setLayout(null);
         this.setOpaque(false);
+
         StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
 
         myRoomPanelMap = new HashMap<>();
@@ -113,7 +114,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            JOptionPane.showMessageDialog(this, "Get your money up not your funny up", "Incorrect Answer", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Boo hoo! You got it wrong.", "Incorrect Answer", JOptionPane.ERROR_MESSAGE);
 
         }
 
@@ -131,13 +132,6 @@ public class MazePanel extends JPanel implements PropertyChangeListener
             }
             JOptionPane.showMessageDialog(this, "Congrats! You got it correct!");
 
-        }
-
-        //maybe give restart button but for now close game button
-        else if(evt.getPropertyName().equals("gameOver"))
-        {
-            JOptionPane.showMessageDialog(this, "Looks like there is no possible path to the exit, you lose :(");
-            System.exit(0);
         }
     }
 }

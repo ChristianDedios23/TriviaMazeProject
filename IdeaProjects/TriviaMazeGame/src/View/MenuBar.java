@@ -1,12 +1,11 @@
 package View;
 
+import Model.Maze;
+
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 public class MenuBar extends JMenuBar
 {
@@ -83,11 +82,10 @@ public class MenuBar extends JMenuBar
         });
 
         myGamePlayInstructionItem.addActionListener(theEvent -> {
-            JOptionPane.showMessageDialog(myParent, "The Trivia Maze Game test you through a series of test to traverse " +
-                    "through a grid like maze starting from the top left corner,\nmaking your way to the bottom right corner!" +
-                    "However, as you traverse, you will be asked a question for every door you haven't opened yet.\n" +
-                    "If answered correctly, you may freely maneuver between rooms using that door, but if answered wrong,\n" +
-                    "that door will be locked forever, trap yourself in and its game over! \n" +
+            JOptionPane.showMessageDialog(myParent, "The Trivia Maze Game challenges you to navigate a grid-like maze, " +
+                    "starting from the top-left corner and \naiming to reach the bottom-right corner. Along the way, each unopened door presents a trivia " +
+                    "question. \nAnswer correctly, and the door remains for future travel. But be careful, a wrong answer locks the door \npermanently. " +
+                    "Get stuck with no way forward and you lose!\n" +
                     "\nHow to play:\n" +
                     "   1. Click the start game button and choose the type of questions you would like and the difficulty!\n" +
                     "   2. Make your way to the bottom right corner by answering questions, opening or closing doors.\n" +
@@ -103,9 +101,9 @@ public class MenuBar extends JMenuBar
         //add buttons to moving later
         myShortCutsItem.addActionListener(theEvent -> {
             JOptionPane.showMessageDialog(myParent, "New Game - ALT + N\n"
-                    + "Load Game - CTRL + L \nSave Game - CTRL + S \nExit Game - CTRL + E \nAbout - CTRL + A\n"
-                    + "How-To-Play - CTRL + H \nShortcuts - CTRL + O \nMove Up - Alt + U \nMove Right - ALT + P\n"
-                    + "Move Left - ALT + L \nMove Down - ALT + D");
+                    + "Load Game - CTRL + L or ALT + L \nSave Game - CTRL + S \nExit Game - CTRL + E \nAbout - CTRL + A\n"
+                    + "How-To-Play - CTRL + H \nShortcuts - CTRL + O \nMove Up - ALT + W \nMove Right - ALT + D\n"
+                    + "Move Left - ALT + A \nMove Down - ALT + S");
         });
 
         mySaveGameItem.addActionListener(theEvent -> {
@@ -155,7 +153,8 @@ public class MenuBar extends JMenuBar
         });
 
         myLegendItem.addActionListener(theEvent -> {
-            JOptionPane.showMessageDialog(myParent, "Legend contents here");
+            JOptionPane.showMessageDialog(myParent, "Brown Door - Unanswered door (question will be asked)\nWhite Line - Open" +
+                    "door (answered correctly)\nYellow Wall - Inaccessible (no door)");
         });
     }
 

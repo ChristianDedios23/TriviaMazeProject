@@ -71,9 +71,6 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
         myHintTextArea.setPreferredSize(new Dimension(this.getWidth(), 100));
         myHintTextArea.setMaximumSize(new Dimension(this.getWidth(),150));
 
-        //Maybe put # of hints used or number of hints left\
-        //maybe make method in maze class to tell maze the a hint was used
-        //that way it will tell me the number we have left
         myReceiveHintButton = new JButton("Receive Hint");
         myReceiveHintButton.setEnabled(false);
         myReceiveHintButton.addActionListener(theEvent -> {

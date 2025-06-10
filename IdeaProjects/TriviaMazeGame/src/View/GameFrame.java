@@ -9,7 +9,7 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class GameFrame extends JFrame
+public class GameFrame extends JFrame implements PropertyChangeListener
 {
     private GamePanel myGamePanel;
 
@@ -19,7 +19,6 @@ public class GameFrame extends JFrame
 
     private final int HEIGHT_OF_FRAME = 768;
 
-    //fix this somehow, logically things appear in the correct order
     GameFrame()
     {
         super();
@@ -28,6 +27,7 @@ public class GameFrame extends JFrame
         addListeners();
 
         //maze container
+        StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
         this.setContentPane(myGamePanel);
         setUpLabels();
     }
@@ -40,7 +40,7 @@ public class GameFrame extends JFrame
     private void setUpLabels()
     {
         myBoardSizeInfoText = new JLabel("Board Size: ...");
-        myBoardSizeInfoText.setFont(new Font("Serif", Font.BOLD, 30));
+        myBoardSizeInfoText.setFont(new Font("Serif", Font.BOLD, 25));
         myBoardSizeInfoText.setForeground(Color.WHITE);
         myBoardSizeInfoText.setBounds(25, 10, 300, 100);
         this.add(myBoardSizeInfoText);
@@ -71,5 +71,41 @@ public class GameFrame extends JFrame
                 }
             }
         });
+    }
+
+    /**
+     * This method gets called when a bound property is changed.
+     *
+     * @param evt A PropertyChangeEvent object describing the event source
+     *            and the property that has changed.
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent evt)
+    {
+        //maybe give restart button but for now close game button
+        if(evt.getPropertyName().equals("gameOver"))
+        {
+            int choice = JOptionPane.showOptionDialog(this, "Looks like there is no possible path to the exit, you lose :( ! Would you like to play again?", "Defeat", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            checkIfPlayAgain(choice);
+        }
+
+        else if(evt.getPropertyName().equals("victory"))
+        {
+            int choice = JOptionPane.showOptionDialog(this, "Congrats you won! Would you like to play again?", "Victory", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+            checkIfPlayAgain(choice);
+        }
+    }
+
+    private void checkIfPlayAgain(final int theChoice)
+    {
+        if(theChoice == 1)
+        {
+            System.exit(0);
+        }
+        else
+        {
+            this.setVisible(false);
+            StartGameFrame startGameFrame = new StartGameFrame();
+        }
     }
 }
