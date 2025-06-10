@@ -1,4 +1,4 @@
-package test;
+package Tests;
 
 import Model.DatabaseConnection;
 import org.junit.jupiter.api.Test;

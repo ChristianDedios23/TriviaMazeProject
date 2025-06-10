@@ -1,4 +1,4 @@
-package test;
+package Tests;
 
 import Model.*;
 import Model.Enum.Difficulty;
