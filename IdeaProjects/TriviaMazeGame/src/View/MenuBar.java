@@ -7,6 +7,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.*;
 
+import static View.StartGameFrame.MY_MAZE_MODEL;
+
 public class MenuBar extends JMenuBar
 {
     private final JFrame myParent;
@@ -107,7 +109,7 @@ public class MenuBar extends JMenuBar
         });
 
         mySaveGameItem.addActionListener(theEvent -> {
-            if(StartGameFrame.MY_MAZE_MODEL == null){
+            if(MY_MAZE_MODEL == null){
                 JOptionPane.showMessageDialog(myParent, "No current game to save!");
             }
             if((new File("savedGame.ser")).exists()){
@@ -130,7 +132,7 @@ public class MenuBar extends JMenuBar
                 ObjectOutputStream out = new ObjectOutputStream(file);
 
                 // Method for serialization of object
-                out.writeObject(StartGameFrame.MY_MAZE_MODEL);
+                out.writeObject(MY_MAZE_MODEL);
 
                 out.close();
                 file.close();
@@ -149,6 +151,28 @@ public class MenuBar extends JMenuBar
         });
 
         myLoadGameItem.addActionListener(theEvent -> {
+            if(GameFrame.getInstance().isVisible()){
+                JOptionPane.showMessageDialog(myParent, "Can't load game while current is active!");
+                return;
+            }
+                try {
+                    FileInputStream file = new FileInputStream("savedGame.ser");
+                    ObjectInputStream in = new ObjectInputStream (file);
+                    MY_MAZE_MODEL = (Maze)in.readObject();
+                    in.close();
+                    file.close();
+
+                }catch (IOException ex) {
+                    System.err.println(ex);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+                finally {
+                    if(MY_MAZE_MODEL != null){
+                        GameFrame gameFrame = GameFrame.getInstance();
+                        gameFrame.setVisible(true);
+                    }
+                }
 
         });
 

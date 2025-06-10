@@ -9,8 +9,12 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import static View.StartGameFrame.MY_MAZE_MODEL;
+
 public class GameFrame extends JFrame implements PropertyChangeListener
 {
+    private static GameFrame myInstance;
+
     private GamePanel myGamePanel;
 
     private JLabel myBoardSizeInfoText;
@@ -19,19 +23,44 @@ public class GameFrame extends JFrame implements PropertyChangeListener
 
     private final int HEIGHT_OF_FRAME = 768;
 
-    GameFrame()
+    private GameFrame()
     {
         super();
+
+        this.setVisible(false);
         myGamePanel = new GamePanel();
         setUpFrame();
         addListeners();
 
-        //maze container
+
         StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
         this.setContentPane(myGamePanel);
         setUpLabels();
+        MenuBar menuBar = new MenuBar(this);
+        this.setJMenuBar(menuBar);
+        this.setLocationRelativeTo(null);
+        this.setBoardSizeInfo(MY_MAZE_MODEL.getMyMazeLength());
+    }
+    public static GameFrame getInstance() {
+        if (myInstance == null) {
+            myInstance = new GameFrame();
+        }
+        return myInstance;
     }
 
+
+    public static void resetInstance() {
+        if (myInstance != null) {
+            myInstance.dispose();
+            myInstance = null;
+        }
+    }
+    public void setVisible(boolean theBoolean) {
+        super.setVisible(theBoolean);
+    }
+    public boolean isVisible() {
+        return super.isVisible();
+    }
     public void setBoardSizeInfo(final int theBoardSizeInfo)
     {
         myBoardSizeInfoText.setText("Board Size: " + theBoardSizeInfo + " x " + theBoardSizeInfo);

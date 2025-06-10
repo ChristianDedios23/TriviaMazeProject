@@ -81,7 +81,6 @@ public class StartGameFrame extends JFrame
         this.add(myLoadGameButton);
         this.add(myTitleLabel);
     }
-
     private void addListeners()
     {
         //MazeModel.addPropertyChangeListener(this);
@@ -107,10 +106,7 @@ public class StartGameFrame extends JFrame
             }
             finally {
                 if(MY_MAZE_MODEL != null){
-                    myGameFrame = new GameFrame();
-                    myGameFrame.setJMenuBar(new MenuBar(myGameFrame));
-                    myGameFrame.setLocationRelativeTo(this);
-                    myGameFrame.setBoardSizeInfo(MY_MAZE_MODEL.getMyMazeLength());
+                    myGameFrame = GameFrame.getInstance();
                     myGameFrame.setVisible(true);
                     this.setVisible(false);
                 }
@@ -153,10 +149,7 @@ public class StartGameFrame extends JFrame
                 MY_MAZE_MODEL.editMyQuestionTypeSet(QuestionType.TRUE_OR_FALSE);
             }
 
-            myGameFrame = new GameFrame();
-            myGameFrame.setJMenuBar(new MenuBar(myGameFrame));
-            myGameFrame.setLocationRelativeTo(this);
-            myGameFrame.setBoardSizeInfo(mazeSize);
+            myGameFrame = GameFrame.getInstance();
             myGameFrame.setVisible(true);
             this.setVisible(false);
         });

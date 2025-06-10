@@ -48,6 +48,7 @@ class MazeTest {
         Maze maze = MazeFactory.createMaze(Difficulty.EASY);
         maze.editMyQuestionTypeSet(QuestionType.MULTIPLE_CHOICE);
         assertDoesNotThrow(maze::getQuestion);
+        assertNotNull(maze.getMyCurrentQuestion());
     }
 
     /**

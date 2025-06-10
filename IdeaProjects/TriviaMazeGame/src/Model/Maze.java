@@ -359,6 +359,9 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         ois.defaultReadObject();
         myPcs = new PropertyChangeSupport(this);
         QuestionFactory.setupQuestions();
+        for(QuestionType type: myQuestionTypes){
+            QuestionFactory.shuffleList(type);
+        }
 
     }
 }
