@@ -26,6 +26,8 @@ public class GamePanel extends JPanel implements PropertyChangeListener
 
     private JLabel myObjectiveLabel;
 
+    private JLabel myLocation;
+
     GamePanel()
     {
         StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
@@ -34,6 +36,12 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         addListeners();
         this.setLayout(null);
         this.add(myMazePanel);
+
+        myLocation = new JLabel("Current Position: 0");
+        myLocation.setFont(new Font("Serif", Font.BOLD, 25));
+        myLocation.setForeground(Color.WHITE);
+        myLocation.setBounds(300, 10, 300, 100);
+        this.add(myLocation);
 
         myObjectiveLabel = new JLabel("Objective: Find the exit!");
         myObjectiveLabel.setFont(new Font("Serif", Font.BOLD, 25));
@@ -154,7 +162,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener
     {
         if(evt.getPropertyName().equals("playerMove"))
         {
-            myObjectiveLabel.setText("Current Position: " + evt.getNewValue());
+            myLocation.setText("Current Position: " + evt.getNewValue());
         }
 
         if(evt.getPropertyName().equals("newQuestion"))
