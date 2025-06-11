@@ -5,9 +5,17 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.File;
 
+/**
+ * Utility class to play sound clips
+ */
 public class SoundClip {
+    /** Dummy Constructor */
     private SoundClip() {}
 
+    /**
+     * Plays a sound clips
+     * @param theFileName the filename of the sound clip
+     */
     public static void playSound(final String theFileName){
         try {
             File soundFile = new File(theFileName);

@@ -18,7 +18,10 @@ public class TrueAndFalseQuestion extends AbstractQuestion {
     public TrueAndFalseQuestion(final String theQuestion, final String theAnswer, final String theHint) {
         super(theQuestion, theAnswer, theHint);
     }
-
+    /**
+     * Getter for the question type.
+     * @return enum value TRUE_OR_FALSE.
+     */
     @Override
     public QuestionType getType() {
         return QuestionType.TRUE_OR_FALSE;
