@@ -340,6 +340,9 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         return myMaze.get(theRoom);
     }
 
+    /**
+     * @return the current player state
+     */
     public Player getPlayer()
     {
         return myPlayer;
