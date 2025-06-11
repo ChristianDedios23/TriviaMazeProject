@@ -157,7 +157,8 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         }
         myPcs.firePropertyChange(PROPERTY_PLAYER_MOVE, myCurrentRoom, theRoom);
         myCurrentRoom = theRoom;
-        }
+        checkIfExit(myCurrentRoom);
+    }
         
 
     /**
@@ -198,11 +199,11 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         Door backSide = getDoor(room, myDesiredDirection.getOpposite());
 
         if(!theCorrectAnswer){
+            myPcs.firePropertyChange(PROPERTY_QUESTION_WRONG, null, myCurrentRoom);//here
             frontSide.lockDoor();
             backSide.lockDoor();
             availablePathToExit();
             myPlayer.resetStreak();
-            myPcs.firePropertyChange(PROPERTY_QUESTION_WRONG, null, myCurrentRoom);//here
             return false;
         }
 
@@ -213,7 +214,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
             backSide.openDoor();
 
             //Change new value
-            myPcs.firePropertyChange(PROPERTY_QUESTION_RIGHT, myCurrentRoom, myDesiredDirection);//here
+            myPcs.firePropertyChange(PROPERTY_QUESTION_RIGHT, myCurrentRoom, myDesiredDirection);
             setCurrentRoom(room);
             myPlayer.addStreak();
             return true;
@@ -358,6 +359,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
         ois.defaultReadObject();
         myPcs = new PropertyChangeSupport(this);
+        myPlayer.setPcs(myPcs);
         QuestionFactory.setupQuestions();
         for(QuestionType type: myQuestionTypes){
             QuestionFactory.shuffleList(type);

@@ -1,6 +1,7 @@
 package View;
 
 import Model.Maze;
+import Util.SoundClip;
 
 import javax.swing.*;
 import java.awt.*;
@@ -111,15 +112,17 @@ public class GameFrame extends JFrame implements PropertyChangeListener
     @Override
     public void propertyChange(PropertyChangeEvent evt)
     {
-        //maybe give restart button but for now close game button
+
         if(evt.getPropertyName().equals("gameOver"))
         {
+            SoundClip.playSound("sound/lose.wav");
             int choice = JOptionPane.showOptionDialog(this, "Looks like there is no possible path to the exit, you lose :( ! Would you like to play again?", "Defeat", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
             checkIfPlayAgain(choice);
         }
 
         else if(evt.getPropertyName().equals("victory"))
         {
+            SoundClip.playSound("sound/win.wav");
             int choice = JOptionPane.showOptionDialog(this, "Congrats you won! Would you like to play again?", "Victory", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
             checkIfPlayAgain(choice);
         }

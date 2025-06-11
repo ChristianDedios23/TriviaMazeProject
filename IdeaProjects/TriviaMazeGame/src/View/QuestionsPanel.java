@@ -129,6 +129,9 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
         else if(evt.getPropertyName().equals("useHint") || evt.getPropertyName().equals("addHint"))
         {
             myHintsAvailableLabel.setText("Available Hints: " + evt.getNewValue());
+            if(evt.getPropertyName().equals("addHint")){
+                JOptionPane.showMessageDialog(null,"Received a Hint!" );
+            }
         }
 
         else if(evt.getPropertyName().equals("addStreak") || evt.getPropertyName().equals("resetStreak"))
