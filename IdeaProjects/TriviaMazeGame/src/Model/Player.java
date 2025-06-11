@@ -76,8 +76,13 @@ public class Player implements Serializable {
         myPcs.firePropertyChange("useHint", null, myHints);
 
     }
+
+    /**
+     * Sets the pcs of the player
+     * @param thePcs the pcs
+     */
     public void setPcs(final PropertyChangeSupport thePcs) {
-        myPcs =thePcs;
+        myPcs = thePcs;
     }
     /**
      * Determines if the user is due for a hint

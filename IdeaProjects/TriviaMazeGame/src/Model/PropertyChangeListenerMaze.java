@@ -2,6 +2,9 @@ package Model;
 
 import java.beans.PropertyChangeListener;
 
+/**
+ * Interface to remove some "magic data"
+ */
 public interface PropertyChangeListenerMaze {
 
     String PROPERTY_PLAYER_MOVE = "playerMove";
@@ -9,7 +12,7 @@ public interface PropertyChangeListenerMaze {
     String PROPERTY_NEW_QUESTION = "newQuestion";
     String PROPERTY_QUESTION_WRONG = "questionWrong";
     String PROPERTY_QUESTION_RIGHT = "questionRight";
-    
+
     String PROPERTY_VICTORY = "victory";
     String PROPERTY_GAMEOVER = "gameOver";
 
