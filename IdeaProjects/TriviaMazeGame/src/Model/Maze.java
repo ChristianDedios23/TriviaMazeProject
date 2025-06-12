@@ -199,9 +199,10 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         Door backSide = getDoor(room, myDesiredDirection.getOpposite());
 
         if(!theCorrectAnswer){
-            myPcs.firePropertyChange(PROPERTY_QUESTION_WRONG, null, myCurrentRoom);//here
             frontSide.lockDoor();
             backSide.lockDoor();
+            myPcs.firePropertyChange(PROPERTY_QUESTION_WRONG, null, myCurrentRoom);//here
+
             availablePathToExit();
             myPlayer.resetStreak();
             return false;
