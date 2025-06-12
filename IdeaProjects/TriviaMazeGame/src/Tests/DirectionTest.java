@@ -1,4 +1,4 @@
-package test;
+package Tests;
 
 import Model.Enum.Direction;
 import org.junit.jupiter.api.Test;

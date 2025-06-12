@@ -16,11 +16,11 @@ public class ShortAnswerQuestion extends AbstractQuestion {
         super(theQuestion, theAnswer, theHint);
     }
 
-    @Override
     /**
      * Getter for the question type.
      * @return enum value SHORT_ANSWER.
      */
+    @Override
     public QuestionType getType() {
         return QuestionType.SHORT_ANSWER;
     }

@@ -4,21 +4,22 @@ import Model.Enum.Difficulty;
 import Model.Enum.QuestionType;
 import Model.Maze;
 import Model.MazeFactory;
+import Model.QuestionFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
-public class StartGameFrame extends JFrame implements PropertyChangeListener
+public class StartGameFrame extends JFrame
 {
 
 
     public static Maze MY_MAZE_MODEL;
-    
 
     private final MenuBar myMenuBar;
     private final GameSettingsWindow myGameSettingsWindow;
@@ -29,18 +30,14 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
     private final JButton myLoadGameButton;
     private final JLabel myTitleLabel;
 
-    //maybe make variable for view to check if all of maze will
-    //be shown or not
-
-    //use the question factory for checking the questions
     public StartGameFrame()
     {
         super();
-        myMenuBar = new MenuBar(this);
         myNewGameButton = new JButton();
         myLoadGameButton = new JButton();
         myTitleLabel = new JLabel();
-        myGameSettingsWindow = new GameSettingsWindow(this);
+        myGameSettingsWindow = new GameSettingsWindow();
+        myMenuBar = new MenuBar(this);
 
         setUpFrame();
         setUpPageElements();
@@ -74,6 +71,7 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
 
         myLoadGameButton.setText("Load Game");
         myLoadGameButton.setBounds(290, 290, WIDTH_OF_BUTTON, HEIGHT_OF_BUTTON);
+        myLoadGameButton.setMnemonic(KeyEvent.VK_L);
 
         myTitleLabel.setText("<html>The Great Trivia Escape!<br>Think Your Way Out!</html>");
         myTitleLabel.setBounds(200, 50, 325, 200);
@@ -83,7 +81,6 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
         this.add(myLoadGameButton);
         this.add(myTitleLabel);
     }
-
     private void addListeners()
     {
         //MazeModel.addPropertyChangeListener(this);
@@ -95,7 +92,26 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
 
         //make method so both do the same
         myLoadGameButton.addActionListener(theEvent -> {
-            //this.dispatchEvent(new KeyEvent());
+            try {
+                FileInputStream file = new FileInputStream("savedGame.ser");
+                ObjectInputStream in = new ObjectInputStream (file);
+                MY_MAZE_MODEL = (Maze)in.readObject();
+                in.close();
+                file.close();
+
+            }catch (IOException ex) {
+                System.err.println(ex);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            finally {
+                if(MY_MAZE_MODEL != null){
+                    myGameFrame = GameFrame.getInstance();
+                    myGameFrame.setVisible(true);
+                    this.setVisible(false);
+                }
+            }
+
         });
 
         myGameSettingsWindow.getStartGameButton().addActionListener(theEvent -> {
@@ -120,23 +136,20 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
 
             if (myGameSettingsWindow.getMultipleChoiceBox().isSelected())
             {
-               MY_MAZE_MODEL.setQuestionType(QuestionType.MULTIPLE_CHOICE);
+                MY_MAZE_MODEL.editMyQuestionTypeSet(QuestionType.MULTIPLE_CHOICE);
             }
 
             if (myGameSettingsWindow.getShortAnswerCheckBox().isSelected())
             {
-                MY_MAZE_MODEL.setQuestionType(QuestionType.SHORT_ANSWER);
+                MY_MAZE_MODEL.editMyQuestionTypeSet(QuestionType.SHORT_ANSWER);
             }
 
             if (myGameSettingsWindow.getTrueFalseCheckBox().isSelected())
             {
-                MY_MAZE_MODEL.setQuestionType(QuestionType.TRUE_OR_FALSE);
+                MY_MAZE_MODEL.editMyQuestionTypeSet(QuestionType.TRUE_OR_FALSE);
             }
 
-            myGameFrame = new GameFrame();
-            myGameFrame.setJMenuBar(new MenuBar(myGameFrame));
-            myGameFrame.setLocationRelativeTo(this);
-            myGameFrame.setBoardSizeInfo(mazeSize);
+            myGameFrame = GameFrame.getInstance();
             myGameFrame.setVisible(true);
             this.setVisible(false);
         });
@@ -157,13 +170,5 @@ public class StartGameFrame extends JFrame implements PropertyChangeListener
                 }
             }
         });
-    }
-
-    //private void check
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt)
-    {
-
     }
 }

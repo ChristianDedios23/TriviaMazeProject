@@ -1,8 +1,12 @@
 package View;
 
 import Model.Maze;
+import Util.SoundClip;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -30,13 +34,18 @@ public class MazePanel extends JPanel implements PropertyChangeListener
         super();
         this.setLayout(null);
         this.setOpaque(false);
+
         StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
 
         myRoomPanelMap = new HashMap<>();
         myMazeSize = StartGameFrame.MY_MAZE_MODEL.getMyMazeLength();
         myRoomLength = myMazeSize * 75;
         initializeRoomPanelMap();
-        myCurrentRoom = 0;
+        if(StartGameFrame.MY_MAZE_MODEL != null){
+            myCurrentRoom = StartGameFrame.MY_MAZE_MODEL.getMyCurrentRoom();
+        }else{
+            myCurrentRoom = 0;
+        }
         myRoomPanelMap.get(myCurrentRoom).setMyIsCurrentRoom(true);
 
         this.setPreferredSize(new Dimension(myRoomLength, myRoomLength));
@@ -96,20 +105,16 @@ public class MazePanel extends JPanel implements PropertyChangeListener
         else if(evt.getPropertyName().equals("questionWrong"))
         {
             myRoomPanelMap.get(myCurrentRoom).setMyIsCurrentRoom(true);
-            JOptionPane.showMessageDialog(this, "Get your money up not your funny up", "Incorrect Answer", JOptionPane.ERROR_MESSAGE);
+            SoundClip.playSound("sound/wrong.wav");
+            JOptionPane.showMessageDialog(this, "Boo hoo! You got it wrong.", "Incorrect Answer", JOptionPane.ERROR_MESSAGE);
 
         }
 
         else if(evt.getPropertyName().equals("questionRight"))
         {
+            SoundClip.playSound("sound/correct.wav");
             JOptionPane.showMessageDialog(this, "Congrats! You got it correct!");
-        }
 
-        //maybe give restart button but for now close game button
-        else if(evt.getPropertyName().equals("gameOver"))
-        {
-            JOptionPane.showMessageDialog(this, "Looks like there is no possible path to the exit, you lose :(");
-            System.exit(0);
         }
     }
 }

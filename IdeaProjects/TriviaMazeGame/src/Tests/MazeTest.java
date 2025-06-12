@@ -1,9 +1,10 @@
-package test;
+package Tests;
 
 import Model.*;
 import Model.Enum.Difficulty;
 import Model.Enum.Direction;
 import Model.Enum.DoorState;
+import Model.Enum.QuestionType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +23,33 @@ class MazeTest {
         assertTrue(maze.checkIfExit(24));
     }
 
+    /**
+     * Tests getMazeLength method
+     */
+    @Test
+    void testGetMazeLength(){
+        assertEquals(5, MazeFactory.createMaze(Difficulty.EASY).getMyMazeLength());
+        assertEquals(6, MazeFactory.createMaze(Difficulty.MEDIUM).getMyMazeLength());
+        assertEquals(7, MazeFactory.createMaze(Difficulty.HARD).getMyMazeLength());
+    }
 
+    /**
+     * Tests getPlayer method
+     */
+    @Test
+    void testGetPlayer(){
+        assertNotNull(MazeFactory.createMaze(Difficulty.EASY).getPlayer());
+    }
+    /**
+     * Tests getPlayer method
+     */
+    @Test
+    void testGetQuestion(){
+        Maze maze = MazeFactory.createMaze(Difficulty.EASY);
+        maze.editMyQuestionTypeSet(QuestionType.MULTIPLE_CHOICE);
+        assertDoesNotThrow(maze::getQuestion);
+        assertNotNull(maze.getMyCurrentQuestion());
+    }
 
     /**
      * Tests getRoom on a valid roomNum

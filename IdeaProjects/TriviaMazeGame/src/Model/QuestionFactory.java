@@ -40,11 +40,6 @@ public class QuestionFactory {
      */
     private static List<ShortAnswerQuestion> myShortAnswerQuestionList = new ArrayList<>();
 
-    /**
-     * Set that stores the type of questions currently active in the game.
-     */
-    private static Set<QuestionType> myQuestionTypeSet = new HashSet<QuestionType>();
-
     private QuestionFactory() {
     }
 
@@ -97,9 +92,9 @@ public class QuestionFactory {
      * in the question type set and returns it.
      * @return question A random question based on the settings of the game.
      */
-    public static AbstractQuestion getQuestion() {
+    public static AbstractQuestion getQuestion(final Set<QuestionType> theQuestionTypes) {
         Random rand = new Random();
-        String type = myQuestionTypeSet.toArray()[rand.nextInt(myQuestionTypeSet.size())].toString();
+        String type = theQuestionTypes.toArray()[rand.nextInt(theQuestionTypes.size())].toString();
         AbstractQuestion question = null;
         if(type.equals("MULTIPLE_CHOICE")) {
             if(myMCCurrentIndex >= myMCQuestionList.size()) {
@@ -129,25 +124,12 @@ public class QuestionFactory {
     }
 
 
-    /**
-     * Changes the selection of questions to choose from.
-     * @param theQuestionType the question type being added or removed from the set.
-     */
-    public static void editMyQuestionTypeSet(final QuestionType theQuestionType) {
-        if (myQuestionTypeSet.contains(theQuestionType)) {
-            myQuestionTypeSet.remove(theQuestionType);
-        } else {
-            myQuestionTypeSet.add(theQuestionType);
-        }
-
-        shuffleList(theQuestionType);
-    }
 
     /**
      * Shuffles the list after the questions have all been asked.
-     * @param theQuestionType
+     * @param theQuestionType the question type to be added or removed
      */
-    private static void shuffleList(final QuestionType theQuestionType) {
+    static void shuffleList(final QuestionType theQuestionType) {
         if(theQuestionType == SHORT_ANSWER) {
             Collections.shuffle(myShortAnswerQuestionList);
         }
@@ -159,11 +141,4 @@ public class QuestionFactory {
         }
     }
 
-    /**
-     * Method to check what types of questions are available.
-     * @return myQuestionTypeSet a set of questionTypes i currently have at my disposal.
-     */
-    public static Set<QuestionType> checkQuestionTypes() {
-        return myQuestionTypeSet;
-    }
 }

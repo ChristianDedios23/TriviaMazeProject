@@ -19,7 +19,7 @@ public class Player implements Serializable {
     /** Current held hints*/
     private int myHints;
     /** PCS from the Maze*/
-    private final PropertyChangeSupport myPcs;
+    private transient PropertyChangeSupport myPcs;
 
     /**
      * Constructs the Player with set difficulty
@@ -77,6 +77,13 @@ public class Player implements Serializable {
 
     }
 
+    /**
+     * Sets the pcs of the player
+     * @param thePcs the pcs
+     */
+    public void setPcs(final PropertyChangeSupport thePcs) {
+        myPcs = thePcs;
+    }
     /**
      * Determines if the user is due for a hint
      * depending on the difficulty

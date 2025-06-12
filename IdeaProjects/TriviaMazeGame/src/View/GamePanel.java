@@ -22,6 +22,12 @@ public class GamePanel extends JPanel implements PropertyChangeListener
 
     private JPanel myButtonLocation;
 
+    private JLabel myCurrentTask;
+
+    private JLabel myObjectiveLabel;
+
+    private JLabel myLocation;
+
     GamePanel()
     {
         StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
@@ -31,10 +37,28 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         this.setLayout(null);
         this.add(myMazePanel);
 
+        myLocation = new JLabel("Current Position: 0");
+        myLocation.setFont(new Font("Serif", Font.BOLD, 25));
+        myLocation.setForeground(Color.WHITE);
+        myLocation.setBounds(300, 10, 300, 100);
+        this.add(myLocation);
+
+        myObjectiveLabel = new JLabel("Objective: Find the exit!");
+        myObjectiveLabel.setFont(new Font("Serif", Font.BOLD, 25));
+        myObjectiveLabel.setForeground(Color.WHITE);
+        myObjectiveLabel.setBounds(575, 575, 300, 100);
+        this.add(myObjectiveLabel);
+
+        myCurrentTask = new JLabel("Current Task:");
+        myCurrentTask.setFont(new Font("Serif", Font.BOLD, 25));
+        myCurrentTask.setForeground(Color.WHITE);
+        myCurrentTask.setBounds(575, 525, 450, 100);
+        this.add(myCurrentTask);
 
         QuestionsPanel myQuestionPanel = new QuestionsPanel();
         this.add(myQuestionPanel);
         this.setPreferredSize(new Dimension(1024, 768));
+
 
     }
 
@@ -53,11 +77,17 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         myLeftButton = new JButton("Left");
         myRightButton = new JButton("Right");
 
+        //only works on windows
         myUpButton.setMnemonic(KeyEvent.VK_W);
         myDownButton.setMnemonic(KeyEvent.VK_S);
         myLeftButton.setMnemonic(KeyEvent.VK_A);
         myRightButton.setMnemonic(KeyEvent.VK_D);
-
+        if(StartGameFrame.MY_MAZE_MODEL.getMyCurrentQuestion() != null){
+            myUpButton.setEnabled(false);
+            myDownButton.setEnabled(false);
+            myLeftButton.setEnabled(false);
+            myRightButton.setEnabled(false);
+        }
         gbc.gridx = 1;
         gbc.gridy = 0;
         myButtonLocation.add(myUpButton, gbc);
@@ -130,14 +160,21 @@ public class GamePanel extends JPanel implements PropertyChangeListener
     @Override
     public void propertyChange(PropertyChangeEvent evt)
     {
+        if(evt.getPropertyName().equals("playerMove"))
+        {
+            myLocation.setText("Current Position: " + evt.getNewValue());
+        }
+
         if(evt.getPropertyName().equals("newQuestion"))
         {
             enableButtons(false);
+            myCurrentTask.setText("Current Task: Answer the question");
         }
 
         else if(evt.getPropertyName().equals("questionWrong") || evt.getPropertyName().equals("questionRight"))
         {
             enableButtons(true);
+            myCurrentTask.setText("Current Task: Choose a valid direction");
         }
     }
 

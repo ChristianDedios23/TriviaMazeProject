@@ -1,4 +1,4 @@
-package test;
+package Tests;
 
 import Model.Enum.Difficulty;
 import Model.Player;

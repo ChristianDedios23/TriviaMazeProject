@@ -2,6 +2,7 @@ package View.QuestionTypePanels;
 
 import Model.AbstractQuestion;
 import Model.Enum.QuestionType;
+import Model.MultipleChoiceQuestion;
 import Model.ShortAnswerQuestion;
 import View.StartGameFrame;
 
@@ -23,7 +24,10 @@ public class ShortAnswerPanel extends JPanel implements PropertyChangeListener
         StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
         this.setLayout(new GridLayout());
         myShortAnswerTextField = new JTextField("Enter your answer...");
-
+        AbstractQuestion question = StartGameFrame.MY_MAZE_MODEL.getMyCurrentQuestion();
+        if(question instanceof ShortAnswerQuestion){
+            myCurrentQuestion = (ShortAnswerQuestion) question;
+        }
         mySubmitButton = new JButton("Submit");
         this.add(myShortAnswerTextField);
         this.add(mySubmitButton);

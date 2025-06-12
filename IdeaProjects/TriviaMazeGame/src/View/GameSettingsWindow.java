@@ -29,7 +29,7 @@ public class GameSettingsWindow extends JDialog
 
     private final JButton myStartGameButton;
 
-    GameSettingsWindow(final JFrame theParent)
+    GameSettingsWindow()
     {
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         this.setTitle("Game settings:");
@@ -44,7 +44,6 @@ public class GameSettingsWindow extends JDialog
 
         setUpQuestionPanel();
         setUpDifficultyPanel();
-        setUpBoardPanel();
 
         myStartGameButton = new JButton("Start Game");
         this.add(myStartGameButton);
@@ -79,14 +78,6 @@ public class GameSettingsWindow extends JDialog
         myDifficultyPanel.add(myMediumButton);
         myDifficultyPanel.add(myHardButton);
         this.add(myDifficultyPanel);
-    }
-
-    private void setUpBoardPanel()
-    {
-        myBoardPanel.setBorder(BorderFactory.createTitledBorder("Other Options:"));
-        JCheckBox myBoardCheckBox = new JCheckBox("Fully Visible Board:");
-        myBoardPanel.add(myBoardCheckBox);
-        this.add(myBoardPanel);
     }
 
     public void makeVisible(boolean isVisible)

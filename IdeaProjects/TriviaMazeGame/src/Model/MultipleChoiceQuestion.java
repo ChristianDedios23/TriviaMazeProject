@@ -32,12 +32,11 @@ public class MultipleChoiceQuestion extends AbstractQuestion {
     }
 
 
-
-    @Override
     /**
      * Getter for the question type.
-     * @returns enum value MULTIPLE_CHOICE.
+     * @return enum value MULTIPLE_CHOICE.
      */
+    @Override
     public QuestionType getType() {
         return QuestionType.MULTIPLE_CHOICE;
     }

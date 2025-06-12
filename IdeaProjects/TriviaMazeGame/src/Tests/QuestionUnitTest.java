@@ -77,7 +77,7 @@ public class QuestionUnitTest {
 
         assertEquals("look outside", question1.getHint());
         assertEquals("look outside", question2.getHint());
-        assertEquals("count your finger", question3.getHint());
+        assertEquals("count your fingers", question3.getHint());
     }
 
 

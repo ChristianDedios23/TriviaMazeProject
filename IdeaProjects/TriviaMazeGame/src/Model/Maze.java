@@ -7,6 +7,8 @@ import Model.Enum.QuestionType;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -45,9 +47,9 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     private final int myExit;
     /** State of the current question*/
     private AbstractQuestion myCurrentQuestion;
-
+    private final Set<QuestionType> myQuestionTypes;
     /** PCS to signal to view */
-    private final transient PropertyChangeSupport myPcs;
+    private transient PropertyChangeSupport myPcs;
     /**
      * Constructs a maze object based on the given length
      * @param theLength, the desired length of the maze
@@ -59,22 +61,32 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         myExit = (int) Math.pow(myMazeLength, 2) - 1;
         myPcs = new PropertyChangeSupport(this);
         myPlayer = new Player(theDifficulty, myPcs);
-        //use player methods inside this class and catch property changfe evenets
         myCurrentQuestion = null;
+        myQuestionTypes = new HashSet<>();
         QuestionFactory.setupQuestions();
+    }
+    public void editMyQuestionTypeSet(final QuestionType theQuestionType) {
+        if (myQuestionTypes.contains(theQuestionType)) {
+            myQuestionTypes.remove(theQuestionType);
+        } else {
+            myQuestionTypes.add(theQuestionType);
+        }
+
+        QuestionFactory.shuffleList(theQuestionType);
+    }
+    /**
+     * Gets a new question for the user to answer
+     */
+    public void getQuestion(){
+        myCurrentQuestion = QuestionFactory.getQuestion(myQuestionTypes);
+        myPcs.firePropertyChange(PROPERTY_NEW_QUESTION, null, myCurrentQuestion);
     }
 
     /**
-     * Sets the question type given to be available during the game.
-     * @param theType the question type chosen.
+     * @return the current active question
      */
-    public void setQuestionType(QuestionType theType) {
-        QuestionFactory.editMyQuestionTypeSet(theType);
-    }
-
-    public void getQuestion(){
-        myCurrentQuestion = QuestionFactory.getQuestion();
-        myPcs.firePropertyChange(PROPERTY_NEW_QUESTION, null, myCurrentQuestion);
+    public AbstractQuestion getMyCurrentQuestion(){
+       return myCurrentQuestion;
     }
     /**
      * Initializes myMaze with Room objects and links them
@@ -145,37 +157,10 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         }
         myPcs.firePropertyChange(PROPERTY_PLAYER_MOVE, myCurrentRoom, theRoom);
         myCurrentRoom = theRoom;
-        firePCSSurroundingRooms();
+        checkIfExit(myCurrentRoom);
+    }
         
-    }
-    /**
-     * Fires a PCS to tell the state of all surrounding doors
-     */
-    private void firePCSSurroundingRooms(){
-        for(Direction direction: Direction.values()){
-            firePCSForDoor(direction);
-        }
-    }
-    /**
-     * Fires a PCS to tell the state of a door in a direction
-     * @param theDirection the direction of the door/room
-     */
-    private void firePCSForDoor(final Direction theDirection){
-        int room = canMove(myCurrentRoom, theDirection);
-        String event = "door" + theDirection;
-        if(room == -1){
-            myPcs.firePropertyChange(event, null, DoorState.LOCKED);
-            return;
-        }
-        DoorState state = getDoor(myCurrentRoom, theDirection).getDoorState();
-        if(state == DoorState.LOCKED){
-            myPcs.firePropertyChange(event, null, DoorState.LOCKED);
-        }else if(state == DoorState.OPEN){
-            myPcs.firePropertyChange(event, null, DoorState.OPEN);
-        }else{
-            myPcs.firePropertyChange(event, null, DoorState.QUESTION);
-        }
-    }
+
     /**
      * Attempts a move to another room by checking the door
      * If not open, but not locked, it will ask the user a quetion
@@ -185,7 +170,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
    
     public DoorState checkDoorState(final Direction theDirection){
         int room = canMove(myCurrentRoom, theDirection); 
-        if(room > 0){
+        if(room >= 0){
             myDesiredDirection = theDirection;
             Door frontSide = getDoor(myCurrentRoom, theDirection);
             Door backSide = getDoor(room, theDirection.getOpposite());
@@ -205,6 +190,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
      * @return true if the move was valid, false if else 
      */
     public boolean move(final boolean theCorrectAnswer){
+        myCurrentQuestion = null;
         int room = canMove(myCurrentRoom, myDesiredDirection);
         if(room < 0){
             return false;
@@ -213,11 +199,11 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         Door backSide = getDoor(room, myDesiredDirection.getOpposite());
 
         if(!theCorrectAnswer){
+            myPcs.firePropertyChange(PROPERTY_QUESTION_WRONG, null, myCurrentRoom);//here
             frontSide.lockDoor();
             backSide.lockDoor();
             availablePathToExit();
             myPlayer.resetStreak();
-            myPcs.firePropertyChange(PROPERTY_QUESTION_WRONG, null, myCurrentRoom);//here
             return false;
         }
 
@@ -228,7 +214,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
             backSide.openDoor();
 
             //Change new value
-            myPcs.firePropertyChange(PROPERTY_QUESTION_RIGHT, myCurrentRoom, myDesiredDirection);//here
+            myPcs.firePropertyChange(PROPERTY_QUESTION_RIGHT, myCurrentRoom, myDesiredDirection);
             setCurrentRoom(room);
             myPlayer.addStreak();
             return true;
@@ -292,9 +278,8 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
                 }else{
                     return -1;
                 }
-            default:
-                throw new IllegalArgumentException("Invalid direction: "+ theDirection);
         }
+        return -1;
     }
     
     /**
@@ -314,7 +299,7 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
                 Door door = getDoor(room, direction);
                 if(door.getDoorState() != DoorState.LOCKED){
                     int nextRoom = canMove(room, direction);
-                    if(nextRoom > 0){
+                    if(nextRoom >= 0){
                         if(checkIfExit(nextRoom)){
                             return;
                         }
@@ -355,6 +340,9 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
         return myMaze.get(theRoom);
     }
 
+    /**
+     * @return the current player state
+     */
     public Player getPlayer()
     {
         return myPlayer;
@@ -369,5 +357,16 @@ public class Maze implements PropertyChangeListenerMaze, Serializable {
     @Override
     public void addPropertyChangeListener(PropertyChangeListener theListener) {
         myPcs.addPropertyChangeListener(theListener);
+    }
+    @Serial
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+        myPcs = new PropertyChangeSupport(this);
+        myPlayer.setPcs(myPcs);
+        QuestionFactory.setupQuestions();
+        for(QuestionType type: myQuestionTypes){
+            QuestionFactory.shuffleList(type);
+        }
+
     }
 }
