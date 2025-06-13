@@ -1,34 +1,45 @@
 package View;
 
 import javax.swing.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import Model.Enum.QuestionType;
 
-import static View.StartGameFrame.MY_MAZE_MODEL;
-
+/** This class represents the game settings window that the
+ * user interacts with to affect the state of the maze.
+ *
+ * @author Christian Dedios, Jason Dinh, Khalid Mohamed
+ * @version 1.0
+ */
 public class GameSettingsWindow extends JDialog
 {
+    /** This panel asks the user the type of questions they want*/
     private final JPanel myQuestionsPanel;
 
+    /** This panel asks the user the type of difficulty they want.*/
     private final JPanel myDifficultyPanel;
 
+    /** This represents multiple choice questions.*/
     private JCheckBox myMultipleChoiceBox;
 
+    /** This represents true or false questions.*/
     private JCheckBox myTrueFalseCheckBox;
 
+    /** This represents short answer questions.*/
     private JCheckBox myShortAnswerCheckBox;
 
-    private final JPanel myBoardPanel;
-
+    /** This represents the easy mode.*/
     private JRadioButton myEasyButton;
 
+    /** This represents the medium mode.*/
     private JRadioButton myMediumButton;
 
+    /** This represents the hard mode.*/
     private JRadioButton myHardButton;
 
+    /** This buttons creates the game with the desired settings.*/
     private final JButton myStartGameButton;
 
+    /** This constructor initializes the properties of the GameSettingsWindow,
+     * and both the difficulty and question panel properties.
+     */
     GameSettingsWindow()
     {
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
@@ -40,7 +51,6 @@ public class GameSettingsWindow extends JDialog
 
         myQuestionsPanel = new JPanel();
         myDifficultyPanel = new JPanel();
-        myBoardPanel = new JPanel();
 
         setUpQuestionPanel();
         setUpDifficultyPanel();
@@ -50,6 +60,9 @@ public class GameSettingsWindow extends JDialog
         this.pack();
     }
 
+    /** This method adds all the contents necessary for the
+     * question panel to be interactive with the user.
+     */
     private void setUpQuestionPanel()
     {
         myMultipleChoiceBox = new JCheckBox("Multiple Choice");
@@ -63,6 +76,9 @@ public class GameSettingsWindow extends JDialog
         this.add(myQuestionsPanel);
     }
 
+    /** This method adds all the contents necessary for the
+     * difficulty panel to be interactive with the user.
+     */
     private void setUpDifficultyPanel()
     {
         ButtonGroup myDifficultyButtons = new ButtonGroup();
@@ -80,23 +96,51 @@ public class GameSettingsWindow extends JDialog
         this.add(myDifficultyPanel);
     }
 
+    /** This method sets the visible of the GameSettingsWindow.
+     *
+     * @param isVisible the visibility of the GameSettingsWindow.
+     */
     public void makeVisible(boolean isVisible)
     {
         this.setVisible(isVisible);
     }
 
+    /** This method retrieves the start game button.
+     *
+     * @return the start game button.
+     */
     public JButton getStartGameButton()
     {
         return myStartGameButton;
     }
 
+    /** This method retrieves the easy mode button.
+     *
+     * @return the easy mode button.
+     */
     public JRadioButton getEasyButton() { return myEasyButton;}
 
+    /** This method retrieves the medium mode button.
+     *
+     * @return the medium mode button.
+     */
     public JRadioButton getMediumButton() { return myMediumButton;}
 
+    /** This method retrieves the multiple choice question box.
+     *
+     * @return the multiple choice question box.
+     */
     public JCheckBox getMultipleChoiceBox(){ return myMultipleChoiceBox;}
 
+    /** This method retrieves the true or false question box.
+     *
+     * @return the true or false question box.
+     */
     public JCheckBox getTrueFalseCheckBox() {return myTrueFalseCheckBox;}
 
+    /** This method retrieves short answer question box.
+     *
+     * @return the short answer question box.
+     */
     public JCheckBox getShortAnswerCheckBox(){return myShortAnswerCheckBox;}
 }

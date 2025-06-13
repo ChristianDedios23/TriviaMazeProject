@@ -9,25 +9,37 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-//To-D0 - Make it so when the player cant move in certain direction, deactivate button or give error to user
+/** This class represents a panel that holds the buttons that the player
+ * uses to move directions, labels that give the user information, and
+ * both the question and maze panel.
+ *
+ * @author Christian Dedios, Jason Dinh, Khalid Mohamed.
+ * @version 1.0
+ */
 public class GamePanel extends JPanel implements PropertyChangeListener
 {
+    /** This is the up button.*/
     private JButton myUpButton;
 
+    /** This is the down button.*/
     private JButton myDownButton;
 
+    /** This is the left button.*/
     private JButton myLeftButton;
 
+    /** This is the right button.*/
     private JButton myRightButton;
 
-    private JPanel myButtonLocation;
+    /** This is the current task that is displayed to the player.*/
+    private final JLabel myCurrentTask;
 
-    private JLabel myCurrentTask;
+    /** This represents the current location of the player.*/
+    private final JLabel myLocation;
 
-    private JLabel myObjectiveLabel;
-
-    private JLabel myLocation;
-
+    /** This constructor initializes all the labels that are used to inform the
+     * user about the state of the game as well as adding the necessary components
+     * to display the questions and maze.
+     */
     GamePanel()
     {
         StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
@@ -43,7 +55,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         myLocation.setBounds(300, 10, 300, 100);
         this.add(myLocation);
 
-        myObjectiveLabel = new JLabel("Objective: Find the exit!");
+        JLabel myObjectiveLabel = new JLabel("Objective: Find the exit!");
         myObjectiveLabel.setFont(new Font("Serif", Font.BOLD, 25));
         myObjectiveLabel.setForeground(Color.WHITE);
         myObjectiveLabel.setBounds(575, 575, 300, 100);
@@ -62,9 +74,10 @@ public class GamePanel extends JPanel implements PropertyChangeListener
 
     }
 
+    /** This method initializes and sets the location of the buttons.*/
     private void setUpButtons()
     {
-        myButtonLocation = new JPanel(new GridBagLayout());
+        JPanel myButtonLocation = new JPanel(new GridBagLayout());
         myButtonLocation.setBackground(new Color(101, 140, 225));
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -82,12 +95,15 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         myDownButton.setMnemonic(KeyEvent.VK_S);
         myLeftButton.setMnemonic(KeyEvent.VK_A);
         myRightButton.setMnemonic(KeyEvent.VK_D);
-        if(StartGameFrame.MY_MAZE_MODEL.getMyCurrentQuestion() != null){
+
+        if(StartGameFrame.MY_MAZE_MODEL.getMyCurrentQuestion() != null)
+        {
             myUpButton.setEnabled(false);
             myDownButton.setEnabled(false);
             myLeftButton.setEnabled(false);
             myRightButton.setEnabled(false);
         }
+
         gbc.gridx = 1;
         gbc.gridy = 0;
         myButtonLocation.add(myUpButton, gbc);
@@ -107,9 +123,10 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         this.add(myButtonLocation);
     }
 
+    /** This method adds listeners to all the buttons in the panel.*/
     private void addListeners()
     {
-        //temp, change
+        //Checks if going up is a valid move or not.
         myUpButton.addActionListener(theEvent -> {
             if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.UP) == DoorState.QUESTION) StartGameFrame.MY_MAZE_MODEL.getQuestion();
 
@@ -118,6 +135,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener
             else{ JOptionPane.showMessageDialog(this, "You can not access this area, try another direction!");}
         });
 
+        //Checks if going down is a valid move or not.
         myDownButton.addActionListener(theEvent -> {
             if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.DOWN) == DoorState.QUESTION) StartGameFrame.MY_MAZE_MODEL.getQuestion();
 
@@ -126,6 +144,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener
             else{ JOptionPane.showMessageDialog(this, "You can not access this area, try another direction!");}
         });
 
+        //Checks if going left is a valid move or not.
         myLeftButton.addActionListener(theEvent -> {
             if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.LEFT) == DoorState.QUESTION) StartGameFrame.MY_MAZE_MODEL.getQuestion();
 
@@ -134,6 +153,7 @@ public class GamePanel extends JPanel implements PropertyChangeListener
             else{ JOptionPane.showMessageDialog(this, "You can not access this area, try another direction!");}
         });
 
+        //Checks if going right is a valid move or not.
         myRightButton.addActionListener(theEvent -> {
             if(StartGameFrame.MY_MAZE_MODEL.checkDoorState(Direction.RIGHT) == DoorState.QUESTION) StartGameFrame.MY_MAZE_MODEL.getQuestion();
 
@@ -143,6 +163,11 @@ public class GamePanel extends JPanel implements PropertyChangeListener
         });
     }
 
+    /** This method sets all the buttons either enabled or disabled,
+     * it depends on the argument passed in.
+     *
+     * @param theIsEnabled Tells the buttons if they are enabled or disabled.
+     */
     public void enableButtons(final boolean theIsEnabled)
     {
         myUpButton.setEnabled(theIsEnabled);
@@ -152,37 +177,43 @@ public class GamePanel extends JPanel implements PropertyChangeListener
     }
 
     /**
-     * This method gets called when a bound property is changed.
+     * This method gets called when a bound property is changed. Depending
+     * on what this method hears, certain actions will be performed to either
+     * enable/disable the buttons or change the text of a label.
      *
-     * @param evt A PropertyChangeEvent object describing the event source
+     * @param myEvt A PropertyChangeEvent object describing the event source
      *            and the property that has changed.
      */
     @Override
-    public void propertyChange(PropertyChangeEvent evt)
+    public void propertyChange(final PropertyChangeEvent myEvt)
     {
-        if(evt.getPropertyName().equals("playerMove"))
+        if(myEvt.getPropertyName().equals("playerMove"))
         {
-            myLocation.setText("Current Position: " + evt.getNewValue());
+            myLocation.setText("Current Position: " + myEvt.getNewValue());
         }
 
-        if(evt.getPropertyName().equals("newQuestion"))
+        if(myEvt.getPropertyName().equals("newQuestion"))
         {
             enableButtons(false);
             myCurrentTask.setText("Current Task: Answer the question");
         }
 
-        else if(evt.getPropertyName().equals("questionWrong") || evt.getPropertyName().equals("questionRight"))
+        else if(myEvt.getPropertyName().equals("questionWrong") || myEvt.getPropertyName().equals("questionRight"))
         {
             enableButtons(true);
             myCurrentTask.setText("Current Task: Choose a valid direction");
         }
     }
 
+    /** This method paints the background of the game light blue.
+     *
+     * @param theG Paints the background of the game.
+     */
     @Override
-    protected void paintComponent(Graphics g)
+    protected void paintComponent(final Graphics theG)
     {
-        super.paintComponent(g);
-        g.setColor(new Color(101, 140, 225));
-        g.fillRect(0, 0, 1024, 768);
+        super.paintComponent(theG);
+        theG.setColor(new Color(101, 140, 225));
+        theG.fillRect(0, 0, 1024, 768);
     }
 }

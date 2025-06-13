@@ -10,24 +10,44 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/** This QuestionPanel class is used to hold all the question related
+ * components. This includes displaying the question, hints,
+ * the place to answer questions, and player streaks.
+ *
+ * @author Christian Dedios, Jason Dinh, Khalid Mohamed
+ * @version 1.0
+ */
 public class QuestionsPanel extends JPanel implements PropertyChangeListener
 {
+    /** This is used to display the question*/
     private JTextArea myQuestionTextArea;
 
+    /** This player object is used to contain the streak and
+     * the number of hints available.*/
     private Player myPlayer;
 
-    private QuestionTypeContainerPanel myQuestionContainer;
+    /** This object contains the different types of questions
+     * that could be asked.*/
+    private final QuestionTypeContainerPanel myQuestionContainer;
 
+    /** This represents the current type of question being asked*/
     private AbstractQuestion myQuestionObject;
 
+    /** This button is used to receive a hint*/
     private JButton myReceiveHintButton;
 
+    /** This label informs the user of how many hints they have left.*/
     private JLabel myHintsAvailableLabel;
 
+    /** This label informs the user of their current correct question streak*/
     private JLabel myStreakLabel;
 
+    /** This is used to display the hint*/
     private JTextArea myHintTextArea;
 
+    /** This QuestionsPanel constructor initializes the attributes of
+     * the panel along with the elements added to it.
+     */
     public QuestionsPanel()
     {
         StartGameFrame.MY_MAZE_MODEL.addPropertyChangeListener(this);
@@ -41,38 +61,51 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
         this.add(myQuestionContainer);
     }
 
+    /** This method sets up the components of panel.*/
     private void setUpComponents()
     {
+        int fontSize = 14;
+        int rowSize = 3;
+        int columnSize = 10;
+
+        int minSize = 50;
+        int prefSize = 100;
+        int maxSize = 150;
+
         myPlayer = StartGameFrame.MY_MAZE_MODEL.getPlayer();
 
         myStreakLabel = new JLabel("Current Streak: " + myPlayer.getStreak());
 
-        myQuestionTextArea = new JTextArea(3,10);
+        myQuestionTextArea = new JTextArea(rowSize, columnSize);
         myQuestionTextArea.setLineWrap(true);
         myQuestionTextArea.setWrapStyleWord(true);
 
         myQuestionTextArea.setEditable(false);
-        myQuestionTextArea.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        myQuestionTextArea.setFont(new Font("SansSerif", Font.PLAIN, fontSize));
         myQuestionTextArea.setBorder(BorderFactory.createTitledBorder("Question:"));
 
-        myHintTextArea = new JTextArea(3,10);
+        myHintTextArea = new JTextArea(rowSize, columnSize);
         myHintTextArea.setLineWrap(true);
         myHintTextArea.setWrapStyleWord(true);
 
         myHintTextArea.setEditable(false);
-        myHintTextArea.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        myHintTextArea.setFont(new Font("SansSerif", Font.PLAIN, fontSize));
         myHintTextArea.setBorder(BorderFactory.createTitledBorder("Hint:"));
 
-        myQuestionTextArea.setMinimumSize(new Dimension(this.getWidth(),50));
-        myQuestionTextArea.setPreferredSize(new Dimension(this.getWidth(), 100));
-        myQuestionTextArea.setMaximumSize(new Dimension(this.getWidth(),150));
+        myQuestionTextArea.setMinimumSize(new Dimension(this.getWidth(), minSize));
+        myQuestionTextArea.setPreferredSize(new Dimension(this.getWidth(), prefSize));
+        myQuestionTextArea.setMaximumSize(new Dimension(this.getWidth(), maxSize));
 
-        myHintTextArea.setMinimumSize(new Dimension(this.getWidth(),50));
-        myHintTextArea.setPreferredSize(new Dimension(this.getWidth(), 100));
-        myHintTextArea.setMaximumSize(new Dimension(this.getWidth(),150));
+        myHintTextArea.setMinimumSize(new Dimension(this.getWidth(), minSize));
+        myHintTextArea.setPreferredSize(new Dimension(this.getWidth(), prefSize));
+        myHintTextArea.setMaximumSize(new Dimension(this.getWidth(), maxSize));
 
         myReceiveHintButton = new JButton("Receive Hint");
         myReceiveHintButton.setEnabled(false);
+
+        //When the player presses the hint button the text area is
+        //set with the hint, if there are no more hints available the
+        //button is deactivated.
         myReceiveHintButton.addActionListener(theEvent -> {
 
             myHintTextArea.setText(myQuestionObject.getHint());
@@ -88,12 +121,15 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
 
         myHintsAvailableLabel = new JLabel("Available Hints: " + myPlayer.getHints());
         AbstractQuestion currentQuestion = StartGameFrame.MY_MAZE_MODEL.getMyCurrentQuestion();
-        if(currentQuestion != null){
+
+        if(currentQuestion != null)
+        {
             myQuestionObject = currentQuestion;
             myQuestionContainer.setQuestionType(myQuestionObject.getType());
             myQuestionTextArea.setText(myQuestionObject.getQuestion());
             if(myPlayer.getHints() > 0) myReceiveHintButton.setEnabled(true);
         }
+
         this.add(myQuestionTextArea);
         this.add(myHintTextArea);
         this.add(myHintsAvailableLabel);
@@ -102,23 +138,26 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
     }
 
     /**
-     * This method gets called when a bound property is changed.
+     * This method gets called when a bound property is changed. When
+     * there is new question, the player gets a question wrong/correct, uses
+     * a hint, or has a change in streak. The elements in this panel are changed.
      *
-     * @param evt A PropertyChangeEvent object describing the event source
+     * @param theEvt A PropertyChangeEvent object describing the event source
      *            and the property that has changed.
      */
     @Override
-    public void propertyChange(PropertyChangeEvent evt)
+    public void propertyChange(final PropertyChangeEvent theEvt)
     {
-        if(evt.getPropertyName().equals("newQuestion"))
+        if(theEvt.getPropertyName().equals("newQuestion"))
         {
-            myQuestionObject = (AbstractQuestion)evt.getNewValue();
+            myQuestionObject = (AbstractQuestion)theEvt.getNewValue();
             myQuestionContainer.setQuestionType(myQuestionObject.getType());
             myQuestionTextArea.setText(myQuestionObject.getQuestion());
             if(myPlayer.getHints() > 0) myReceiveHintButton.setEnabled(true);
         }
 
-        else if(evt.getPropertyName().equals("questionWrong") || evt.getPropertyName().equals("questionRight"))
+
+        else if(theEvt.getPropertyName().equals("questionWrong") || theEvt.getPropertyName().equals("questionRight"))
         {
             myReceiveHintButton.setEnabled(false);
             myQuestionTextArea.setText("");
@@ -126,17 +165,17 @@ public class QuestionsPanel extends JPanel implements PropertyChangeListener
             myQuestionContainer.clearComponents();
         }
 
-        else if(evt.getPropertyName().equals("useHint") || evt.getPropertyName().equals("addHint"))
+        else if(theEvt.getPropertyName().equals("useHint") || theEvt.getPropertyName().equals("addHint"))
         {
-            myHintsAvailableLabel.setText("Available Hints: " + evt.getNewValue());
-            if(evt.getPropertyName().equals("addHint")){
+            myHintsAvailableLabel.setText("Available Hints: " + theEvt.getNewValue());
+            if(theEvt.getPropertyName().equals("addHint")){
                 JOptionPane.showMessageDialog(null,"Received a Hint!" );
             }
         }
 
-        else if(evt.getPropertyName().equals("addStreak") || evt.getPropertyName().equals("resetStreak"))
+        else if(theEvt.getPropertyName().equals("addStreak") || theEvt.getPropertyName().equals("resetStreak"))
         {
-            myStreakLabel.setText("Current Streak: " + evt.getNewValue());
+            myStreakLabel.setText("Current Streak: " + theEvt.getNewValue());
         }
     }
 }

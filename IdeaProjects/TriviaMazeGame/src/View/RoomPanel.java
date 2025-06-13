@@ -12,18 +12,35 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/** This class represents a room that is display in a small panel.
+ * That panel then represents the state of the room by painting \
+ * each side of the panel a color that is associated with a door state.
+ *
+ * @author Christian Dedios, Jason Dinh, Khalid Mohamed
+ * @version 1.0
+ */
 public class RoomPanel extends JPanel
 {
+    /** The room object for this panel*/
     private final Room myRoom;
 
-    private boolean myIsLocked;
-
+    /** A boolean representing if this RoomPanel instance
+     * is the current room occupied by the user in the maze.*/
     private boolean myIsCurrentRoom;
 
+    /** The avatar used to represent the users location in the maze.*/
     private transient BufferedImage myBunnyImage;
 
+    /** The length of each side of the room*/
     private final int myRoomLength = 75;
 
+    /** This constructor initializes the RoomPanel with its row and column in
+     * the maze. Along with the Room object associated with it.
+     *
+     * @param theRoom The room object associated with this RoomPanel instance.
+     * @param theRow The row of the RoomPanel
+     * @param theColumn the column of the RoomPanel
+     */
     RoomPanel(final Room theRoom, final int theRow, final int theColumn)
     {
         this.setLayout(null);
@@ -42,15 +59,24 @@ public class RoomPanel extends JPanel
         }
     }
 
-
-
-    public void setMyIsCurrentRoom(final boolean theCurrentRoom)
+    /** This method is used to set if the specific RoomPanel object
+     * is the room that is currently being occupied by the user.
+     *
+     * @param theIsCurrentRoom a boolean value that sets if the RoomPanel is being occupied
+     */
+    public void setMyIsCurrentRoom(final boolean theIsCurrentRoom)
     {
-        myIsCurrentRoom = theCurrentRoom;
+        myIsCurrentRoom = theIsCurrentRoom;
         this.repaint();
         this.revalidate();
     }
 
+    /** This method is used to paint the components of the maze.
+     * This consists of the rooms with their states and the users
+     * avatar.
+     *
+     * @param theG the component used to paint the panel
+     */
     @Override
     protected void paintComponent(final Graphics theG)
     {
@@ -63,10 +89,6 @@ public class RoomPanel extends JPanel
             theG.drawImage(myBunnyImage, 0, 0, myRoomLength, myRoomLength, this);
         }
 
-        //change the color based on door state, and change doors based on direction of door
-        // left is open, green
-        // right is question, white
-        //down is closed, red
         for (Direction direction: Direction.values())
         {
             Door myCurrentDoor = myRoom.getDoor(direction);
@@ -84,23 +106,33 @@ public class RoomPanel extends JPanel
         }
     }
 
+    /** This method is used to paint a specific side of the panel based
+     * on the direction the user wants to go and the state of that door.
+     *
+     * @param theDirection the direction the user wants to go
+     * @param theG the component used to paint the panel
+     */
     private void setDirectionColor(final Direction theDirection, final Graphics theG)
     {
         switch (theDirection)
         {
             case UP -> {
+                //top of panel
                 theG.fillRect(0, 0, myRoomLength, 3);
             }
 
             case DOWN -> {
+                //bottom of panel
                 theG.fillRect(0, myRoomLength - 3, myRoomLength, 3);
             }
 
             case LEFT -> {
+                //left side of panel
                 theG.fillRect(0, 0, 3, myRoomLength);
             }
 
             case RIGHT -> {
+                //right side of panel
                 theG.fillRect(myRoomLength - 3, 0, 3, myRoomLength);
             }
         }

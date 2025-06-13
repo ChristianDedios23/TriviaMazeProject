@@ -1,12 +1,8 @@
 package View;
 
-import Model.Maze;
 import Util.SoundClip;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,19 +12,33 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-
+/** This class represents a JPanel that holds all the contents used to
+ * represent the maze to the user.
+ *
+ * @author Christian Dedios, Jason Dinh, Khalid Mohamed
+ * @version 1.0
+ */
 public class MazePanel extends JPanel implements PropertyChangeListener
 {
+    /** This represents the background image of the maze.*/
     private transient BufferedImage myMazeImage;
 
-    private HashMap<Integer, RoomPanel> myRoomPanelMap;
+    /** This represents a hashMap of RoomPanel objects to paint each room, with
+     * the keys being their room number in the maze.*/
+    private final HashMap<Integer, RoomPanel> myRoomPanelMap;
 
+    /** This represents the current room number of the player*/
     private int myCurrentRoom;
 
-    private int myMazeSize;
+    /** This represents the size of the maze.*/
+    private final int myMazeSize;
 
-    private int myRoomLength;
+    /** This represents the length of the maze panel and the maze image.*/
+    private final int myMazeLength;
 
+    /** This constructor initializes the contents of the room panel map,
+     * background image of maze, and properties of the maze panel itself.
+     */
     MazePanel()
     {
         super();
@@ -39,17 +49,23 @@ public class MazePanel extends JPanel implements PropertyChangeListener
 
         myRoomPanelMap = new HashMap<>();
         myMazeSize = StartGameFrame.MY_MAZE_MODEL.getMyMazeLength();
-        myRoomLength = myMazeSize * 75;
+        myMazeLength = myMazeSize * 75;
+
         initializeRoomPanelMap();
-        if(StartGameFrame.MY_MAZE_MODEL != null){
+
+        if(StartGameFrame.MY_MAZE_MODEL != null)
+        {
             myCurrentRoom = StartGameFrame.MY_MAZE_MODEL.getMyCurrentRoom();
-        }else{
+        }
+        else
+        {
             myCurrentRoom = 0;
         }
+
         myRoomPanelMap.get(myCurrentRoom).setMyIsCurrentRoom(true);
 
-        this.setPreferredSize(new Dimension(myRoomLength, myRoomLength));
-        this.setBounds(25, 100, myRoomLength, myRoomLength);
+        this.setPreferredSize(new Dimension(myMazeLength, myMazeLength));
+        this.setBounds(25, 100, myMazeLength, myMazeLength);
         this.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         try
@@ -62,6 +78,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener
         }
     }
 
+    /** This method initializes the hashmap with all the rooms in the maze.*/
     private void initializeRoomPanelMap()
     {
         for (int i = 0; i < myMazeSize * myMazeSize; i++)
@@ -72,37 +89,42 @@ public class MazePanel extends JPanel implements PropertyChangeListener
         }
     }
 
+    /** This method paints the components in the maze panel.
+     *
+     * @param theG This is used to paint the background image of the maze.
+     */
     @Override
-    protected void paintComponent(Graphics g)
+    protected void paintComponent(final Graphics theG)
     {
-        super.paintComponent(g);
+        super.paintComponent(theG);
 
         if (myMazeImage != null)
         {
-            g.drawImage(myMazeImage, 0, 0, myRoomLength, myRoomLength, this);
+            theG.drawImage(myMazeImage, 0, 0, myMazeLength, myMazeLength, this);
         }
 
     }
 
-    /**
-     * This method gets called when a bound property is changed.
+    /** This method listens for changes made in the maze,
+     * such as the player moving or getting a question wrong/correct.
+     * Based on what it hears certain actions are performed.
      *
-     * @param evt A PropertyChangeEvent object describing the event source
+     * @param theEvt A PropertyChangeEvent object describing the event source
      *            and the property that has changed.
      */
     @Override
-    public void propertyChange(PropertyChangeEvent evt)
+    public void propertyChange(final PropertyChangeEvent theEvt)
     {
-        if(evt.getPropertyName().equals("playerMove"))
+        if(theEvt.getPropertyName().equals("playerMove"))
         {
-            myCurrentRoom = (int)evt.getNewValue();
-            int myOldRoom = (int)evt.getOldValue();
+            myCurrentRoom = (int)theEvt.getNewValue();
+            int myOldRoom = (int)theEvt.getOldValue();
             System.out.println("Reached player move, current room:  " + myCurrentRoom);
             myRoomPanelMap.get(myOldRoom).setMyIsCurrentRoom(false);
             myRoomPanelMap.get(myCurrentRoom).setMyIsCurrentRoom(true);
         }
 
-        else if(evt.getPropertyName().equals("questionWrong"))
+        else if(theEvt.getPropertyName().equals("questionWrong"))
         {
             myRoomPanelMap.get(myCurrentRoom).setMyIsCurrentRoom(true);
             SoundClip.playSound("sound/wrong.wav");
@@ -110,7 +132,7 @@ public class MazePanel extends JPanel implements PropertyChangeListener
 
         }
 
-        else if(evt.getPropertyName().equals("questionRight"))
+        else if(theEvt.getPropertyName().equals("questionRight"))
         {
             SoundClip.playSound("sound/correct.wav");
             JOptionPane.showMessageDialog(this, "Congrats! You got it correct!");
